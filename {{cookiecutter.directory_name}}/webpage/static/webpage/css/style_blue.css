@@ -2,15 +2,6 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Oswald&display=swap');
 
-@font-face {
-    font-family: 'Lyon Text Web';
-    src: url("../../fonts/LyonText-Regular-Web.eot"),
-        /* IE9 Compat Modes */ url("../../fonts/LyonText-Regular-Web.eot?#iefix?") format('embedded-opentype'),
-        /* IE6-IE8 */ url("../../fonts/LyonText-Regular-Web.woff") format('woff'),
-        /* Modern Browsers */ url("../../fonts/LyonText-Regular-Web.woff2") format('woff2')
-    /* Modern Browsers */
-}
-
 /* Viewport & Page Setup ====================================================== */
 
 html {
@@ -185,6 +176,14 @@ header {
 /* SVG logo of the mdw */
 .header-firstRow .mdwLogo {
     padding-top: 10px;
+    min-width: 120px;
+}
+
+.svgLogo {
+    background-repeat: no-repeat;
+    display: block;
+    background-image: url("https://repo.mdw.ac.at/shared/images/mdw-logo-white.svg");
+    height: 100px;
 }
 
 .header-firstRow .mdwRepository {
@@ -236,32 +235,32 @@ header {
         height: 80px;
     }
 
-    .svg {
-        max-height: 60px;
-    }
-
     .appname {
         font-size: 2em;
+    }
+
+    .svgLogo {
+        display: none;
     }
 
 }
 
 @media (min-width: 576px) and (max-width: 767px) {
-    .svg {
-        max-height: 50px;
+    .svgLogo {
+        height: 50px;
     }
 
 }
 
 @media (min-width: 768px) and (max-width: 991px) {
-    .svg {
+    .svgLogo {
         max-height: 60px;
     }
 
 }
 
 @media (min-width: 992px) and (max-width: 1399px) {
-    .svg {
+    .svgLogo {
         max-height: 75px;
     }
 
