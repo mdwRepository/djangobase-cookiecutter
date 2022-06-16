@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+import logging
 import os
 import traceback
 import uuid
@@ -212,4 +213,65 @@ SPAGHETTI_SAUCE = {
     ],
     'show_fields': False,
     'exclude': {'auth': ['user']},
+}
+
+# ---------------------------------------------------------------------------#
+# Logging                                                                    #
+# ---------------------------------------------------------------------------#
+
+LOG_DIR = str(BASE_DIR) + '/log/{{cookiecutter.project_slug}}'
+
+if not os.path.exists(LOG_DIR):
+    try:
+        os.makedirs(LOG_DIR)
+    except Exception as error:
+        traceback.print_exc(f"Error: {error}, {traceback.format_exc()}")
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple'
+        },
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(LOG_DIR, 'server.log'),
+            'formatter': 'verbose',
+        },
+        'sql': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(LOG_DIR, 'sql.log'),
+            'formatter': 'verbose',
+        },
+     },
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'file', ],
+            'propagate': True,
+            'level': 'INFO',
+        },
+        'django.request': {
+            'handlers': ['console', 'file', ],
+            'propagate': True,
+            'level': 'INFO',
+        },
+        'django.db.backends': {
+            'handlers': ['console', 'sql', ],
+            'propagate': True,
+            'level': 'DEBUG',
+        }
+    },
 }
