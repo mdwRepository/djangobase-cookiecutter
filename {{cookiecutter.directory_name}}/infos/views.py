@@ -74,7 +74,7 @@ class TeamMemberUpdate(BaseUpdateView):
 class TeamMemberDelete(DeleteView):
     model = TeamMember
     template_name = 'webpage/confirm_delete.html'
-    success_url = reverse_lazy('info:teammember_browse')
+    success_url = reverse_lazy('infos:teammember_browse')
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -121,7 +121,7 @@ class AboutTheProjectUpdate(BaseUpdateView):
 class AboutTheProjectDelete(DeleteView):
     model = AboutTheProject
     template_name = 'webpage/confirm_delete.html'
-    success_url = reverse_lazy('info:about_browse')
+    success_url = reverse_lazy('infos:about_browse')
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -168,7 +168,7 @@ class ProjectInstUpdate(BaseUpdateView):
 class ProjectInstDelete(DeleteView):
     model = ProjectInst
     template_name = 'webpage/confirm_delete.html'
-    success_url = reverse_lazy('info:projectinst_browse')
+    success_url = reverse_lazy('infos:projectinst_browse')
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):

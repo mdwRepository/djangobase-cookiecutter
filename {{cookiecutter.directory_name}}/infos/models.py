@@ -46,26 +46,26 @@ class ProjectInst(models.Model):
 
     @classmethod
     def get_listview_url(self):
-        return reverse('info:projectinst_browse')
+        return reverse('infos:projectinst_browse')
 
     @classmethod
     def get_createview_url(self):
-        return reverse('info:projectinst_create')
+        return reverse('infos:projectinst_create')
 
     def get_absolute_url(self):
-        return reverse('info:projectinst_detail', kwargs={'pk': self.id})
+        return reverse('infos:projectinst_detail', kwargs={'pk': self.id})
 
     def get_delete_url(self):
-        return reverse('info:projectinst_delete', kwargs={'pk': self.id})
+        return reverse('infos:projectinst_delete', kwargs={'pk': self.id})
 
     def get_edit_url(self):
-        return reverse('info:projectinst_edit', kwargs={'pk': self.id})
+        return reverse('infos:projectinst_edit', kwargs={'pk': self.id})
 
     def get_next(self):
         next = self.__class__.objects.filter(id__gt=self.id)
         if next:
             return reverse(
-                'info:projectinst_detail',
+                'infos:projectinst_detail',
                 kwargs={'pk': next.first().id}
             )
         return False
@@ -74,7 +74,7 @@ class ProjectInst(models.Model):
         prev = self.__class__.objects.filter(id__lt=self.id).order_by('-id')
         if prev:
             return reverse(
-                'info:projectinst_detail',
+                'infos:projectinst_detail',
                 kwargs={'pk': prev.first().id}
             )
         return False
@@ -121,26 +121,26 @@ class TeamMember(models.Model):
 
     @classmethod
     def get_listview_url(self):
-        return reverse('info:teammember_browse')
+        return reverse('infos:teammember_browse')
 
     @classmethod
     def get_createview_url(self):
-        return reverse('info:teammember_create')
+        return reverse('infos:teammember_create')
 
     def get_absolute_url(self):
-        return reverse('info:teammember_detail', kwargs={'pk': self.id})
+        return reverse('infos:teammember_detail', kwargs={'pk': self.id})
 
     def get_delete_url(self):
-        return reverse('info:teammember_delete', kwargs={'pk': self.id})
+        return reverse('infos:teammember_delete', kwargs={'pk': self.id})
 
     def get_edit_url(self):
-        return reverse('info:teammember_edit', kwargs={'pk': self.id})
+        return reverse('infos:teammember_edit', kwargs={'pk': self.id})
 
     def get_next(self):
         next = self.__class__.objects.filter(id__gt=self.id)
         if next:
             return reverse(
-                'info:teammember_detail',
+                'infos:teammember_detail',
                 kwargs={'pk': next.first().id}
             )
         return False
@@ -149,7 +149,7 @@ class TeamMember(models.Model):
         prev = self.__class__.objects.filter(id__lt=self.id).order_by('-id')
         if prev:
             return reverse(
-                'info:teammember_detail',
+                'infos:teammember_detail',
                 kwargs={'pk': prev.first().id}
             )
         return False
@@ -199,26 +199,26 @@ class AboutTheProject(models.Model):
 
     @classmethod
     def get_listview_url(self):
-        return reverse('info:about_browse')
+        return reverse('infos:about_browse')
 
     @classmethod
     def get_createview_url(self):
-        return reverse('info:about_create')
+        return reverse('infos:about_create')
 
     def get_absolute_url(self):
-        return reverse('info:about_detail', kwargs={'pk': self.id})
+        return reverse('infos:about_detail', kwargs={'pk': self.id})
 
     def get_delete_url(self):
-        return reverse('info:about_delete', kwargs={'pk': self.id})
+        return reverse('infos:about_delete', kwargs={'pk': self.id})
 
     def get_edit_url(self):
-        return reverse('info:about_edit', kwargs={'pk': self.id})
+        return reverse('infos:about_edit', kwargs={'pk': self.id})
 
     def get_next(self):
         next = self.__class__.objects.filter(id__gt=self.id)
         if next:
             return reverse(
-                'info:about_detail',
+                'infos:about_detail',
                 kwargs={'pk': next.first().id}
             )
         return False
@@ -227,7 +227,7 @@ class AboutTheProject(models.Model):
         prev = self.__class__.objects.filter(id__lt=self.id).order_by('-id')
         if prev:
             return reverse(
-                'info:about_detail',
+                'infos:about_detail',
                 kwargs={'pk': prev.first().id}
             )
         return False
