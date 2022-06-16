@@ -18,10 +18,7 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 SHARED_URL = "https://shared.acdh.oeaw.ac.at/"
 PROJECT_NAME = "{{cookiecutter.project_abbr}}"
-
-
-ACDH_IMPRINT_URL = "https://shared.acdh.oeaw.ac.at/acdh-common-assets/api/imprint.php?serviceID="
-REDMINE_ID = 10459
+IMPRINT_URL = SHARED_URL + "imprint"
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/

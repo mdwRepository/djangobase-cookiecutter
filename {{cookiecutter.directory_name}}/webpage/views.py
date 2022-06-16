@@ -16,14 +16,10 @@ from . metadata import PROJECT_METADATA as PM
 
 def get_imprint_url():
     try:
-        base_url = settings.ACDH_IMPRINT_URL
+        base_url = settings.IMPRINT_URL
     except AttributeError:
-        base_url = "https://provide-an-acdh-imprint-url/"
-    try:
-        redmine_id = settings.REDMINE_ID
-    except AttributeError:
-        redmine_id = "go-register-a-redmine-service-issue"
-    return "{}{}".format(base_url, redmine_id)
+        base_url = "https://provide-an-mdw-imprint-url/"
+    return "{}".format(base_url)
 
 
 class ImprintView(TemplateView):
@@ -40,7 +36,7 @@ class ImprintView(TemplateView):
             context['imprint_body'] = """
             On of our services is currently not available.\
             Please try it later or write an email to\
-            acdh@oeaw.ac.at; if you are service provide,\
+            repo-admim@mdw.ac.at; if you are service provide,\
             make sure that you provided ACDH_IMPRINT_URL and REDMINE_ID
             """
         return context
