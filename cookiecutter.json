@@ -13,7 +13,7 @@
     "white"
   ],
   "github_url": "https://github.com/xxx",
-  "shared_url": "https://repo.mdw.ac.at",
+  "shared_url": "https://repo.mdw.ac.at/",
   "debug_sql": "n",
   "_copy_without_render": [
     "*.css",

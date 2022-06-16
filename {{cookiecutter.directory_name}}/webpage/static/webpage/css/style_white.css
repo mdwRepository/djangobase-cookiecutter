@@ -1,0 +1,470 @@
+/* Fonts ======================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Oswald&display=swap');
+
+@font-face {
+    font-family: 'Lyon Text Web';
+    src: url("../../fonts/LyonText-Regular-Web.eot"),
+        /* IE9 Compat Modes */ url("../../fonts/LyonText-Regular-Web.eot?#iefix?") format('embedded-opentype'),
+        /* IE6-IE8 */ url("../../fonts/LyonText-Regular-Web.woff") format('woff'),
+        /* Modern Browsers */ url("../../fonts/LyonText-Regular-Web.woff2") format('woff2')
+    /* Modern Browsers */
+}
+
+/* Viewport & Page Setup ====================================================== */
+
+html {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+body {
+    flex-grow: 1;
+}
+
+/* Colors ====================================================== */
+
+:root {
+    --mdwblue: #003b79;
+    --white: #ffffff;
+}
+
+.mdw-dark-blue {
+    background: var(--mdwblue);
+    color: #ffffff;
+}
+
+.mdw-dark-blue-text {
+    color: var(--mdwblue);
+}
+
+.mdw-light-blue {
+    background: #0ca0d6;
+    color: #ffffff;
+}
+
+.text-white {
+    color: #ffffff;
+}
+
+/* ScreenReader only content =================================== */
+
+.sr-only {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+}
+
+/* Typography =================================================== */
+
+h1 {
+    font-family: 'Lyon Text Web', 'Roboto', sans-serif;
+    color: var(--mdwblue);
+    font-size: 26px;
+    line-height: 1.2;
+    padding-top: 10px;
+    padding-bottom: 0px;
+    font-weight: normal;
+}
+
+h2 {
+    font-family: 'Lyon Text Web', 'Roboto', sans-serif;
+    color: var(--mdwblue);
+    font-size: 21px;
+    font-weight: bold;
+    line-height: 25px;
+    padding-bottom: 0.5em;
+    margin-top: 1em;
+    font-style: normal;
+    letter-spacing: normal;
+    text-transform: none;
+}
+
+h3 {
+    font-family: 'Lyon Text Web', 'Roboto', sans-serif;
+    color: var(--mdwblue);
+    font-weight: normal;
+    font-style: normal;
+    font-size: 22px;
+    line-height: 1.2;
+    padding-bottom: 0.2em;
+    margin-bottom: 10px;
+}
+
+h4 {
+    font-family: 'Lyon Text Web', 'Roboto', sans-serif;
+    color: var(--mdwblue);
+    font-weight: normal;
+    font-size: 18px;
+    padding-bottom: 0.8em;
+}
+
+h5 {
+    font-family: 'Lyon Text Web', 'Roboto', sans-serif;
+    color: var(--mdwblue);
+    font-weight: normal;
+    font-style: normal;
+    font-size: 18px;
+    padding-bottom: 0.2em;
+}
+
+h6 {
+    font-weight: normal;
+    font-style: normal;
+    font-size: 18px;
+    padding-bottom: 0.2em;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+a {
+    text-decoration: none;
+    color: var(--mdwblue);
+    text-underline-offset: 0.1em;
+}
+
+a:visited {
+    color: var(--mdwblue);
+}
+
+a:hover {
+    text-decoration: underline;
+    color: var(--mdwblue);
+}
+
+.mainContent a {
+    /* color: #0000FF !important; */
+    color: #000 !important;
+    text-decoration: underline !important;
+}
+
+.mainContent a:visited {
+    /* color: #0000FF !important; */
+    color: #000 !important;
+    text-decoration: underline !important;
+    /* text-decoration: underline; */
+}
+
+/* Header  ====================================================== */
+
+header {
+    background-color: var(--white);
+    color: var(--mdwblue);
+}
+
+/* positioning */
+
+.header-flexBox {
+    display: -webkit-flex;
+    display: flex;
+    list-style-type: none;
+    padding-top: 15px;
+    justify-content: flex-end;
+    margin-left: -30px;
+}
+
+.header-flexBox a {
+    text-decoration: none;
+    color: #ffffff;
+}
+
+.header-flexBox .left {
+    margin-right: auto;
+}
+
+.header-flexBox .right {
+    padding-top: 40px;
+}
+
+/* First Row */
+.header-firstRow {
+    height: 40px;
+}
+
+/* SVG logo of the mdw */
+.header-firstRow .mdwLogo {
+    padding-top: 10px;
+}
+
+.header-firstRow .mdwRepository {
+    font-family: "Oswald";
+    font-weight: 300;
+    font-style: normal;
+    font-size: 1.2em;
+    text-decoration: none;
+}
+
+/* Second Row */
+/* includes Repository Service name and right box that can be used for Quicklinks or language switch */
+.header-secondRow {
+    height: 80px;
+}
+
+.appname {
+    font-family: "Oswald";
+    font-weight: 400;
+    font-style: normal;
+    font-size: 2.2em;
+    text-decoration: none;
+}
+
+/* Mobile view */
+
+@media (max-width: 576px) {
+    .header-flexBox .right {
+        visibility: hidden;
+    }
+
+    .header-firstRow {
+        height: 40px;
+    }
+
+    .header-firstRow .mdwLogo {
+        visibility: hidden;
+    }
+
+    .header-firstRow .mdwRepository {
+        font-family: "Oswald";
+        font-weight: 400;
+        font-style: normal;
+        font-size: 1.2em;
+        text-decoration: none;
+    }
+
+    .header-secondRow {
+        height: 80px;
+    }
+
+    .svg {
+        max-height: 60px;
+    }
+
+    .appname {
+        font-size: 2em;
+    }
+
+}
+
+@media (min-width: 576px) and (max-width: 767px) {
+    .svg {
+        max-height: 50px;
+    }
+
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    .svg {
+        max-height: 60px;
+    }
+
+}
+
+@media (min-width: 992px) and (max-width: 1399px) {
+    .svg {
+        max-height: 75px;
+    }
+
+}
+
+@media (min-width: 1400px) {
+}
+
+/* Navbar  ====================================================== */
+
+.navbar {
+	background-color: #d2dce5;
+}
+
+@media (min-width: 768px) and (max-width: 1105px) {
+    .navbar-right {
+        float: none !important;
+    }
+}
+
+/* TODO: review usage */
+span.select2-container--default .select2-selection--single .select2-selection__rendered {
+    color: #444;
+    line-height: 16px; }
+
+/* Footer  ====================================================== */
+
+footer {
+    padding-bottom: 15px;
+    padding-top: 15px;
+    background-color: var(--white);
+    text-align: center;
+    color: var(--mdwblue);
+}
+
+footer a {
+    text-decoration: none;
+    /*color: #1fa9e3;*/
+    /* color: #777; */
+    /* color: #007bff; */
+    color: #fff;
+    text-underline-offset: 0.1em;
+}
+
+footer a:visited {
+    /*color: #157aa4;*/
+    /* color: #777; */
+    /* color: #007bff; */
+    color: #fff;
+}
+
+footer a:hover {
+    text-decoration: underline;
+    /*color: #157aa4;*/
+    /* color: #777; */
+    color: #fff;
+}
+
+/* Reamining ACDH styles  ====================================================== */
+
+
+/*Button's text is all in caps and bold. When adding html markup text should be all in lowercase. */
+.btn {
+   /* font-weight: bold;
+    font-variant: small-caps;*/
+    white-space: normal;
+    margin-bottom: 10px;
+}
+.separate-panel legend, .legend-blue {
+    /*change color of border when the pallete is chosen*/
+    border: 2px solid #caebf2;
+    background-color: #caebf2;
+    /*color: #ffffff;*/
+    padding: 5px;
+}
+.select2-container {
+ /*   width: 100%;*/
+}
+
+/* css for checkbox widget in filters */
+.chbx-select-multi {
+  /* 1.5-sized Checkboxes */
+  -ms-transform: scale(1.5); /* IE */
+  -moz-transform: scale(1.5); /* FF */
+  -webkit-transform: scale(1.8); /* Safari and Chrome */
+  -o-transform: scale(1.5); /* Opera */
+  padding: 10px;
+  margin: 5px 10px 5px 10px;
+  border: 1px solid #aaa;
+
+}
+/*overriding css for field labels, helptext in filters*/
+.control-label {
+    font-weight: 600;
+}
+.help-block {
+    font-size: 0.8rem;
+}
+.card-index {
+    padding: 80px;
+    z-index: 1;
+    /*margin-top: -900px;*/
+    margin-top: -80px;
+
+}
+.title-index {
+    font-weight: 900;
+    color: #254aa5;
+    font-size: 350%;
+}
+@media (max-width: 768px) {
+    .card-index {
+        padding: 30px !important;
+    }
+    .title-index {
+    font-weight: 900;
+    font-size: 200% !important;
+}
+
+}
+
+.paragraph-index {
+    font-weight: 900;
+}
+.hr-index {
+    height: 4px;
+    border: 0;
+    background: #254aa5;
+    width: 40%;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+.h2-index {
+    color:#254aa5;
+    font-weight: 800;
+    text-align: center;
+}
+#yourmap {
+    z-index: 0;
+    /*min-height: 1000px;*/
+   /* min-height: 450px;*/
+}
+.special-index {
+    padding: 30px;
+    border-radius: 50%;
+    background-color: #fbbf18ff;
+    color: #fff;
+    font-weight: 800;
+    margin-left: -80px;
+    margin-top: -450px;
+    width: 10rem;
+    height: 10rem;
+    z-index: 2;
+}
+
+.btn-index {
+    margin-top: 5px;
+    margin-bottom: 0px;
+    /*margin-left: 10px;
+    margin-right: 10px;*/
+    background-color: #ffffff;
+    color: #254aa5;
+    border: 3px solid #254aa5;
+    font-weight: 800;
+    white-space: normal;
+    padding-left: 40px;
+    padding-right: 40px;
+    box-shadow: 0px 0px 0px 0px #254aa5;
+    transition: box-shadow 0.6s linear;
+}
+
+.btn-index:hover {
+   box-shadow: 0px 0px 0px 2px #254aa5;
+
+}
+
+
+.tooltip-inner {
+  background-color: #fff !important;
+  /*!important is not necessary if you place custom.css at the end of your css calls. For the purpose of this demo, it seems to be required in SO snippet*/
+  color: #000;
+  border: 1px solid #000;
+  text-align: left;
+  max-width: auto;
+}
+
+.tooltip.top .tooltip-arrow {
+  border-top-color: #000;
+}
+
+.tooltip.right .tooltip-arrow {
+  border-right-color: #fff;
+  color: #fff;
+}
+
+.tooltip.bottom .tooltip-arrow {
+  border-bottom-color: #000;
+}
+
+.tooltip.left .tooltip-arrow {
+  border-left-color: #000;
+}
+
+a > .fa-2x {
+    color: #444;
+}
