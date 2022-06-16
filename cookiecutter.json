@@ -1,8 +1,22 @@
 {
-    "directory_name": "my-new-project",
-    "project_title": "My New Project",
-    "project_abbr": "mnp",
-    "_copy_without_render": [
-        "*.html"
-    ]
+  "directory_name": "my-new-project",
+  "project_title": "My New Project",
+  "project_slug": "{{ cookiecutter.project_title.lower()|replace(' ', '_')|replace('-', '_')|replace('.', '_')|trim() }}",
+  "project_abbr": "mnp",
+  "project_short_description": "A django project to bootstrap further web-app developments",
+  "project_group": "mdwRepository",
+  "version": "0.0.1",
+  "language_code": "en-us",
+  "timezone": "Europe/Vienna",
+  "theme": [
+    "blue",
+    "white"
+  ],
+  "github_url": "https://github.com/xxx",
+  "shared_url": "https://repo.mdw.ac.at",
+  "_copy_without_render": [
+    "*.css",
+    "*.html",
+    "*.js"
+  ]
 }
