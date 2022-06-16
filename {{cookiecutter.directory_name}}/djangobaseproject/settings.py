@@ -42,6 +42,14 @@ if os.environ.get('DEBUG'):
 else:
     DEBUG = False
 
+# Debug SQL queries to dedicated log file
+{%- if cookiecutter.debug_sql == 'y' %}
+DEBUG_SQL = True
+{%- else %}
+DEBUG_SQL = False
+{%- endif %}
+
+
 ADD_ALLOWED_HOST = os.environ.get('ALLOWED_HOST', '*')
 
 ALLOWED_HOSTS = [
@@ -275,3 +283,9 @@ LOGGING = {
         }
     },
 }
+
+if DEBUG_SQL is True:
+    logger = logging.getLogger('django.db.backends')
+    logger.setLevel(logging.DEBUG)
+    logger.addHandler(logging.StreamHandler())
+    INSTALLED_APPS.append('django_extensions')
