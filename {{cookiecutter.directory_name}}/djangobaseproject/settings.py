@@ -11,22 +11,31 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 import os
+import traceback
+import uuid
+
 from pathlib import Path
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# ---------------------------------------------------------------------------#
+# Setup                                                                      #
+# ---------------------------------------------------------------------------#
 
+# project configuration
+
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-SHARED_URL = "https://shared.acdh.oeaw.ac.at/"
+SHARED_URL = "{{cookiecutter.shared_url}}"
 PROJECT_NAME = "{{cookiecutter.project_abbr}}"
 IMPRINT_URL = SHARED_URL + "imprint"
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
+ROOT_URLCONF = 'djangobaseproject.urls'
+WSGI_APPLICATION = 'djangobaseproject.wsgi.application'
+SITE_ID = 1
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY', '{{ random_ascii_string(8) }}')
+SECRET_KEY = str(uuid.uuid4())
 
 # SECURITY WARNING: don't run with debug turned on in production!
+# debug SQL statements (logs all SQL statements to a dedicated log file defined in the respective LOGGING handler)
 if os.environ.get('DEBUG'):
     DEBUG = True
 else:
@@ -36,9 +45,21 @@ ADD_ALLOWED_HOST = os.environ.get('ALLOWED_HOST', '*')
 
 ALLOWED_HOSTS = [
     "127.0.0.1",
-    "0.0.0.0",
     ADD_ALLOWED_HOST,
 ]
+
+# Default primary key field type
+# https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Crispy Forms UI Library
+CRISPY_ALLOWED_TEMPLATE_PACKS = ('bootstrap', 'uni_form', 'bootstrap3', 'bootstrap4',)
+CRISPY_TEMPLATE_PACK = "bootstrap4"
+
+# ---------------------------------------------------------------------------#
+# Application(s)                                                             #
+# ---------------------------------------------------------------------------#
 
 # Application definition
 
@@ -49,6 +70,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'django.contrib.sitemaps',
+    'guardian',
     'crispy_forms',
     'django_filters',
     'django_tables2',
@@ -58,15 +82,11 @@ INSTALLED_APPS = [
     'infos',
 ]
 
-CRISPY_TEMPLATE_PACK = "bootstrap4"
+# ---------------------------------------------------------------------------#
+# Middleware                                                                 #
+# ---------------------------------------------------------------------------#
 
-SPAGHETTI_SAUCE = {
-    'apps': [
-        'infos',
-    ],
-    'show_fields': False,
-    'exclude': {'auth': ['user']},
-}
+# Middleware definition
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -78,7 +98,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'djangobaseproject.urls'
+# ---------------------------------------------------------------------------#
+# Templates                                                                  #
+# ---------------------------------------------------------------------------#
 
 TEMPLATES = [
     {
@@ -101,8 +123,9 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'djangobaseproject.wsgi.application'
-
+# ---------------------------------------------------------------------------#
+# Database                                                                   #
+# ---------------------------------------------------------------------------#
 
 if os.environ.get('POSTGRES_DB'):
     DATABASES = {
@@ -123,6 +146,9 @@ else:
         }
     }
 
+# ---------------------------------------------------------------------------#
+# Authentication                                                             #
+# ---------------------------------------------------------------------------#
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -142,20 +168,31 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'guardian.backends.ObjectPermissionBackend',
+)
+
+# ---------------------------------------------------------------------------#
+# Internationalization                                                       #
+# ---------------------------------------------------------------------------#
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'UTC'
-
 USE_I18N = True
+
+LANGUAGE_CODE = "{{cookiecutter.language_code}}"
 
 USE_L10N = True
 
 USE_TZ = True
 
+TIME_ZONE = "{{cookiecutter.timezone}}"
+
+# ---------------------------------------------------------------------------#
+# Files                                                                      #
+# ---------------------------------------------------------------------------#
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
@@ -165,7 +202,14 @@ STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 MEDIA_URL = '/media/'
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
+# ---------------------------------------------------------------------------#
+# django Spaghetti                                                           #
+# ---------------------------------------------------------------------------#
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+SPAGHETTI_SAUCE = {
+    'apps': [
+        'infos',
+    ],
+    'show_fields': False,
+    'exclude': {'auth': ['user']},
+}
