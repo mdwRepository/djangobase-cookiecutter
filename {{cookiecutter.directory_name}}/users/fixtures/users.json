@@ -1,0 +1,24 @@
+[
+  {
+    "model": "users.customuser",
+    "pk": 2,
+    "fields": {
+      "password": "pbkdf2_sha256$260000$MLyMo2CgDbNsyIZ9XEWl28$/XaARpMBh+YYMTTO88vzwgZfG8v5rnPh3BbgeCpNHMA=",
+      "last_login": "2022-06-20T15:29:29.353Z",
+      "is_superuser": true,
+      "username": "admin",
+      "first_name": "",
+      "last_name": "",
+      "email": "admin@test.com",
+      "is_staff": true,
+      "is_active": true,
+      "birth_date": null,
+      "auth_type": "local",
+      "current_tou_accepted": false,
+      "email_confirmed": false,
+      "date_joined": "2022-06-20T13:42:49.607Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  }
+]

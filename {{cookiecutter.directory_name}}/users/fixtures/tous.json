@@ -1,0 +1,21 @@
+[{
+	"model": "users.termsofuse",
+	"pk": "89044ec7-3458-41d4-b291-53dee7eb7e18",
+	"fields": {
+		"title": "Test",
+		"description": null,
+		"created_at_time": "2022-06-20T15:29:00.076Z",
+		"creator": 2,
+		"modified_at_time": "2022-06-20T15:29:00.076Z",
+		"modifier": 2,
+		"current_major_version": 0,
+		"current_minor_version": 0,
+		"current_revision_number": 0,
+		"slug": null,
+		"content": "Sample TOU",
+		"version": "1.0",
+		"date": "2022-06-20T15:39:58Z",
+		"language": "english",
+		"contributors": [2]
+	}
+}]
