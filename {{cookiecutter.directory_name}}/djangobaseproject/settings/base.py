@@ -237,10 +237,10 @@ try:
 
     AUTH_LDAP_SERVER_URI = env('LDAP_SERVER_URI', default="ldap://")
     AUTH_LDAP_BIND_DN = env('LDAP_BIND_DN', default="cn=xxx")
-    AUTH_LDAP_BIND_PASSWORD = env('BIND_PASSWORD', default="password")
-    AUTH_LDAP_USER_ATTR_MAP = env('USER_ATTR_MAP', default='{"first_name": "givenName", "last_name": "sn", "email": "mail"}')
-    AUTH_LDAP_USER_SEARCH = LDAPSearch(env('USER_SEARCH', default="o="),
-                                       ldap.SCOPE_SUBTREE, env('USER_SEARCH_SCOPE', default="cn=%(user)s)"))
+    AUTH_LDAP_BIND_PASSWORD = env('LDAP_BIND_PASSWORD', default="password")
+    AUTH_LDAP_USER_ATTR_MAP = env.dict('LDAP_USER_ATTR_MAP', default={"last_name":"sn"})
+    AUTH_LDAP_USER_SEARCH = LDAPSearch(env('LDAP_USER_SEARCH', default="o="),
+                                       ldap.SCOPE_SUBTREE, env('LDAP_USER_SEARCH_SCOPE', default="cn=%(user)s)"))
 
     AUTHENTICATION_BACKENDS = (
         'users.models.CustomLDAPBackend',
@@ -249,6 +249,7 @@ try:
     )
 except Exception as error:
     traceback.print_exc(f"Error: {error}, {traceback.format_exc()}")
+
 {%- else %}
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
