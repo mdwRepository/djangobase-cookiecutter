@@ -118,6 +118,7 @@ DJANGO_APPS = [
 THIRD_PARTY_APPS = [
     'corsheaders',
     'guardian',
+    'tabbed_admin',
     'crispy_forms',
     'django_filters',
     'django_tables2',
@@ -307,6 +308,14 @@ SPAGHETTI_SAUCE = {
     'show_fields': False,
     'exclude': {'auth': ['user']},
 }
+
+# ---------------------------------------------------------------------------#
+# Tabbed django Admin Interface                                              #
+# ---------------------------------------------------------------------------#
+
+# uses django-tabbed-admin (https://pypi.org/project/django-tabbed-admin/)
+
+TABBED_ADMIN_USE_JQUERY_UI = True
 
 # ---------------------------------------------------------------------------#
 # Logging                                                                    #

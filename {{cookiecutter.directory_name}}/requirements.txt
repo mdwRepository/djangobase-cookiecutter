@@ -8,6 +8,7 @@ django-fsm-admin==1.2.4
 django-guardian==2.4.0
 acdh-django-browsing==1.0.0
 django-spaghetti-and-meatballs==0.4.2
+django-tabbed-admin==1.0.4
 requests>=2.25
 {% if cookiecutter.ldap_authentication == 'y' -%}
 python-ldap==3.3.1
