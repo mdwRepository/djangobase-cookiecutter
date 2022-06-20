@@ -21,9 +21,13 @@ SITE_ID = 1
 # APPEND_SLASH = False
 
 # django admin labels
-SITE_HEADER = '{{cookiecutter.project_abbr}} - {{cookiecutter.project_title}} Admin'
-SITE_TITLE = '{{cookiecutter.project_abbr}} - {{cookiecutter.project_title}} Admin Portal'
-INDEX_TITLE = '{{cookiecutter.project_abbr}} - {{cookiecutter.project_title}} Portal'
+SITE_HEADER = '{{cookiecutter.project_group}} | {{cookiecutter.project_title}} Admin'
+SITE_TITLE = '{{cookiecutter.project_group}} | {{cookiecutter.project_title}} Admin Portal'
+INDEX_TITLE = '{{cookiecutter.project_group}} | {{cookiecutter.project_title}} Portal'
+
+# django DRF - RESTful API labels
+API_ROOT = '{{cookiecutter.project_group}} | {{cookiecutter.project_title}} - REST API'
+API_ROOT_DESCRIPTION = 'RESTful API Service for internal use.'
 
 # PATHS
 # ------------------------------------------------------------------------------
@@ -125,6 +129,8 @@ DJANGO_APPS = [
 THIRD_PARTY_APPS = [
     'corsheaders',
     'guardian',
+    'rest_framework',
+    'rest_framework_guardian',
     'tabbed_admin',
     'crispy_forms',
     'django_filters',
@@ -269,6 +275,33 @@ AUTHENTICATION_BACKENDS = (
     'guardian.backends.ObjectPermissionBackend',
 )
 {%- endif %}
+
+# ---------------------------------------------------------------------------#
+# REST API                                                                   #
+# ---------------------------------------------------------------------------#
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [],
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+        'rest_framework_xml.renderers.XMLRenderer',
+        'rest_framework_jsonp.renderers.JSONPRenderer',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.JSONParser',
+        'rest_framework_xml.parsers.XMLParser',
+    ],
+    'TEST_REQUEST_DEFAULT_FORMAT': 'json',
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
+}
+
 # ---------------------------------------------------------------------------#
 # Internationalization                                                       #
 # ---------------------------------------------------------------------------#
