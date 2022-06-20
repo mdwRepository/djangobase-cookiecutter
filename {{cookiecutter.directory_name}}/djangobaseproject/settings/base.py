@@ -71,7 +71,7 @@ ALLOWED_HOSTS = [
 
 # corsheaders settings
 CORS_ORIGIN_ALLOW_ALL = False
-ADD_CORS_ORIGIN_WHITELIST =  env('CORS_ORIGIN_WHITELIST', default="http://127.0.0.1")
+ADD_CORS_ORIGIN_WHITELIST = env('CORS_ORIGIN_WHITELIST', default="http://127.0.0.1")
 CORS_ORIGIN_WHITELIST = [
     ADD_CORS_ORIGIN_WHITELIST,
 ]
@@ -112,7 +112,7 @@ DJANGO_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'django.contrib.sitemaps',
-    ]
+]
 
 THIRD_PARTY_APPS = [
     'corsheaders',
@@ -122,7 +122,7 @@ THIRD_PARTY_APPS = [
     'django_tables2',
     'django_spaghetti',
     'fsm_admin',
-    ]
+]
 
 LOCAL_APPS = [
     'core',
@@ -130,7 +130,7 @@ LOCAL_APPS = [
     'webpage',
     'browsing',
     'infos',
-    ]
+]
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -210,7 +210,6 @@ AUTH_USER_MODEL = 'users.CustomUser'
 # anonymous user for guardianed content (public content)
 GUARDIAN_GET_INIT_ANONYMOUS_USER = 'users.models.get_custom_anon_user'
 
-
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
@@ -229,11 +228,32 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# LDAP authentication if activated
+{% if cookiecutter.ldap_authentication == 'y' -%}
+try:
+    import ldap
+    from django_auth_ldap.config import LDAPSearch
+
+    AUTH_LDAP_SERVER_URI = env('LDAP_SERVER_URI', default="ldap://")
+    AUTH_LDAP_BIND_DN = env('LDAP_BIND_DN', default="cn=xxx")
+    AUTH_LDAP_BIND_PASSWORD = env('BIND_PASSWORD', default="password")
+    AUTH_LDAP_USER_ATTR_MAP = env('USER_ATTR_MAP', default='{"first_name": "givenName", "last_name": "sn", "email": "mail"}')
+    AUTH_LDAP_USER_SEARCH = LDAPSearch(env('USER_SEARCH', default="o="),
+                                       ldap.SCOPE_SUBTREE, env('USER_SEARCH_SCOPE', default="cn=%(user)s)"))
+
+    AUTHENTICATION_BACKENDS = (
+        'users.models.CustomLDAPBackend',
+        'django.contrib.auth.backends.ModelBackend',
+        'guardian.backends.ObjectPermissionBackend',
+    )
+except Exception as error:
+    traceback.print_exc(f"Error: {error}, {traceback.format_exc()}")
+{%- else %}
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'guardian.backends.ObjectPermissionBackend',
 )
-
+{%- endif %}
 # ---------------------------------------------------------------------------#
 # Internationalization                                                       #
 # ---------------------------------------------------------------------------#
@@ -322,7 +342,7 @@ LOGGING = {
             'filename': os.path.join(LOG_DIR, 'sql.log'),
             'formatter': 'verbose',
         },
-     },
+    },
     'loggers': {
         'django': {
             'handlers': ['console', 'file', ],
