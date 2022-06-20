@@ -64,10 +64,11 @@ DEBUG_SQL = False
 SECRET_KEY = str(uuid.uuid4())
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
-ADD_ALLOWED_HOST = env('ALLOWED_HOST', default="127.0.0.1")
 ALLOWED_HOSTS = [
-    ADD_ALLOWED_HOST,
 ]
+ADD_ALLOWED_HOST = env.list('ALLOWED_HOST', default="127.0.0.1")
+ALLOWED_HOSTS += ADD_ALLOWED_HOST
+
 
 # corsheaders settings
 CORS_ORIGIN_ALLOW_ALL = False
