@@ -1,0 +1,58 @@
+{% extends 'webpage/base.html' %}
+{% load i18n %}
+
+{% block title %}
+{% trans "Login" %}
+{% endblock title %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="https://pub.mdw.ac.at">Home</a>
+                    </li>
+                    <li class="breadcrumb-item active">{% trans "Login" %}</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="pub_pagetitle">
+                {% trans "Login" %}
+            </h1>
+            {% if form.errors %}
+            <div class="alert alert-danger" role="alert">
+                Your username and password didn't match. Please try again.
+            </div>
+            {% endif %}
+            <p class="col-4">
+            <form class="form-login" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{{ next }}"/>
+                {% for field in form %}
+                <p>
+                    {{ field.label_tag }}<br>
+                    {{ field }}<br>
+                    {% for error in field.errors %}
+                <p style="color: red">{{ error }}</p>
+                {% endfor %}
+                {% if field.help_text %}
+                <p><small style="color: grey">{{ field.help_text }}</small></p>
+                {% endif %}
+                </p>
+                {% endfor %}
+                <div class="input-group form-group">
+                    <button type="submit" class="btn btn-primary"
+                            style="background-color: #003b79; border-color: #003b79">{% trans "Log in" %}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
