@@ -126,6 +126,7 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     'core',
+    'users',
     'webpage',
     'browsing',
     'infos',
@@ -202,6 +203,13 @@ else:
 # ---------------------------------------------------------------------------#
 # Authentication                                                             #
 # ---------------------------------------------------------------------------#
+
+# custom user model
+AUTH_USER_MODEL = 'users.CustomUser'
+
+# anonymous user for guardianed content (public content)
+GUARDIAN_GET_INIT_ANONYMOUS_USER = 'users.models.get_custom_anon_user'
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
