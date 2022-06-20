@@ -20,6 +20,11 @@ SITE_ID = 1
 # FORCE_SCRIPT_NAME = env('FORCE_SCRIPT_NAME', default="/my_path")
 # APPEND_SLASH = False
 
+# django admin labels
+SITE_HEADER = '{{cookiecutter.project_abbr}} - {{cookiecutter.project_title}} Admin'
+SITE_TITLE = '{{cookiecutter.project_abbr}} - {{cookiecutter.project_title}} Admin Portal'
+INDEX_TITLE = '{{cookiecutter.project_abbr}} - {{cookiecutter.project_title}} Portal'
+
 # PATHS
 # ------------------------------------------------------------------------------
 
