@@ -1,0 +1,17 @@
+{% extends 'webpage/base.html' %}
+{% load i18n %}
+
+{% block content %}
+    <div class="container">
+        <h1>{{ tou.title }}</h1>
+        {{ tou.content|safe }}
+        <form name="terms_of_use_accept" method="post">
+            {% csrf_token %}
+            <div class="form-actions">
+                <button type="submit" class="btn btn-large btn-success">{% translate 'Accept' %}</button> or
+                <a href="{{ logout_url }}">{% translate 'log out' %}</a>
+            </div>
+        </form>
+        <br/>
+    </div>
+{% endblock %}

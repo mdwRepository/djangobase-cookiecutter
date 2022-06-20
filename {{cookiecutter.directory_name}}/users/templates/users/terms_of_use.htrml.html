@@ -1,0 +1,16 @@
+{% extends 'webpage/base.html' %}
+{% load i18n %}
+
+{% block content %}
+    <div class="container">
+        <h1>{% trans 'Terms of use' %}</h1>
+        <p>
+            {% get_current_language as lang %}
+            {% if lang == 'de' %}
+                {% include 'users/terms_of_use_de.html' %}
+            {% else %}
+                {% include 'users/terms_of_use_en.html' %}
+            {% endif %}
+        </p>
+    </div>
+{% endblock %}
