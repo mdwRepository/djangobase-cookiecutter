@@ -122,6 +122,7 @@ THIRD_PARTY_APPS = [
     ]
 
 LOCAL_APPS = [
+    'core',
     'webpage',
     'browsing',
     'infos',
