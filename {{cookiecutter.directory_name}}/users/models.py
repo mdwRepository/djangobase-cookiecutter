@@ -12,6 +12,7 @@ from django.utils import timezone
 from django.contrib.auth.models import AbstractUser, Group
 from django.utils.translation import gettext_lazy as _
 
+from rest_framework.authtoken.models import Token
 from guardian.models import UserObjectPermissionBase, GroupObjectPermissionBase
 
 from core.mixins import BaseEntityMetadataMixin, ExtIdMixin
@@ -88,6 +89,12 @@ class CustomUser(AbstractUser):
             return '%s %s (%s)' % (self.first_name, self.last_name, self.username)
         else:
             return self.username
+
+
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
+def create_auth_token(sender, instance=None, created=False, **kwargs):
+    if created:
+        Token.objects.create(user=instance)
 
 
 # create anonymous user for public objects (django-guardian based permission on object level)
