@@ -23,7 +23,7 @@ class HideAdminForUnauthorizedUsersMiddleware:
     def __call__(self, request):
         if request.path.startswith(reverse('admin:index')):
             if not request.user.is_authenticated:
-                return redirect(reverse('login'))
+                return redirect(reverse('user_login'))
             else:
                 if not (request.user.is_staff and request.user.is_active):
                     return redirect('/')

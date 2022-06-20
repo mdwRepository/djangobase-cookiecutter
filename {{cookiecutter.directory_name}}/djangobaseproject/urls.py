@@ -28,8 +28,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('webpage.urls', namespace='webpage')),
     path('infos/', include('infos.urls', namespace='infos')),
-    path('login/', auth_views.LoginView.as_view(), name='login'),
-    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
 ]
 
 # import urls from LOCAL_APPS as defines in base.py

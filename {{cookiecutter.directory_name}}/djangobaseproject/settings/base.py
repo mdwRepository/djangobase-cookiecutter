@@ -30,8 +30,6 @@ SHARED_URL = "{{cookiecutter.shared_url}}"
 IMPRINT_URL = SHARED_URL + "imprint"
 ROOT_URLCONF = 'djangobaseproject.urls'
 WSGI_APPLICATION = 'djangobaseproject.wsgi.application'
-LOGIN_URL = 'login'
-LOGOUT_URL = 'logout'
 
 # ENVIRONMENT
 # ----------------------------------------------------------------------------

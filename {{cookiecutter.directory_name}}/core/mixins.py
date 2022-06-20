@@ -9,6 +9,7 @@ from django.contrib import messages
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.db import models
+from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.utils.translation import gettext_lazy as _
 from django_fsm import FSMField, transition, can_proceed
@@ -424,7 +425,7 @@ class SuperUserRequiredMixin(object):
             messages.error(
                 request,
                 'Error: Administrator permission is required to access this resource')
-            return redirect(settings.LOGIN_URL)
+            return redirect(reverse('user_login'))
         return super(SuperUserRequiredMixin, self).dispatch(request, *args, **kwargs)
 
 
