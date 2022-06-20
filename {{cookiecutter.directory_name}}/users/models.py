@@ -39,6 +39,10 @@ class CustomUser(AbstractUser):
         default='local',
         help_text=_("auth_type_help")
     )
+    # e-mail confirmed? (after signup for external users; LDAP users have e-mail confirmed automatically set)
+    email_confirmed = models.BooleanField(
+        default=False
+    )
     # date the user joined this application
     date_joined = models.DateTimeField(
         default=timezone.now,
@@ -80,7 +84,7 @@ def get_custom_anon_user(CustomUser):
     return CustomUser(
         username='AnonymousUser',
         birth_date=datetime.date(1410, 7, 15),
-        current_tou_accepted=True,
+        # current_tou_accepted=True,
     )
 
 
