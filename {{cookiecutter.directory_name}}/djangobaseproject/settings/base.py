@@ -30,6 +30,8 @@ SHARED_URL = "{{cookiecutter.shared_url}}"
 IMPRINT_URL = SHARED_URL + "imprint"
 ROOT_URLCONF = 'djangobaseproject.urls'
 WSGI_APPLICATION = 'djangobaseproject.wsgi.application'
+LOGIN_URL = 'login'
+LOGOUT_URL = 'logout'
 
 # ENVIRONMENT
 # ----------------------------------------------------------------------------
@@ -119,6 +121,7 @@ THIRD_PARTY_APPS = [
     'django_filters',
     'django_tables2',
     'django_spaghetti',
+    'fsm_admin',
     ]
 
 LOCAL_APPS = [
@@ -243,7 +246,6 @@ TIME_ZONE = "{{cookiecutter.timezone}}"
 # ---------------------------------------------------------------------------#
 # Files                                                                      #
 # ---------------------------------------------------------------------------#
-
 
 # STATIC
 # ----------------------------------------------------------------------------
