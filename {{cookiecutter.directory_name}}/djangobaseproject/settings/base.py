@@ -149,6 +149,11 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    'core.middleware.HideAdminForUnauthorizedUsersMiddleware',
+    # Terms Of Use if activated
+    {% if cookiecutter.tou_enabled == 'y' -%}
+    'users.middleware.TermsOfUseAcceptedMiddleware'
+    {%- endif %}
 ]
 
 # ---------------------------------------------------------------------------#
