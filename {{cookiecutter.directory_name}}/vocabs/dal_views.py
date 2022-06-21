@@ -1,9 +1,10 @@
 from dal import autocomplete
 from .models import SkosConcept, SkosConceptScheme, SkosCollection
 from guardian.shortcuts import get_objects_for_user
-from django.conf import settings
 from mptt.settings import DEFAULT_LEVEL_INDICATOR
 import requests, json
+
+from users.models import CustomUser
 from .endpoints import *
 
 
@@ -103,7 +104,7 @@ class SkosCollectionAC(autocomplete.Select2QuerySetView):
 
 class UserAC(autocomplete.Select2QuerySetView):
     def get_queryset(self):
-        qs = settings.AUTH_USER_MODEL.objects.exclude(username=self.request.user)
+        qs = CustomUser.objects.exclude(username=self.request.user)
         if self.q:
             qs = qs.filter(username__icontains=self.q)
 
