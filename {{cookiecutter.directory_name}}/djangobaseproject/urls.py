@@ -20,14 +20,39 @@ from importlib import import_module
 from sys import stdout
 
 from django.contrib import admin
-from django.contrib.auth import views as auth_views
 from django.conf import settings
 from django.urls import path, include
 
+from rest_framework import routers, permissions
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+
+from vocabs import api_views as skos_views
+
+router = routers.DefaultRouter()
+router.register(r'skosconceptschemes', skos_views.SkosConceptSchemeViewSet)
+router.register(r'skoscollections', skos_views.SkosCollectionViewSet)
+router.register(r'skosconcepts', skos_views.SkosConceptViewSet)
+
+schema_view = get_schema_view(
+   openapi.Info(
+      title="Vocabs",
+      default_version='v1',
+   ),
+   public=True,
+   permission_classes=(permissions.AllowAny,),
+)
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('webpage.urls', namespace='webpage')),
+    path('api/', include(router.urls)),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('api/schema/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path('api/schema/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('infos/', include('infos.urls', namespace='infos')),
+    path('vocabs/', include('vocabs.urls', namespace='vocabs')),
+    path('vocabs-ac/', include('vocabs.dal_urls', namespace='vocabs-ac')),
+    path('', include('webpage.urls', namespace='webpage')),
 ]
 
 # import urls from LOCAL_APPS as defines in base.py

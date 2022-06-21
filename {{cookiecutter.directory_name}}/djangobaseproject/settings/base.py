@@ -80,7 +80,6 @@ ALLOWED_HOSTS = [
 ADD_ALLOWED_HOST = env.list('ALLOWED_HOST', default="127.0.0.1")
 ALLOWED_HOSTS += ADD_ALLOWED_HOST
 
-
 # corsheaders settings
 CORS_ORIGIN_ALLOW_ALL = False
 ADD_CORS_ORIGIN_WHITELIST = env('CORS_ORIGIN_WHITELIST', default="http://127.0.0.1")
@@ -96,6 +95,8 @@ CSRF_COOKIE_HTTPONLY = True
 SECURE_BROWSER_XSS_FILTER = True
 # https://docs.djangoproject.com/en/dev/ref/settings/#x-frame-options
 X_FRAME_OPTIONS = "DENY"
+
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # FORM LAYOUT
 # ----------------------------------------------------------------------------
@@ -116,6 +117,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # ---------------------------------------------------------------------------#
 
 DJANGO_APPS = [
+    'dal',
+    'dal_select2',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -127,16 +130,20 @@ DJANGO_APPS = [
 ]
 
 THIRD_PARTY_APPS = [
+    'reversion',
     'corsheaders',
     'guardian',
     'rest_framework',
     'rest_framework_guardian',
+    'drf_yasg',
     'tabbed_admin',
     'crispy_forms',
     'django_filters',
     'django_tables2',
     'django_spaghetti',
     'fsm_admin',
+    'mptt',
+    'django_extensions',
 ]
 
 LOCAL_APPS = [
@@ -145,6 +152,7 @@ LOCAL_APPS = [
     'webpage',
     'browsing',
     'infos',
+    'vocabs',
 ]
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -164,6 +172,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'core.middleware.HideAdminForUnauthorizedUsersMiddleware',
+    'reversion.middleware.RevisionMiddleware',
     # Terms Of Use if activated
     {% if cookiecutter.tou_enabled == 'y' -%}
     'users.middleware.TermsOfUseAcceptedMiddleware'
@@ -304,6 +313,20 @@ REST_FRAMEWORK = {
 }
 
 # ---------------------------------------------------------------------------#
+# OpenAPI                                                                    #
+# ---------------------------------------------------------------------------#
+
+SWAGGER_SETTINGS = {
+    'LOGIN_URL': '/accounts/login/',
+    'LOGOUT_URL': '/logout/',
+    'SECURITY_DEFINITIONS': {
+        'basic': {
+            'type': 'basic'
+        }
+    },
+}
+
+# ---------------------------------------------------------------------------#
 # Internationalization                                                       #
 # ---------------------------------------------------------------------------#
 
@@ -424,3 +447,14 @@ if DEBUG_SQL is True:
     logger = logging.getLogger('django.db.backends')
     logger.setLevel(logging.DEBUG)
     logger.addHandler(logging.StreamHandler())
+
+# ---------------------------------------------------------------------------#
+# Vocabs App                                                                 #
+# ---------------------------------------------------------------------------#
+
+VOCABS_DEFAULT_PEFIX = os.path.basename(BASE_DIR)
+VOCABS_SETTINGS = {
+    'default_prefix': VOCABS_DEFAULT_PEFIX,
+    'default_ns': "http://www.vocabs/{}/".format(VOCABS_DEFAULT_PEFIX),
+    'default_lang': "en"
+}

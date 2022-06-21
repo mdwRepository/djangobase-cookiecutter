@@ -1,4 +1,6 @@
 Django==3.2.13
+django-autocomplete-light==3.8.1
+django-ckeditor==6.0.0
 django-cors-headers==3.13.0
 django-debug-toolbar==3.2.2
 django-environ==0.9.0
@@ -6,15 +8,28 @@ django-extensions==3.1.3
 django-fsm==2.7.1
 django-fsm-admin==1.2.4
 django-guardian==2.4.0
+django-js-asset==1.2.2
+django-leaflet==0.27.1
+django-nose==1.4.7
+django-mptt==0.11.0
+django-reversion==3.0.8
+django-spaghetti-and-meatballs==0.4.2
+django-super-deduper==0.1.4
+django-tabbed-admin==1.0.4
+django-tables2==2.3.3
 djangorestframework==3.12.4
 djangorestframework-guardian==0.3.0
 djangorestframework-jsonp==1.0.2
 djangorestframework-xml==2.0.0
 djangorestframework-jsonapi==5.0.0
+drf-yasg==1.20.0
 acdh-django-browsing==1.0.0
-django-spaghetti-and-meatballs==0.4.2
-django-tabbed-admin==1.0.4
+acdh-django-charts==0.5.3
+acdh-django-netvis==1.0.0
+chardet==3.0.4
 requests>=2.25
+rdflib==5.0.0
+xlrd==1.2.0
 {% if cookiecutter.ldap_authentication == 'y' -%}
 python-ldap==3.3.1
 django-auth-ldap==3.0.0
