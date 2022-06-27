@@ -135,6 +135,7 @@ THIRD_PARTY_APPS = [
     'guardian',
     'rest_framework',
     'rest_framework_guardian',
+    'rest_framework.authtoken',
     'drf_yasg',
     'tabbed_admin',
     'crispy_forms',
