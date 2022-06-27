@@ -18,12 +18,12 @@ except KeyError:
     notation_for_uri = False
 
 
-DEFAULT_URI = "https://vocabs.acdh.oeaw.ac.at/"
+DEFAULT_URI = "https://repo.mdw.ac.at/"
 
 try:
     DEFAULT_NAMESPACE = settings.VOCABS_SETTINGS['default_nsgg']
 except KeyError:
-    DEFAULT_NAMESPACE = "https://vocabs.acdh.oeaw.ac.at/provide-some-namespace"
+    DEFAULT_NAMESPACE = "https://repo.mdw.ac.at/provide-some-namespace"
 
 try:
     DEFAULT_PREFIX = settings.VOCABS_SETTINGS['default_prefix']
