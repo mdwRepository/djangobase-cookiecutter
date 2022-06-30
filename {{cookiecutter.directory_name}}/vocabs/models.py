@@ -1,16 +1,19 @@
+import reversion
+import uuid
+
 from django.conf import settings
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.text import slugify
 from django.db.models.signals import post_save, m2m_changed
-from guardian.shortcuts import assign_perm, remove_perm
 from django.dispatch import receiver
-import reversion
+
+from guardian.shortcuts import assign_perm, remove_perm
 from mptt.models import MPTTModel, TreeForeignKey
 
 from users.models import CustomUser
-
+from core.mixins import ExtIdMixin
 
 try:
     notation_for_uri = settings.VOCABS_SETTINGS['notation_for_uri']
@@ -23,7 +26,7 @@ DEFAULT_URI = "https://repo.mdw.ac.at/"
 try:
     DEFAULT_NAMESPACE = settings.VOCABS_SETTINGS['default_nsgg']
 except KeyError:
-    DEFAULT_NAMESPACE = "https://repo.mdw.ac.at/provide-some-namespace"
+    DEFAULT_NAMESPACE = "https://repo.mdw.ac.at//provide-some-namespace"
 
 try:
     DEFAULT_PREFIX = settings.VOCABS_SETTINGS['default_prefix']
@@ -530,8 +533,14 @@ class SkosConcept(MPTTModel):
         help_text="Collection that this concept is a member of",
         related_name="has_members",
     )
+    slug = models.SlugField(
+        default=uuid.uuid4,
+        null=True,
+        blank=True
+    )
     notation = models.CharField(
-        max_length=300, blank=True,
+        max_length=300,
+        blank=True,
         verbose_name="skos:notation",
         help_text="A notation is a unique string used\
         to identify the concept in current vocabulary"
@@ -672,7 +681,8 @@ class SkosConcept(MPTTModel):
         return reverse('vocabs:skosconcept_create')
 
     def get_absolute_url(self):
-        return reverse('vocabs:skosconcept_detail', kwargs={'pk': self.id})
+        return reverse('vocabs:skosconcept_detail', kwargs={'slug': self.slug})
+        #return reverse('vocabs:skosconcept_detail', kwargs={'pk': self.id})
 
     def __str__(self):
         return self.pref_label

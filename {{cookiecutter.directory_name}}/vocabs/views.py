@@ -413,6 +413,7 @@ class SkosConceptListView(GenericListView):
         'id',
         'pref_label',
         'scheme',
+        'slug'
     ]
 
     def get_queryset(self, **kwargs):
@@ -484,7 +485,7 @@ class SkosConceptCreate(BaseCreateView):
         return initial
 
     def get_success_url(self):
-        return reverse_lazy('vocabs:skosconcept_detail', kwargs={'pk': self.object.pk})
+        return reverse_lazy('vocabs:skosconcept_detail', kwargs={'slug': self.object.slug})
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -537,7 +538,7 @@ class SkosConceptUpdate(BaseUpdateView):
         return super(SkosConceptUpdate, self).form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy('vocabs:skosconcept_detail', kwargs={'pk': self.object.pk})
+        return reverse_lazy('vocabs:skosconcept_detail', kwargs={'slug': self.object.slug})
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
