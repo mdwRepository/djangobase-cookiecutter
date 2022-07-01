@@ -67,6 +67,7 @@ class SkosConceptSchemeListView(GenericListView):
     init_columns = [
         'id',
         'title',
+        'slug',
     ]
 
     def get_all_cols(self):
@@ -152,7 +153,7 @@ class SkosConceptSchemeCreate(BaseCreateView):
         return super(SkosConceptSchemeCreate, self).form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy('vocabs:skosconceptscheme_detail', kwargs={'pk': self.object.pk})
+        return reverse_lazy('vocabs:skosconceptscheme_detail', kwargs={'slug': self.object.slug})
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -212,7 +213,7 @@ class SkosConceptSchemeUpdate(BaseUpdateView):
         return super(SkosConceptSchemeUpdate, self).form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy('vocabs:skosconceptscheme_detail', kwargs={'pk': self.object.pk})
+        return reverse_lazy('vocabs:skosconceptscheme_detail', kwargs={'slug': self.object.slug})
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -244,6 +245,7 @@ class SkosCollectionListView(GenericListView):
         'id',
         'name',
         'scheme',
+        'slug',
     ]
 
     def get_all_cols(self):
@@ -328,7 +330,7 @@ class SkosCollectionCreate(BaseCreateView):
         return initial
 
     def get_success_url(self):
-        return reverse_lazy('vocabs:skoscollection_detail', kwargs={'pk': self.object.pk})
+        return reverse_lazy('vocabs:skoscollection_detail', kwargs={'slug': self.object.slug})
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -381,7 +383,7 @@ class SkosCollectionUpdate(BaseUpdateView):
         return super(SkosCollectionUpdate, self).form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy('vocabs:skoscollection_detail', kwargs={'pk': self.object.pk})
+        return reverse_lazy('vocabs:skoscollection_detail', kwargs={'slug': self.object.slug})
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):

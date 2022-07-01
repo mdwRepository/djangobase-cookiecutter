@@ -4,25 +4,25 @@ from vocabs.models import *
 
 
 class SkosConceptSchemeTable(tables.Table):
-    title = tables.LinkColumn('vocabs:skosconceptscheme_detail', args=[A('pk')])
+    title = tables.LinkColumn('vocabs:skosconceptscheme_detail', args=[A('slug')])
 
     class Meta:
         model = SkosConceptScheme
-        sequence = ['id', 'title']
+        sequence = ['id', 'title', 'slug']
         attrs = {"class": "table table-hover table-striped table-condensed"}
 
 
 class SkosCollectionTable(tables.Table):
-    name = tables.LinkColumn('vocabs:skoscollection_detail', args=[A('pk')])
+    name = tables.LinkColumn('vocabs:skoscollection_detail', args=[A('slug')])
 
     class Meta:
         model = SkosCollection
-        sequence = ['id', 'name', 'scheme']
+        sequence = ['id', 'name', 'scheme', 'slug']
         attrs = {"class": "table table-hover table-striped table-condensed"}
 
 
 class SkosConceptTable(tables.Table):
-    pref_label = tables.LinkColumn('vocabs:skosconcept_detail', args=[A('pk')])
+    pref_label = tables.LinkColumn('vocabs:skosconcept_detail', args=[A('slug')])
 
     class Meta:
         model = SkosConcept

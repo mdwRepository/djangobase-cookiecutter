@@ -157,6 +157,11 @@ class SkosConceptScheme(models.Model):
         blank=True,
         help_text="The selected user(s) will be able to view and edit this Concept Scheme"
     )
+    slug = models.SlugField(
+        default=uuid.uuid4,
+        null=True,
+        blank=True
+    )
 
     class Meta:
         ordering = ['id']
@@ -195,7 +200,7 @@ class SkosConceptScheme(models.Model):
         return reverse('vocabs:skosconceptscheme_create')
 
     def get_absolute_url(self):
-        return reverse('vocabs:skosconceptscheme_detail', kwargs={'pk': self.id})
+        return reverse('vocabs:skosconceptscheme_detail', kwargs={'slug': self.slug})
 
     def get_next(self):
         next = SkosConceptScheme.objects.filter(id__gt=self.id)
@@ -353,6 +358,11 @@ class SkosCollection(models.Model):
         blank=True, null=True,
         on_delete=models.SET_NULL
     )
+    slug = models.SlugField(
+        default=uuid.uuid4,
+        null=True,
+        blank=True
+    )
 
     class Meta:
         ordering = ['id']
@@ -373,7 +383,7 @@ class SkosCollection(models.Model):
         return reverse('vocabs:skoscollection_create')
 
     def get_absolute_url(self):
-        return reverse('vocabs:skoscollection_detail', kwargs={'pk': self.id})
+        return reverse('vocabs:skoscollection_detail', kwargs={'slug': self.slug})
 
     def get_next(self):
         next = SkosCollection.objects.filter(id__gt=self.id)
