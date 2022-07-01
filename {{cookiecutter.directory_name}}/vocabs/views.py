@@ -1,57 +1,25 @@
-from django.views.generic.detail import DetailView
-from django.views.generic.edit import DeleteView
+import time
+import datetime
+
 from django.utils.decorators import method_decorator
 from django.urls import reverse_lazy
 from django_tables2 import RequestConfig
+from django.http import HttpResponse
+from django.shortcuts import redirect
+from django.contrib import messages
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required, permission_required
+
+from browsing.browsing_utils import GenericListView, BaseCreateView, BaseUpdateView
+
+from core.views import BaseDetailView, BaseDeleteView
+
 from .models import SkosConcept, SkosConceptScheme, SkosCollection
 from .forms import *
 from .tables import *
 from .filters import SkosConceptListFilter, SkosConceptSchemeListFilter, SkosCollectionListFilter
-from browsing.browsing_utils import GenericListView, BaseCreateView, BaseUpdateView
-from .rdf_utils import *
-from django.shortcuts import render
-from django.http import HttpResponse
-import time
-import datetime
-from guardian.shortcuts import get_objects_for_user
-from django.contrib.auth.decorators import login_required, permission_required
-from reversion.models import Version
-from django.db import transaction
-from django.shortcuts import redirect
 from .skos_import import *
-from django.contrib import messages
-
-
-class BaseDetailView(DetailView):
-
-    def get_queryset(self, **kwargs):
-        qs = get_objects_for_user(self.request.user,
-                                  perms=[
-                                      'view_{}'.format(self.model.__name__.lower()),
-                                      'change_{}'.format(self.model.__name__.lower()),
-                                      'delete_{}'.format(self.model.__name__.lower()),
-                                  ],
-                                  klass=self.model)
-        return qs
-
-    def get_context_data(self, **kwargs):
-        context = super(BaseDetailView, self).get_context_data(**kwargs)
-        context['history'] = Version.objects.get_for_object(self.object)
-        return context
-
-
-class BaseDeleteView(DeleteView):
-
-    def get_queryset(self, **kwargs):
-        qs = get_objects_for_user(self.request.user,
-                                  perms=[
-                                      'view_{}'.format(self.model.__name__.lower()),
-                                      'change_{}'.format(self.model.__name__.lower()),
-                                      'delete_{}'.format(self.model.__name__.lower()),
-                                  ],
-                                  klass=self.model)
-        return qs
-
+from .rdf_utils import *
 
 ######################################################################
 #
