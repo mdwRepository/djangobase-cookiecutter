@@ -16,8 +16,22 @@ from .models import CustomUser
 
 
 class form_user_login(forms.Form):
-    username = forms.CharField(label='Username', widget=forms.TextInput)
-    password = forms.CharField(label='Password', widget=forms.PasswordInput)
+    username = forms.CharField(
+        label='Username',
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control'
+            }
+        )
+    )
+    password = forms.CharField(
+        label='Password',
+        widget=forms.PasswordInput(
+            attrs={
+                'class': 'form-control'
+            }
+        )
+    )
 
     def __init__(self, *args, **kwargs):
         super(form_user_login, self).__init__(*args, **kwargs)
