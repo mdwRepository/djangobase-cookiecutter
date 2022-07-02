@@ -49,7 +49,6 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('api/schema/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('api/schema/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    path('infos/', include('infos.urls', namespace='infos')),
     path('vocabs/', include('vocabs.urls', namespace='vocabs')),
     path('vocabs-ac/', include('vocabs.dal_urls', namespace='vocabs-ac')),
     path('', include('webpage.urls', namespace='webpage')),
