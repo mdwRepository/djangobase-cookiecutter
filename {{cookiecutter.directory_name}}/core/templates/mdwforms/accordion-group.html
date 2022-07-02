@@ -1,3 +1,4 @@
+{% load crispy_forms_tags %}
 <div class="card mb-2">
     <div class="card-header" role="tab">
         <h5 class="mb-0">
@@ -7,10 +8,15 @@
             </a>
         </h5>
     </div>
-    <div id="{{ div.css_id }}" class="collapse{% if div.active %} hide{% endif %}" role="tabpanel"
+    <div id="{{ div.css_id }}" class="collapse{% if div.active %} show{% endif %}" role="tabpanel"
          aria-labelledby="{{ div.css_id }}" data-parent="#{{ div.data_parent }}">
         <div class="card-body">
-            {{ fields|as_crispy_field }}
+            {{ fields|safe }}
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function() {
+        $('.collapse').collapse()
+    });
+</script>
