@@ -88,6 +88,11 @@ class ConceptSchemeTitleForm(forms.ModelForm):
         help_text=ConceptSchemeTitle._meta.get_field('name').help_text,
         error_messages=custom_name_errors(
             field_name=ConceptSchemeTitle._meta.get_field('name').verbose_name
+        ),
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control'
+            }
         )
     )
     language = forms.CharField(
@@ -95,6 +100,11 @@ class ConceptSchemeTitleForm(forms.ModelForm):
         help_text=ConceptSchemeTitle._meta.get_field('language').help_text,
         error_messages=custom_lang_errors(
             field_name=ConceptSchemeTitle._meta.get_field('name').verbose_name
+        ),
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control'
+            }
         )
     )
 
@@ -125,13 +135,22 @@ class ConceptSchemeDescriptionForm(forms.ModelForm):
         error_messages=custom_name_errors(
             field_name=ConceptSchemeDescription._meta.get_field('name').verbose_name
         ),
-        widget=forms.Textarea
+        widget=forms.Textarea(
+            attrs={
+                'class': 'form-control'
+            }
+        )
     )
     language = forms.CharField(
         label=ConceptSchemeDescription._meta.get_field('language').verbose_name,
         help_text=ConceptSchemeDescription._meta.get_field('language').help_text,
         error_messages=custom_lang_errors(
             field_name=ConceptSchemeDescription._meta.get_field('name').verbose_name
+        ),
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control'
+            }
         )
     )
 
@@ -162,13 +181,22 @@ class ConceptSchemeSourceForm(forms.ModelForm):
         error_messages=custom_name_errors(
             field_name=ConceptSchemeSource._meta.get_field('name').verbose_name
         ),
-        widget=forms.Textarea
+        widget=forms.Textarea(
+            attrs={
+                'class': 'form-control'
+            }
+        )
     )
     language = forms.CharField(
         label=ConceptSchemeSource._meta.get_field('language').verbose_name,
         help_text=ConceptSchemeSource._meta.get_field('language').help_text,
         error_messages=custom_lang_errors(
             field_name=ConceptSchemeSource._meta.get_field('name').verbose_name
+        ),
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control'
+            }
         )
     )
 
@@ -204,8 +232,84 @@ class SkosConceptSchemeForm(forms.ModelForm):
         model = SkosConceptScheme
         exclude = ['created_by', ]
         widgets = {
+            'title': forms.TextInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            'title_lang': forms.TextInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            'identifier': forms.TextInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            'license': forms.TextInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            'owner': forms.TextInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            'publisher': forms.TextInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            'creator': forms.Textarea(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            'contributor': forms.Textarea(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            'relation': forms.TextInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            'subject': forms.Textarea(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            'coverage': forms.Textarea(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            'language': forms.Textarea(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
             'curator': autocomplete.ModelSelect2Multiple(
-                url='vocabs-ac:user-autocomplete'),
+                url='vocabs-ac:user-autocomplete'
+            ),
+            'version': forms.TextInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            'legacy_id': forms.TextInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            'date_issued': forms.TextInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
         }
 
     def __init__(self, *args, **kwargs):
@@ -219,26 +323,74 @@ class SkosConceptSchemeForm(forms.ModelForm):
             Div(
                 Field('title'),
                 Field('title_lang'),
-                Fieldset('Add titles in other languages',
-                         Formset('titles'), css_class="formset-div"),
-                Fieldset('Add description',
-                         Formset('descriptions'), css_class="formset-div"),
-                Field('identifier', placeholder="https://example.org/vocabulary-unique-title"),
-                Field('language'),
-                Field('creator'),
-                Field('contributor'),
-                Field('publisher'),
-                Field('license'),
-                Field('owner'),
-                Field('subject'),
-                Field('relation'),
-                Field('coverage'),
-                Fieldset('Add source information',
-                         Formset('sources'), css_class="formset-div"),
-                Field('version'),
-                Field('legacy_id'),
-                Field('date_issued', placeholder="YYYY-MM-DD"),
                 Field('curator'),
+                Field('owner'),
+                Field('license'),
+                Accordion(
+                    AccordionGroup(
+                        'Recommended Information',
+                        Accordion(
+                            AccordionGroup(
+                                'Titles in other languages',
+                                Fieldset('',
+                                         Formset('titles'), css_class="formset-div"),
+                                # TODO: active=False causes remove button to be hidden
+                                # active=False,
+                                # <div id="{{ div.css_id }}" class="{% if div.css_class %}{{ div.css_class }}{% endif %}" role="tabpanel"
+                                #          aria-labelledby="{{ div.css_id }}" data-parent="#{{ div.data_parent }}">
+                                # css_class="collapse collapsed"
+                            ),
+                            Accordion(
+                                AccordionGroup(
+                                    'Descriptions',
+                                    Fieldset('',
+                                             Formset('descriptions'), css_class="formset-div"),
+                                )
+                            ),
+                            Accordion(
+                                AccordionGroup(
+                                    'Agents',
+                                    Field('creator'),
+                                    Field('contributor'),
+                                    Field('publisher'),
+                                    # active=False,
+                                )
+                            ),
+                            Accordion(
+                                AccordionGroup(
+                                    'Versioning',
+                                    Field('version'),
+                                    Field('legacy_id'),
+                                    Field('date_issued', placeholder="YYYY-MM-DD"),
+                                )
+                            ),
+                            Accordion(
+                                AccordionGroup(
+                                    'Other descriptive information',
+                                    Field('subject'),
+                                    Field('coverage'),
+                                    Field('language'),
+                                    Field('identifier', placeholder="https://example.org/vocabulary-unique-title"),
+                                    Field('relation'),
+                                )
+                            ),
+                        ),
+                        active=True,
+                    )
+                ),
+                Accordion(
+                    AccordionGroup(
+                        'Optional Information',
+                        Accordion(
+                            AccordionGroup(
+                                'Source Information',
+                                Fieldset('',
+                                         Formset('sources'), css_class="formset-div"),
+                                # active=False,
+                            ),
+                        ),
+                    ),
+                ),
                 HTML("<br>"),
                 ButtonHolder(Submit('submit', 'save')),
             )
@@ -640,6 +792,41 @@ class SkosConceptForm(forms.ModelForm):
         model = SkosConcept
         exclude = ['created_by', ]
         widgets = {
+            'pref_label': forms.TextInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            'pref_label_lang': forms.TextInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            'language': forms.TextInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            'legacy_id': forms.TextInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            'creator': forms.Textarea(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            'contributor': forms.Textarea(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            'notation': forms.TextInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
             'scheme': autocomplete.ModelSelect2(
                 url='vocabs-ac:skosconceptscheme-autocomplete'),
         }
