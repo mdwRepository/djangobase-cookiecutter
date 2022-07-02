@@ -1,0 +1,6 @@
+<ul{% if ul.css_id %} id="{{ ul.css_id }}"{% endif %} class="nav nav-tabs {{ ul.css_class|default:'' }}">
+    {{ links|safe }}
+</ul>
+<div class="tab-content card-body {{ div.css_class|default:'' }}">
+    {{ content|safe }}
+</div>

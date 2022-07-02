@@ -102,8 +102,8 @@ X_FRAME_OPTIONS = "DENY"
 # ----------------------------------------------------------------------------
 
 # Crispy Forms UI Library
-CRISPY_ALLOWED_TEMPLATE_PACKS = ('bootstrap', 'uni_form', 'bootstrap3', 'bootstrap4',)
-CRISPY_TEMPLATE_PACK = "bootstrap4"
+CRISPY_ALLOWED_TEMPLATE_PACKS = ('bootstrap', 'uni_form', 'bootstrap3', 'bootstrap4', 'mdwforms')
+CRISPY_TEMPLATE_PACK = 'mdwforms'
 
 # FIELD TYPE
 # ----------------------------------------------------------------------------
