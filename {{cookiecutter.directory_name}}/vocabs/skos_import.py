@@ -5,6 +5,7 @@ import re
 import logging
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
+from users.models import CustomUser
 
 
 logging.getLogger().setLevel(logging.INFO)
@@ -288,7 +289,7 @@ class SkosImporter(object):
             creator=concept_scheme_creator, contributor=concept_scheme_contributor,
             language=concept_scheme_language, subject=concept_scheme_subject,
             publisher=concept_scheme_publisher, license=concept_scheme_license,
-            created_by=User.objects.get(username=user)
+            created_by=CustomUser.objects.get(username=user)
         )
         if len(other_titles) > 0:
             for other in other_titles:
@@ -341,7 +342,7 @@ class SkosImporter(object):
                                                                                            "language"),
                                                                    legacy_id=col.get("legacy_id"),
                                                                    label_lang=col_main_label.get("lang", self.language),
-                                                                   created_by=User.objects.get(username=user))
+                                                                   created_by=CustomUser.objects.get(username=user))
                     if len(col_other_labels) > 0:
                         for other in col_other_labels:
                             CollectionLabel.objects.create(
@@ -401,7 +402,7 @@ class SkosImporter(object):
                     scheme=SkosConceptScheme.objects.get(id=concept_scheme.id),
                     pref_label=concept_pref_label, pref_label_lang=concept_pref_label_lang,
                     notation=concept_notation, creator=concept_creator,
-                    contributor=concept_contributor, created_by=User.objects.get(username=user)
+                    contributor=concept_contributor, created_by=CustomUser.objects.get(username=user)
                 )
                 new_concept.save()
 
