@@ -453,9 +453,9 @@ if DEBUG_SQL is True:
 # Vocabs App                                                                 #
 # ---------------------------------------------------------------------------#
 
-VOCABS_DEFAULT_PEFIX = os.path.basename(BASE_DIR)
+VOCABS_DEFAULT_PREFIX = os.path.basename(BASE_DIR)
 VOCABS_SETTINGS = {
-    'default_prefix': VOCABS_DEFAULT_PEFIX,
-    'default_ns': "http://www.vocabs/{}/".format(VOCABS_DEFAULT_PEFIX),
+    'default_prefix': VOCABS_DEFAULT_PREFIX,
+    'default_ns': "http://www.vocabs/{}/".format(VOCABS_DEFAULT_PREFIX),
     'default_lang': "en"
 }
