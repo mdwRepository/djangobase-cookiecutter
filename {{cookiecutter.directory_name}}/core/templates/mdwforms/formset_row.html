@@ -3,7 +3,6 @@
 {% load static %}
 <table class="col-md-9" style="margin-left: 10px;">
 {{ formset.management_form|crispy }}
-
     {% for form in formset.forms %}
             <tr class="{% cycle 'row1' 'row2' %} formset_row-{{ formset.prefix }}">
                 {% for field in form.visible_fields %}
@@ -20,8 +19,9 @@
                 {% endfor %}
             </tr>
     {% endfor %}
-
 </table>
+<br>
+<hr>
 <br>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script src="{% static 'webpage/libraries/django-dynamic-formset/jquery.formset.js' %}"></script>

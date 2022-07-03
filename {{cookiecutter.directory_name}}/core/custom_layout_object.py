@@ -11,7 +11,7 @@ class Formset(LayoutObject):
     Formset("attached_files_formset")
     """
 
-    template = "vocabs/formset.html" % TEMPLATE_PACK
+    template = "mdwforms/formset.html" % TEMPLATE_PACK
 
     def __init__(self, formset_name_in_context, template=None):
         self.formset_name_in_context = formset_name_in_context
