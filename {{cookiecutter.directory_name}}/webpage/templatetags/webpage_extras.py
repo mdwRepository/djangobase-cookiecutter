@@ -123,3 +123,11 @@ def js(obj):
     Bandit issue: [B308:blacklist] Use of mark_safe() may expose cross-site scripting vulnerabilities and should be reviewed.
     """
     return mark_safe(json.dumps(obj))
+
+
+@register.simple_tag
+def get_force_script_name():
+    if settings.FORCE_SCRIPT_NAME:
+        return settings.FORCE_SCRIPT_NAME
+    else:
+        return ''
