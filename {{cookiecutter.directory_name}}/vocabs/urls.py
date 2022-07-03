@@ -5,7 +5,8 @@ from . import views
 app_name = 'vocabs'
 
 urlpatterns = [
-    path('concepts/', views.SkosConceptListView.as_view(), name='browse_vocabs'),
+    path('concepts/', views.SkosConceptListView.as_view(), name="list_vocabs"),
+    path('concepts/table/', views.SkosConceptTableListView.as_view(), name='browse_vocabs'),
     #path('concepts/<int:pk>', views.SkosConceptDetailView.as_view(), name='skosconcept_detail'),
     path('concepts/<slug:slug>', views.SkosConceptDetailView.as_view(), name='skosconcept_detail'),
     path('concepts/create/', views.SkosConceptCreate.as_view(), name='skosconcept_create'),

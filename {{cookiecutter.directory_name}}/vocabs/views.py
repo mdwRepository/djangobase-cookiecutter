@@ -3,16 +3,19 @@ import datetime
 
 from django.utils.decorators import method_decorator
 from django.urls import reverse_lazy
+from django.views.generic import ListView
 from django_tables2 import RequestConfig
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.contrib import messages
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required, permission_required
+from django.db.models import Q
 
 from browsing.browsing_utils import GenericListView, BaseCreateView, BaseUpdateView
 
 from core.views import BaseDetailView, BaseDeleteView
+from guardian.shortcuts import get_objects_for_user
 
 from .models import SkosConcept, SkosConceptScheme, SkosCollection
 from .forms import *
@@ -375,7 +378,7 @@ class SkosCollectionDelete(BaseDeleteView):
 #
 ######################################################################
 
-class SkosConceptListView(GenericListView):
+class SkosConceptTableListView(GenericListView):
     model = SkosConcept
     table_class = SkosConceptTable
     filter_class = SkosConceptListFilter
@@ -388,8 +391,29 @@ class SkosConceptListView(GenericListView):
     ]
 
     def get_queryset(self, **kwargs):
-        qs = super(SkosConceptListView, self).get_queryset()
+        qs = super(SkosConceptTableListView, self).get_queryset()
         return qs.order_by('id')
+
+
+class SkosConceptListView(ListView):
+    model = SkosConcept
+    template_name = "vocabs/skosconcept_list.html"
+    pk_url_kwarg = "pk"
+    paginate_by = 10
+    ordering = ['pref_label']
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(**kwargs)
+        querySet = self.get_queryset()
+        return context
+
+    def get_queryset(self, *args, **kwargs):
+        querySet = get_objects_for_user(self.request.user, ('view_skosconcept'), SkosConcept.objects.all().distinct())
+        query = self.request.GET.get('q', None)
+        if query != '' and query is not None:
+            querySet = querySet.filter(
+                Q(pref_label__icontains=query) | Q(has_labels__name__icontains=query))
+        return querySet.order_by('pref_label')
 
 
 class SkosConceptDetailView(BaseDetailView):
