@@ -60,6 +60,12 @@ class CustomUser(AbstractUser):
         default=timezone.now,
         editable=False
     )
+    # preferred language for GUI
+    language = models.CharField(
+        max_length=8,
+        choices=settings.LANGUAGES,
+        default=settings.LANGUAGE_CODE,
+    )
 
     class Meta:
         verbose_name = _('User')
