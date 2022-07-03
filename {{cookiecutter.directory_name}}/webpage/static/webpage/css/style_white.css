@@ -14,6 +14,11 @@ body {
     flex-grow: 1;
 }
 
+.clearfix:before, .clearfix:after {
+    content: " ";
+    display: table;
+}
+
 /* Colors ====================================================== */
 
 :root {
@@ -183,7 +188,7 @@ header {
     background-repeat: no-repeat;
     display: block;
     background-image: url("https://repo.mdw.ac.at/shared/images/mdw-logo-blue.svg");
-    height: 100px;
+    height: 75px;
 }
 
 .header-firstRow .mdwRepository {
@@ -273,6 +278,7 @@ header {
 
 .navbar {
 	background-color: #d2dce5;
+	border: 0px;
 }
 
 @media (min-width: 768px) and (max-width: 1105px) {
@@ -319,7 +325,7 @@ footer a:hover {
     color: #fff;
 }
 
-/* Reamining ACDH styles  ====================================================== */
+/* Remaining ACDH styles  ====================================================== */
 
 
 /*Button's text is all in caps and bold. When adding html markup text should be all in lowercase. */
@@ -466,4 +472,270 @@ footer a:hover {
 
 a > .fa-2x {
     color: #444;
+}
+
+/* Forms  ====================================================== */
+
+.form-divider {
+    padding-bottom: .21428571rem;
+    border-bottom: 1px solid rgba(34, 36, 38, .15);
+}
+
+.custom-select {
+    display: inline-block;
+    width: 100%;
+    font-weight: 400;
+    color: #495057;
+    vertical-align: middle;
+    background-color: #fff;
+    border: 1px solid #ced4da;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    height: calc(1.5em + .5rem + 2px);
+    padding: .25rem .5rem;
+    font-size: .875rem;
+    line-height: 1.5;
+    border-radius: .2rem;
+}
+
+.formset-div {
+    padding-bottom: 15px;
+}
+
+.formsetAdd {
+    color: #008038 !important;
+}
+
+.formsetRemove {
+}
+
+.accordion-header {
+    background-color: #003b7929;
+}
+
+.form-headline {
+    background-color: #003b7912;
+    padding-left: 10px;
+    padding-top: 10px;
+}
+
+.delete-row {
+    color: #ff0000 !important;
+}
+
+.row1 {
+    background-color: #003b7908;
+    padding: 10px;
+    margin-bottom: 10px;}
+
+/* Add button  ====================================================== */
+
+#tray {
+    position: fixed;
+    bottom: 64px;
+    right: 32px;
+    z-index: 10;
+    transition: color 0.25s ease-in-out;
+}
+
+.btn-circle.btn-sm {
+    width: 30px;
+    height: 30px;
+    padding: 6px 0px;
+    border-radius: 15px;
+    font-size: 8px;
+    text-align: center;
+}
+
+.btn-circle.btn-md {
+    width: 50px;
+    height: 50px;
+    padding: 7px 10px;
+    border-radius: 25px;
+    font-size: 10px;
+    text-align: center;
+}
+
+.btn-circle.btn-xl {
+    width: 70px;
+    height: 70px;
+    padding: 10px 16px;
+    border-radius: 35px;
+    font-size: 12px;
+    text-align: center;
+}
+
+/* Autosuggest  ====================================================== */
+
+.select2-selection__rendered {
+    margin-top: -5px;
+}
+
+.select2-search__field {
+    display: block;
+    width: 100%;
+    height: calc(1.5em + .5rem + 2px);
+    padding: 0.25rem .5rem;
+    font-size: .875rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.2rem;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+
+}
+
+.select2-results__message {
+    font-size: .875rem;
+    line-height: 1.5;
+}
+
+.select2-results__option {
+    font-weight: normal;
+    display: block;
+    font-size: .875rem;
+    line-height: 1.5;
+    white-space: nowrap;
+    min-height: 1.2em;
+    color: #495057;
+    padding: 0px 2px 1px;
+}
+
+/* Search Results  ====================================================== */
+
+.sresult {
+    overflow: auto;
+    padding: 0.625rem;
+    border: 1px solid #cccccc;
+    background-color: #ffffff;
+    margin-bottom: 0.625rem;
+}
+
+.sresult .res_type-badge {
+    display: inline-block ! important;
+    float: left ! important;
+    text-align: center ! important;
+    word-break: break-word;
+    padding: 0.25rem;
+    font-size: 0.6rem;
+}
+
+.res_type-badge .res_type-badge-icon {
+    font-size: 20px ! important;
+}
+
+.sresult .ressummary {
+    display: inline-block ! important;
+    max-width: calc(100% - 180px) ! important;
+    margin-left: 1ch ! important;
+    height: 100% ! important;
+}
+
+.applied_filters {
+    padding-bottom: 10px;
+}
+
+.applied_filters a {
+    text-decoration: none !important;
+}
+
+.applied_filters a.link_underline {
+    text-decoration: underline !important;
+}
+
+.pag_and_sort {
+    border: 1px solid #cccccc;
+    background-color: #f2f5f9;
+    padding-top: 10px;
+    margin-bottom: -15px;
+}
+
+.pag {
+    border: 1px solid #cccccc;
+    padding-top: 10px;
+    background-color: #f2f5f9;
+    margin-bottom: 30px;
+}
+
+.pag nav {
+    margin-bottom: -15px;
+}
+
+.pag nav ul {
+    justify-content: center!important;
+}
+
+/* Main Content Section  ====================================================== */
+
+.content_section {
+    margin: 30px auto 0 auto !important;
+}
+
+/* Breadcrumbs  ====================================================== */
+
+.breadcrumb-content {
+    /*border-bottom: 1px solid #ced4da; */
+}
+
+.breadcrumb {
+    background-color: transparent;
+    padding: 0 1rem 0 0;
+}
+
+.breadcrumb-item, .breadcrumb-item a {
+    color: #505152;
+}
+
+
+.breadcrumb-item + .breadcrumb-item::before {
+    content: " /";
+}
+
+.page-list {
+    background-color: #ffffff;
+    padding-bottom: 8px;
+}
+
+.clearfix:before, .clearfix:after {
+    display: table;
+    content: "";
+}
+
+/* Left Sidebar (Aside)  ====================================================== */
+
+.aside-all {
+    padding-top: 45px;
+}
+
+.aside-facets ul > li:first-child {
+    border-width: 1px 1px 0 1px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+
+.aside-facets ul > li {
+    padding-bottom: 0;
+    font-size: 80%;
+}
+
+.identifiers ul {
+    display: inline;
+    margin-top: 0;
+    margin-bottom: -10px;
+}
+
+.badge-primary {
+    color: #fff;
+    background-color: var(--mdwblue);
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: var(--mdwblue);
+    border-color: transparent;
+    border-width: 0px;
 }
