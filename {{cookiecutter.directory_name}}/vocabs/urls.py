@@ -1,5 +1,6 @@
 from django.urls import include, path
 from . import views
+from .feed import *
 
 
 app_name = 'vocabs'
@@ -12,6 +13,9 @@ urlpatterns = [
     path('concepts/create/', views.SkosConceptCreate.as_view(), name='skosconcept_create'),
     path('concepts/update/<int:pk>', views.SkosConceptUpdate.as_view(), name='skosconcept_update'),
     path('concepts/delete/<int:pk>', views.SkosConceptDelete.as_view(), name='skosconcept_delete'),
+    path('concepts/feed/rss', LatestSkosConceptRssFeed(), name="persons_rss_feed"),
+    path('concepts/feed/atom', LatestSkosConceptAtomFeed(), name="persons_atom_feed"),
+
     path('scheme/', views.SkosConceptSchemeListView.as_view(), name='browse_schemes'),
     # path('scheme/<int:pk>', views.SkosConceptSchemeDetailView.as_view(), name='skosconceptscheme_detail'),
     path('scheme/<slug:slug>', views.SkosConceptSchemeDetailView.as_view(), name='skosconceptscheme_detail'),

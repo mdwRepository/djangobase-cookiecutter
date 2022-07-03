@@ -9,18 +9,18 @@
                 <aside>
                     <div class="aside-feeds">
                         <a href="feed/atom">
-                            <img src="{% static 'img/atom.svg' %}" alt="Atom logo">
+                            <img src="{% settings_value 'SHARED_URL' %}shared/images/atom.svg" alt="Atom logo">
                         </a>
                         <br/>
                         <a href="feed/rss">
-                            <img src="{% static 'img/rss20_logo.svg' %}" alt="RSS2 logo">
+                            <img src="{% settings_value 'SHARED_URL' %}shared/images/rss20_logo.svg" alt="RSS2 logo">
                         </a>
                     </div>
                     <div class="aside-all">
                         <ul class="list-group">
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 <small><a href="?">All SKOS Concepts</a></small>
-                                <span class="badge badge-success">{{ count_mws }}</span>
+                                <span class="badge badge-success">{{ count_skosc }}</span>
                             </li>
                         </ul>
                     </div>
@@ -76,8 +76,11 @@
                             </span>
                             <br/>
                             {% if request.GET.q %}
-                                <a href="?{% if request.GET.genre %}genre={{ request.GET.genre }}&{% endif %}{% if request.GET.form %}form={{ request.GET.form }}&{% endif %}{% if request.GET.sase %}sase={{ request.GET.sase }}{% endif %}{% if request.GET.sort %}sort={{ request.GET.sort }}{% endif %}">
-                                    <span class="badge badge-primary"><small><i class="fa-solid fa-x"></i></small>&nbsp; Query: &nbsp;&nbsp; {{ request.GET.q }}</span>
+                                <a href="?{% if request.GET.sort %}sort={{ request.GET.sort }}{% endif %}">
+                                    <span class="badge badge-primary">
+                                        <small><i class="fa-solid fa-x"></i></small>&nbsp;
+                                        Query: &nbsp;&nbsp; {{ request.GET.q }}
+                                    </span>
                                 </a>
                             {% endif %}
                             &nbsp; <small><a href="?" class="link_underline">{% translate 'Clear all' %}</a></small>
@@ -103,7 +106,7 @@
                                 </div>
                                 <div class="col-4 text-right">
                                     <form method='GET'>
-                                        <select class="form-control-sm" id="sort" name="sort"
+                                        <select class="form-control form-control-sm" id="sort" name="sort"
                                                 onchange="this.form.submit()">
                                             <option value="titleasc">Title - A to Z</option>
                                             <option value="titledsc">Title - Z to A</option>

@@ -404,16 +404,23 @@ class SkosConceptListView(ListView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
-        querySet = self.get_queryset()
+        context['count_skosc'] = get_objects_for_user(self.request.user, ('view_skosconcept'),
+                                                    SkosConcept.objects.all().distinct()).count()
         return context
 
     def get_queryset(self, *args, **kwargs):
         querySet = get_objects_for_user(self.request.user, ('view_skosconcept'), SkosConcept.objects.all().distinct())
+        skc_order = self.request.GET.get('sort', 'titleasc')
         query = self.request.GET.get('q', None)
         if query != '' and query is not None:
             querySet = querySet.filter(
                 Q(pref_label__icontains=query) | Q(has_labels__name__icontains=query))
-        return querySet.order_by('pref_label')
+        if skc_order in ('titleasc', 'titledsc'):
+            if skc_order == 'titledsc':
+                oqs = querySet.order_by('-pref_label')
+            elif skc_order == 'titleasc':
+                oqs = querySet.order_by('pref_label')
+        return oqs
 
 
 class SkosConceptDetailView(BaseDetailView):
