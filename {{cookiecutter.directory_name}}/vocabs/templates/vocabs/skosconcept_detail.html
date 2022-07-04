@@ -1,311 +1,509 @@
 {% extends "webpage/base.html" %}
-{% load mptt_tags %}
+{% load i18n static guardian_tags mptt_tags %}
 {% block Title %}{{ object }}{% endblock %}
+
+{% block scripts2 %}
+<script src="https://rawgit.com/RickStrahl/jquery-resizable/master/src/jquery-resizable.js"
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
+
+<script type="text/javascript">
+$(".main").resizable({
+   handleSelector: ".splitter",
+   resizeHeight: false
+ });
+
+var isDragging = false;
+var lastWidth = 0;
+
+    $(".splitter")
+    .mousedown(function() {
+        $(".splitter").addClass("splitter-active");
+        $(window).mousemove(function() {
+            isDragging = true;
+            $(window).unbind("mousemove");
+        });
+        $(".splitter").mousemove(function() {
+          console.log(isDragging)
+          currentWidth = Math.ceil($(".main").width() / $('.main').parent().width() * 100);
+          if (currentWidth >= 90) {
+            $('.col').addClass("col-hidden");
+            $('.splitter').addClass("splitter-signifier");
+          } else {
+            $('.col').removeClass("col-hidden");
+            $('.splitter').removeClass("splitter-signifier");
+          }
+    });
+    })
+    .mouseup(function() {
+        $(".splitter").removeClass("splitter-active");
+        var wasDragging = isDragging;
+        isDragging = false;
+        $(window).unbind("mousemove");
+        if (wasDragging) {
+          $(".splitter").unbind("mousemove");
+          lastWidth = Math.ceil($(".main").width() / $('.main').parent().width() * 100);
+          if (currentWidth >= 90) {
+            $('.col').addClass("col-hidden");
+            $(".splitter").removeClass("splitter-signifier");
+            $('.main').animate({"width" : "100%"}, 250);
+            $('.icon-wrapper').addClass("rotate");
+          } else {
+            $('.icon-wrapper').removeClass("rotate");
+          }
+        } else if (!wasDragging) {
+            var p = Math.ceil($(".main").width() / $('.main').parent().width() * 100);
+            var toggleWidth = p >= 85 ? lastWidth : 100;
+            $('.col').toggleClass("col-hidden");
+            $('.icon-wrapper').toggleClass("rotate");
+            $('.splitter').removeClass("splitter-signifier");
+            $('.main').animate({"width" : toggleWidth + "%"}, 250);
+        }
+    });
+
+  $(function () {
+    $("#jstree").jstree({
+       "plugins" : [ "search" ]
+     });
+
+    var to = false;
+
+    $('#jstree_q').keyup(function () {
+       if(to) { clearTimeout(to); }
+          to = setTimeout(function () {
+             var v = $('#jstree_q').val();
+             $('#jstree').jstree(true).search(v);
+          }, 250);
+      });
+
+    $('#jstree').on("changed.jstree", function (e, data) {
+      console.log(data.selected);
+    });
+
+    $('button').on('click', function () {
+      $('#jstree').jstree(true).select_node('child_node_1');
+      $('#jstree').jstree('select_node', 'child_node_1');
+      $.jstree.reference('#jstree').select_node('child_node_1');
+    });
+  });
+</script>
+{% endblock scripts2 %}
+
 {% block content %}
-<div class="container-fluid">
-<div class="row">
-<div class="col-md-4">
-    <div class="card">
-        <div class="card-header">
-        <h2><a href="{{ object.scheme.get_absolute_url }}">{{object.scheme}}</a>
-        {% if user.is_authenticated %}
-            <a class ="btn btn-outline-secondary"  href="{% url 'vocabs:skosconcept_create' %}?scheme={{object.scheme.id}}">
-            Add Concept
-            </a>
-            <a class ="btn btn-outline-secondary"  href="{% url 'vocabs:skoscollection_create' %}?scheme={{object.scheme.id}}">
-            Add Collection
-            </a>
-        {% endif %}
-        </h2>
+<div class="container">
+    <article class="content clearfix">
+        <div class="breadcrumb-content mb-0">
+            <ul class="breadcrumb mb-0">
+                <li class="breadcrumb-item mb-0">
+                    <a href="/">Home</a>
+                </li>
+                <li class="breadcrumb-item mb-0">
+                    <a href="{% url 'vocabs:browse_vocabs' %}">{% translate "SKOS Concept" %}</a>
+                </li>
+
+                <li class="breadcrumb-item mb-0">
+                    {{ object }}
+                </li>
+            </ul>
         </div>
-    <div class="card-body">
-    <!-- Hierarchy -->
-    {% if object.scheme %}
+        {% get_obj_perms request.user for object as 'object_perms' %}
+        {% if 'view_skosconcept' in object_perms %}
+        <div class="row">
+            <div class="col-md-10">
+                <h1>{{ object }}</h1>
+            </div>
+            <div class="col-md-2">
+                {% if 'change_skosconcept' in object_perms %}
+                <a href="{% url 'vocabs:skosconcept_update' pk=object.id %}"
+                   name="{% translate 'edit' %} {{ object.title }}"
+                   class="editor_link">
+                    <button class="btn btn-success btn-circle btn-circle-sm m-1" type="button"
+                            data-toggle="tooltip"
+                            data-placement="top"
+                            title="Edit">
+                        <i class="fa fa-edit"></i>
+                    </button>
+                </a>
+                {% endif %}
+                {% if 'delete_skosconcept' in object_perms %}
+                <a href="{% url 'vocabs:skosconcept_delete' pk=object.id %}"
+                   name="{% translate 'delete' %}  {{ object.title }}"
+                   class="editor_link">
+                    <button class="btn btn-danger btn-circle btn-circle-sm m-1" type="button"
+                            data-toggle="tooltip"
+                            data-placement="top"
+                            title="Delete">
+                        <i class="fa fa-trash"></i>
+                    </button>
+                </a>
+                {% endif %}
+            </div>
+        </div>
+        <!-- visual representation -->
+        <!-- visual representation end -->
+        <!-- preferred citation -->
+        <!-- preferred citation end -->
+        {% endif %}
+        <div class="row">
+            <div class="col-12">
+                <div class="stage">
+                    <div class="main">
+                        <div class="sheet">
+                            <h2><a href="{{ object.scheme.get_absolute_url }}">{{object.scheme}}</a>
+                                {% if user.is_authenticated %}
+                                <a class="btn btn-outline-secondary"
+                                   href="{% url 'vocabs:skosconcept_create' %}?scheme={{object.scheme.id}}">
+                                    Add Concept
+                                </a>
+                                <a class="btn btn-outline-secondary"
+                                   href="{% url 'vocabs:skoscollection_create' %}?scheme={{object.scheme.id}}">
+                                    Add Collection
+                                </a>
+                                {% endif %}
+                            </h2>
+                            <!-- Hierarchy -->
+                            {% if object.scheme %}
+                            <input type="text" id="jstree_q" value="" class="form-control">
+<div id="jstree">
+                                {% for concept,structure in object.scheme.has_concepts.all|tree_info %}
+                                    {% if structure.new_level %}
+                                        <ul>
+                                    {% else %}
+                                            </li>
+                                    {% endif %}
 
-            {% for concept,structure in object.scheme.has_concepts.all|tree_info %}
-            {% if structure.new_level %}<ul><li>{% else %}</li><li>{% endif %}
+                                    {% if concept.id == object.id and concept.needs_review == False %}
+                                    <li data-jstree='{"opened":true,"selected":true}'><strong>{{ concept.pref_label }}</strong>
+                                    {% elif concept.id == object.id and concept.needs_review == True %}
+                                    <li data-jstree='{"opened":true,"selected":true}'><strong>
+                                        {{ concept.pref_label }} <b style="color:red;" title="Needs review"> !</b>
+                                    </strong>
+                                    {% elif concept.id == object.id %}
+                                    <li data-jstree='{"opened":true,"selected":true}'><strong>{{ concept.pref_label }}</strong>
+                                    {% elif concept.id != object.id and concept.needs_review == True %}
+                                    <li><a href="{{ concept.get_absolute_url }}">
+                                        {{ concept.pref_label }} <b style="color:red;" title="Needs review"> !</b>
+                                    </a>
+                                    {% else %}
+                                    <li><a href="{{ concept.get_absolute_url }}">{{ concept.pref_label }}</a>
+                                    {% endif %}
 
-            {% if concept.id == object.id and concept.needs_review == False %}
-            <strong>{{ concept.pref_label }}</strong>
-            {% elif concept.id == object.id and concept.needs_review == True %}
-            <strong>
-            {{ concept.pref_label }} <b style="color:red;" title="Needs review"> !</b>
-            </strong>
-            {% elif concept.id == object.id %}
-            <strong>{{ concept.pref_label }}</strong>
-            {% elif concept.id != object.id and concept.needs_review == True %}
-            <a href="{{ concept.get_absolute_url }}">
-            {{ concept.pref_label }} <b style="color:red;" title="Needs review"> !</b>
-            </a>
-            {% else %}
-            <a href="{{ concept.get_absolute_url }}">{{ concept.pref_label }}</a>
-            {% endif %}
+                                    {% for level in structure.closed_levels %}
+                                </li>
+                            </ul>
+                            {% endfor %}
+                            {% endfor %}
 
-            {% for level in structure.closed_levels %}</li></ul>{% endfor %}
-            {% endfor %}
-
-    {% endif %}
-    <!-- Hierarchy END -->
-    </div>
-    </div>
+                            {% endif %}
+                            <!-- Hierarchy END -->
 </div>
-<div class="col-md-8">
-    <div class="card">
-    <div class="card-header">
-        <h2 style="text-align: center;">
-            <small>skos:Concept</small> {{ object }}
-            {% if user.is_authenticated %}
-                <small>
-                    <a href="{% url 'vocabs:skosconcept_update' pk=object.id %}">
-                        <i class="fa-solid fa-pen-to-square" title="edit"></i>
-                    </a>
-                </small>
-                |
-                <small>
-                    <a href="{% url 'vocabs:skosconcept_delete' pk=object.id %}">
-                        <i class="far fa-trash-alt" title="delete"></i>
-                    </a>
-                </small>
-            {% endif %}
-        </h2>
-    </div>
-    <table class="table">
-        {% if object.pref_label %}
-        <tr>
-            <th class="w-25">
-            skos:prefLabel{% if object.pref_label_lang %} @{{object.pref_label_lang}}{% endif %}
-            </th>
-            <td>{{ object.pref_label }}</td>
-        </tr>
-        {% endif %}
+                        </div>
+                    </div>
+                    <div class="splitter">
+                        <div class="icon-container">
+                            <div class="icon-wrapper">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="1142 590 3.001 33.515">
+                                    <defs>
+                                    </defs>
+                                    <path id="sig" class="cls-1"
+                                          d="M-1138.455-557.6l-2.47-2.465a.247.247,0,0,1,0-.355l2.47-2.47c.2-.2.356-.13.356.145v5c0,.168-.06.257-.151.257A.317.317,0,0,1-1138.455-557.6Zm-1.545-11.4v-10a1,1,0,0,1,1-1,1,1,0,0,1,1,1v10a1,1,0,0,1-1,1A1,1,0,0,1-1140-569.005Zm1.545-16.6-2.47-2.465a.247.247,0,0,1,0-.356l2.47-2.47c.2-.2.356-.13.356.145v5c0,.168-.06.258-.151.258A.317.317,0,0,1-1138.455-585.6Z"
+                                          transform="translate(4 32.51) rotate(180)"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="sheet">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                        <li class="nav-item metadata-tab">
+                                            <a class="nav-link active" id="overview-tab" data-toggle="tab"
+                                               href="#overview"
+                                               role="tab"
+                                               aria-controls="overview" aria-selected="true">Overview</a>
+                                        </li>
+                                        <li class="nav-item metadata-tab">
+                                            <a class="nav-link" id="history-tab" data-toggle="tab" href="#history"
+                                               role="tab"
+                                               aria-controls="history" aria-selected="false">History</a>
+                                        </li>
+                                    </ul>
+                                    <div class="tab-content" id="conceptTabContent">
+                                        <div class="tab-pane fade active show" id="overview" role="tabpanel"
+                                             aria-labelledby="overview-tab">
+                                            <div class="card">
+                                                {% if object.pref_label %}
+                                                <div class="row">
+                                                    <div class="container">
+                                                        <div class="col-12">
+                                                            <table class="table">
+                                                                {% if object.pref_label %}
+                                                                <tr>
+                                                                    <th class="w-25">
+                                                                        skos:prefLabel{% if object.pref_label_lang %}
+                                                                        @{{object.pref_label_lang}}{% endif %}
+                                                                    </th>
+                                                                    <td>{{ object.pref_label }}</td>
+                                                                </tr>
+                                                                {% endif %}
 
 
-        <!--for inline added abels-->
-        {% if object.has_labels %}
-        {% for label in object.has_labels.all %}
-        <tr>
-            <th>skos:{{label.label_type}} @{{label.language}}</th>
-            <td>{{label.name}}</td>
-        </tr>
-        {% endfor %}
-        {% endif %}
-        <!--end-->
+                                                                <!--for inline added abels-->
+                                                                {% if object.has_labels %}
+                                                                {% for label in object.has_labels.all %}
+                                                                <tr>
+                                                                    <th>skos:{{label.label_type}} @{{label.language}}
+                                                                    </th>
+                                                                    <td>{{label.name}}</td>
+                                                                </tr>
+                                                                {% endfor %}
+                                                                {% endif %}
+                                                                <!--end-->
 
-        {% if object.notation %}
-        <tr>
-        <th>skos:notation</th>
-        <td>{{object.notation}}</td>
-        </tr>
-        {% endif %}
-       
-        {% if object.scheme %}
-        <tr>
-        <th>skos:inScheme</th>
-        <td>
-            <a href="{{ object.scheme.get_absolute_url }}">{{object.scheme}}</a>
-        </td>
-        </tr>
-        {% endif %}
-         {% if object.collection.all %}
-        <tr>
-        <th>member of skos:Collection</th>
-        <td>
-            {% for x in object.collection.all %}
-            <a href="{{ x.get_absolute_url }}">{{x}}</a><br>
-            {% endfor %}
-        </td>
-        </tr>
-        {% endif %}
-        {% if object.legacy_id %}
-        <tr>
-        <th>legacy id</th>
-        <td>{{object.legacy_id}}</td>
-        </tr>
-        {% endif %}
-        {% if object.creator %}
-        <tr>
-        <th>dc:creator</th>
-        <td>
-        {% for creator in object.creator_as_list %}
-        <li>{{creator}}</li>
-        {% endfor %}
-        </td>
-        </tr>
-        {% endif %}
+                                                                {% if object.notation %}
+                                                                <tr>
+                                                                    <th>skos:notation</th>
+                                                                    <td>{{object.notation}}</td>
+                                                                </tr>
+                                                                {% endif %}
 
-        {% if object.contributor %}
-        <tr>
-        <th>dc:contributor</th>
-        <td>
-        {% for contributor in object.contributor_as_list %}
-        <li>{{contributor}}</li>
-        {% endfor %}
-        </td>
-        </tr>
-        {% endif %}
-         <!--for inline added notes-->
-        {% if object.has_notes %}
-        {% for note in object.has_notes.all %}
-        <tr>
-            <th>skos:{{note.note_type}} @{{note.language}}</th>
-            <td>{{note.name}}</td>
-        </tr>
-        {% endfor %}
-        {% endif %}
-        <!--end-->
+                                                                {% if object.scheme %}
+                                                                <tr>
+                                                                    <th>skos:inScheme</th>
+                                                                    <td>
+                                                                        <a href="{{ object.scheme.get_absolute_url }}">{{object.scheme}}</a>
+                                                                    </td>
+                                                                </tr>
+                                                                {% endif %}
+                                                                {% if object.collection.all %}
+                                                                <tr>
+                                                                    <th>member of skos:Collection</th>
+                                                                    <td>
+                                                                        {% for x in object.collection.all %}
+                                                                        <a href="{{ x.get_absolute_url }}">{{x}}</a><br>
+                                                                        {% endfor %}
+                                                                    </td>
+                                                                </tr>
+                                                                {% endif %}
+                                                                {% if object.legacy_id %}
+                                                                <tr>
+                                                                    <th>legacy id</th>
+                                                                    <td>{{object.legacy_id}}</td>
+                                                                </tr>
+                                                                {% endif %}
+                                                                {% if object.creator %}
+                                                                <tr>
+                                                                    <th>dc:creator</th>
+                                                                    <td>
+                                                                        {% for creator in object.creator_as_list %}
+                                                                        <li>{{creator}}</li>
+                                                                        {% endfor %}
+                                                                    </td>
+                                                                </tr>
+                                                                {% endif %}
 
-         <!--for inline added sources-->
-        {% if object.has_sources %}
-        {% for source in object.has_sources.all %}
-        <tr>
-            <th>dc:source @{{source.language}}</th>
-            <td>{{source.name}}</td>
-        </tr>
-        {% endfor %}
-        {% endif %}
-        <!--end-->
-<!-- Mapping relationships -->
-        {% if object.broader_concept %}
-        <tr>
-        <th>skos:broader</th>
-        <td>
-        <a href="{{ object.broader_concept.get_absolute_url }}">
-        {{object.broader_concept}}
-        </a>
-        </td>
-        </tr>
-        {% endif %}
-        {% if object.narrower_concepts.all %}
-        <tr>
-        <th>skos:narrower</th>
-        <td>
-            {% for x in object.narrower_concepts.all %}
-            <a href="{{ x.get_absolute_url }}">{{x}}</a><br>
-            {% endfor %}
-        </td>
-        </tr>
-        {% endif %}
-<!-- external macthes via AC -->
-        {% if object.related %}
-        <tr>
-            <th>skos:related</th>
-            <td>
-            {% for x in object.related_as_list %}
-            <li>{{x|urlize}}</li>
-            {% endfor %}
-            </td>
-        </tr>
-        {% endif %}
-        {% if object.broad_match %}
-        <tr>
-            <th>skos:broadMatch</th>
-            <td>
-            {% for x in object.broad_match_as_list %}
-            <li>{{x|urlize}}</li>
-            {% endfor %}
-            </td>
-        </tr>
-        {% endif %}
-        {% if object.narrow_match %}
-        <tr>
-            <th>skos:narrowMatch</th>
-            <td>
-            {% for x in object.narrow_match_as_list %}
-            <li>{{x|urlize}}</li>
-            {% endfor %}
-            </td>
-        </tr>
-        {% endif %}
-        {% if object.exact_match %}
-        <tr>
-            <th>skos:exactMatch</th>
-            <td>
-            {% for x in object.exact_match_as_list %}
-            <li>{{x|urlize}}</li>
-            {% endfor %}
-            </td>
-        </tr>
-        {% endif %}
-        {% if object.related_match %}
-        <tr>
-            <th>skos:relatedMatch</th>
-            <td>
-            {% for x in object.related_match_as_list %}
-            <li>{{x|urlize}}</li>
-            {% endfor %}
-            </td>
-        </tr>
-        {% endif %}
-        {% if object.close_match %}
-        <tr>
-            <th>skos:closeMatch</th>
-            <td>
-            {% for x in object.close_match_as_list %}
-            <li>{{x|urlize}}</li>
-            {% endfor %}
-            </td>
-        </tr>
-        {% endif %}
-<!--  -->
-        {% if object.date_created %}
-         <tr>
-            <th>dct:created</th>
-            <td>{{object.date_created}}</td>
-        </tr>
-        {% endif %}
-        {% if object.date_modified %}
-         <tr>
-            <th>dct:modified</th>
-            <td>{{object.date_modified}}</td>
-        </tr>
-        {% endif %}
+                                                                {% if object.contributor %}
+                                                                <tr>
+                                                                    <th>dc:contributor</th>
+                                                                    <td>
+                                                                        {% for contributor in object.contributor_as_list %}
+                                                                        <li>{{contributor}}</li>
+                                                                        {% endfor %}
+                                                                    </td>
+                                                                </tr>
+                                                                {% endif %}
+                                                                <!--for inline added notes-->
+                                                                {% if object.has_notes %}
+                                                                {% for note in object.has_notes.all %}
+                                                                <tr>
+                                                                    <th>skos:{{note.note_type}} @{{note.language}}</th>
+                                                                    <td>{{note.name}}</td>
+                                                                </tr>
+                                                                {% endfor %}
+                                                                {% endif %}
+                                                                <!--end-->
 
-        {% if user.is_authenticated %}
-        {% if object.created_by %}
-         <tr>
-            <th class="w-25">created by</th>
-            <td>{{object.created_by}}</td>
-        </tr>
-        {% endif %}
-        {% if object.needs_review == True %}
-         <tr>
-            <th class="w-25"></th>
-            <td style="color:red;"><b>Needs review</b></td>
-        </tr>
-        {% endif %}
-        {% endif %}
-        <tr>
-            <th>download this concept</th>
-            <td>
-                <li><a href="{% url 'vocabs:vocabs-download' %}?pref_label={{object.id}}">RDF/XML</a></li>
-                <li><a href="{% url 'vocabs:vocabs-download' %}?format=turtle&pref_label={{object.id}}">Turtle</a></li>
-            </td>
-        </tr>
-        </table>
-        <!--change history collapse button-->
-        {% if user.is_authenticated %}
-        {% if history %}
-        <div class="col-md-12" style="margin-bottom: 20px;">
-        <button class="btn btn-outline-info" type="button" data-toggle="collapse" data-target="#changeHistory" aria-expanded="false" aria-controls="changeHistory" style="margin-bottom: 20px;">
-        Change history
-        </button>
-        <div class="collapse" id="changeHistory">
-           {% for x in history %}
-            <li>
-            {% if forloop.last %}
-            {{ x.revision.date_created }} created by {{ x.revision.user }}
+                                                                <!--for inline added sources-->
+                                                                {% if object.has_sources %}
+                                                                {% for source in object.has_sources.all %}
+                                                                <tr>
+                                                                    <th>dc:source @{{source.language}}</th>
+                                                                    <td>{{source.name}}</td>
+                                                                </tr>
+                                                                {% endfor %}
+                                                                {% endif %}
+                                                                <!--end-->
+                                                                <!-- Mapping relationships -->
+                                                                {% if object.broader_concept %}
+                                                                <tr>
+                                                                    <th>skos:broader</th>
+                                                                    <td>
+                                                                        <a href="{{ object.broader_concept.get_absolute_url }}">
+                                                                            {{object.broader_concept}}
+                                                                        </a>
+                                                                    </td>
+                                                                </tr>
+                                                                {% endif %}
+                                                                {% if object.narrower_concepts.all %}
+                                                                <tr>
+                                                                    <th>skos:narrower</th>
+                                                                    <td>
+                                                                        {% for x in object.narrower_concepts.all %}
+                                                                        <a href="{{ x.get_absolute_url }}">{{x}}</a><br>
+                                                                        {% endfor %}
+                                                                    </td>
+                                                                </tr>
+                                                                {% endif %}
+                                                                <!-- external macthes via AC -->
+                                                                {% if object.related %}
+                                                                <tr>
+                                                                    <th>skos:related</th>
+                                                                    <td>
+                                                                        {% for x in object.related_as_list %}
+                                                                        <li>{{x|urlize}}</li>
+                                                                        {% endfor %}
+                                                                    </td>
+                                                                </tr>
+                                                                {% endif %}
+                                                                {% if object.broad_match %}
+                                                                <tr>
+                                                                    <th>skos:broadMatch</th>
+                                                                    <td>
+                                                                        {% for x in object.broad_match_as_list %}
+                                                                        <li>{{x|urlize}}</li>
+                                                                        {% endfor %}
+                                                                    </td>
+                                                                </tr>
+                                                                {% endif %}
+                                                                {% if object.narrow_match %}
+                                                                <tr>
+                                                                    <th>skos:narrowMatch</th>
+                                                                    <td>
+                                                                        {% for x in object.narrow_match_as_list %}
+                                                                        <li>{{x|urlize}}</li>
+                                                                        {% endfor %}
+                                                                    </td>
+                                                                </tr>
+                                                                {% endif %}
+                                                                {% if object.exact_match %}
+                                                                <tr>
+                                                                    <th>skos:exactMatch</th>
+                                                                    <td>
+                                                                        {% for x in object.exact_match_as_list %}
+                                                                        <li>{{x|urlize}}</li>
+                                                                        {% endfor %}
+                                                                    </td>
+                                                                </tr>
+                                                                {% endif %}
+                                                                {% if object.related_match %}
+                                                                <tr>
+                                                                    <th>skos:relatedMatch</th>
+                                                                    <td>
+                                                                        {% for x in object.related_match_as_list %}
+                                                                        <li>{{x|urlize}}</li>
+                                                                        {% endfor %}
+                                                                    </td>
+                                                                </tr>
+                                                                {% endif %}
+                                                                {% if object.close_match %}
+                                                                <tr>
+                                                                    <th>skos:closeMatch</th>
+                                                                    <td>
+                                                                        {% for x in object.close_match_as_list %}
+                                                                        <li>{{x|urlize}}</li>
+                                                                        {% endfor %}
+                                                                    </td>
+                                                                </tr>
+                                                                {% endif %}
+                                                                <!--  -->
+                                                                {% if object.date_created %}
+                                                                <tr>
+                                                                    <th>dct:created</th>
+                                                                    <td>{{object.date_created}}</td>
+                                                                </tr>
+                                                                {% endif %}
+                                                                {% if object.date_modified %}
+                                                                <tr>
+                                                                    <th>dct:modified</th>
+                                                                    <td>{{object.date_modified}}</td>
+                                                                </tr>
+                                                                {% endif %}
+
+                                                                {% if user.is_authenticated %}
+                                                                {% if object.created_by %}
+                                                                <tr>
+                                                                    <th class="w-25">created by</th>
+                                                                    <td>{{object.created_by}}</td>
+                                                                </tr>
+                                                                {% endif %}
+                                                                {% if object.needs_review == True %}
+                                                                <tr>
+                                                                    <th class="w-25"></th>
+                                                                    <td style="color:red;"><b>Needs review</b></td>
+                                                                </tr>
+                                                                {% endif %}
+                                                                {% endif %}
+                                                                <tr>
+                                                                    <th>download this concept</th>
+                                                                    <td>
+                                                                        <li>
+                                                                            <a href="{% url 'vocabs:vocabs-download' %}?pref_label={{object.id}}">RDF/XML</a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="{% url 'vocabs:vocabs-download' %}?format=turtle&pref_label={{object.id}}">Turtle</a>
+                                                                        </li>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="history" role="tabpanel"
+                                             aria-labelledby="history-tab">
+                                            <div class="card">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        {% for x in history %}
+                                                        <li>
+                                                            {% if forloop.last %}
+                                                            {{ x.revision.date_created }} created by {{ x.revision.user
+                                                            }}
+                                                            {% else %}
+                                                            {{ x.revision.date_created }} changed by {{ x.revision.user
+                                                            }}
+                                                            {% endif %}
+                                                        </li>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br/>
             {% else %}
-            {{ x.revision.date_created }} changed by {{ x.revision.user }}
+            <h1>{% translate 'Unauthorized' %}</h1>
             {% endif %}
-           </li>
-           {% endfor %}
-        </div>
-        </div>
-        {% endif %}
-        {% endif %}
-        <!--change history ends here-->            
+    </article>
+    {% if 'vocabs.add_skosconcept' in perms %}
+    <div id="tray">
+        <a href="{% url 'vocabs:skosconcept_create' %}">
+            <button type="button" class="btn-success btn-circle btn-xl">
+                <i class="fa fa-plus"></i>
+            </button>
+        </a>
     </div>
-</div><!-- col-8 ends -->
-</div><!-- row ends -->
+    {% endif %}
 </div>
 {% endblock content %}
