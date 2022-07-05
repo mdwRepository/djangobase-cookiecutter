@@ -108,7 +108,7 @@ def get_custom_anon_user(CustomUser):
     return CustomUser(
         username='AnonymousUser',
         birth_date=datetime.date(1410, 7, 15),
-        {% if cookiecutter.enable_tou == 'y' -%}
+        {% if cookiecutter.tou_enabled == 'y' -%}
         current_tou_accepted=True,
         {%- endif %}
     )
