@@ -593,18 +593,19 @@ class SkosCollectionForm(forms.ModelForm):
             Div(
                 Field('name'),
                 Field('label_lang'),
-                Fieldset('Add other labels or labels in other languages',
+                HTML('<h4 class="form-headline">Other Labels</h4>'),
+                Fieldset('',
                          Formset('labels'), css_class="formset-div"),
                 Field('scheme'),
                 Accordion(
                     AccordionGroup(
                         'Recommended Information',
-                        HTML('<h4>Agents</h4>'),
+                        HTML('<h4 class="form-headline">Agents</h4>'),
                         Field('creator'),
                         Field('contributor'),
-                        HTML('<h4>Identifier</h4>'),
+                        HTML('<h4 class="form-headline">Identifier</h4>'),
                         Field('legacy_id'),
-                        HTML('<h4>Notes/h4>'),
+                        HTML('<h4 class="form-headline">Notes</h4>'),
                         Fieldset('',
                                  Formset('notes'), css_class="formset-div"),
                     ),
@@ -612,7 +613,7 @@ class SkosCollectionForm(forms.ModelForm):
                 Accordion(
                     AccordionGroup(
                         'Optional Information',
-                        HTML('<h4>Source Information/h4>'),
+                        HTML('<h4 class="form-headline">Source Information/h4>'),
                         Fieldset('',
                                  Formset('sources'), css_class="formset-div"),
                     ),
