@@ -18,10 +18,10 @@ class TermsOfUseAcceptedMiddleware:
 
     def __call__(self, request, *args, **kwargs):
         ignored_paths = [
-            reverse('user_login'),
-            reverse('logout'),
-            reverse('terms_of_use'),
-            reverse('terms_of_use_accept'),
+            reverse('customuser:uuser_login'),
+            reverse('customuser:user_logout'),
+            reverse('tou:terms_of_use'),
+            reverse('tou:terms_of_use_accept'),
         ]
         user = request.user
         if user.is_superuser == True:
@@ -31,7 +31,7 @@ class TermsOfUseAcceptedMiddleware:
         else:
             if user.is_authenticated == True and user.current_tou_accepted == False:
                 if request.path not in ignored_paths:
-                    return redirect(reverse('terms_of_use_accept'))
+                    return redirect(reverse('tou:terms_of_use_accept'))
             return self.get_response(request)
 
 {%- endif %}

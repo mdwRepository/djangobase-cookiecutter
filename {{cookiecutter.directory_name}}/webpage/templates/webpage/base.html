@@ -149,10 +149,10 @@
                             {{ user.get_username }}
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <a class="nav-link" href="{% url 'users:user_logout' %}">log out <i class="feather-32" data-feather="log-out"></i></a>
+                            <a class="nav-link" href="{% url 'customuser:user_logout' %}">log out <i class="feather-32" data-feather="log-out"></i></a>
                         </div>
                     </li> {% else %} <li class="nav-item dropdown my-2 my-lg-0">
-                        <a class="nav-link" href="{% url 'users:user_login' %}">
+                        <a class="nav-link" href="{% url 'customuser::user_login' %}">
                             <i class="feather-32" data-feather="log-in"></i>
                         </a>
                     </li> {% endif %} </ul>

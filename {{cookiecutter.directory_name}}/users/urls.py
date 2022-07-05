@@ -4,7 +4,7 @@ from django.conf.urls import url
 from django.urls import include
 
 urlpatterns = [
-    url('', include(('users.user_urls', 'users'), namespace='users')),
+    url('', include(('users.user_urls', 'users'), namespace='customuser')),
 ]
 
 
@@ -16,7 +16,7 @@ urlpatterns = [
 {% if cookiecutter.tou_enabled == 'y' -%}
 
 urlpatterns += [
-    url('', include(('users.tou_urls', 'users'), namespace='users')),
+    url('', include(('users.tou_urls', 'users'), namespace='tou')),
 ]
 
 {%- endif %}

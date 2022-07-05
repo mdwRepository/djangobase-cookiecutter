@@ -67,7 +67,7 @@ class TermsOfUseAcceptView(View):
                       {
                           'next': request.GET.get('next'),
                           'tou': tou,
-                          'logout_url': reverse('logout')
+                          'logout_url': reverse('customuser:users_logout')
                       }
                       )
 
