@@ -359,8 +359,8 @@ class SkosConceptSchemeForm(forms.ModelForm):
                                 )
                             ),
                         ),
-                        active=True,
-                    )
+                        css_class="recommended"
+                    ),
                 ),
                 Accordion(
                     AccordionGroup(
@@ -939,7 +939,7 @@ class SkosConceptForm(forms.ModelForm):
                         Fieldset('',
                                  Formset('labels'), css_class="formset-div"),
                         HTML('<h4 class="form-headline">Notes</h4>'),
-                        Fieldset('Note',
+                        Fieldset('',
                                  Formset('notes'), css_class="formset-div"),
                         HTML('<h4 class="form-headline">Agents</h4>'),
                         Field('creator'),
@@ -957,6 +957,7 @@ class SkosConceptForm(forms.ModelForm):
                                  Field('related_match'),
                                  Field('close_match'),
                                  ),
+                        css_class="recommended"
                     ),
                 ),
                 Accordion(
@@ -967,7 +968,7 @@ class SkosConceptForm(forms.ModelForm):
                                  Formset('sources'), css_class="formset-div"),
                         HTML('<h4 class="form-headline">Collection</h4>'),
                         Field('collection'),
-                    ),
+                    )
                 ),
                 # Field('top_concept'),
                 HTML("<br>"),

@@ -817,3 +817,35 @@ a > .fa-2x {
     display: none;
   }
 }
+
+/* Accordion in Crispy Forms ====================================================== */
+
+
+.accordion-title>a {
+  display: block;
+  position: relative;
+}
+
+.accordion-title>a:after {
+  content: "\f078";
+  /* fa-chevron-down */
+  font-family: 'FontAwesome';
+  position: absolute;
+  right: 0;
+}
+
+.accordion-title>a[aria-expanded="true"]:after {
+  content: "\f077";
+  /* fa-chevron-up */
+}
+
+.recommended {
+    border-left: 4px solid #04adad;
+    background-color: #09bfbf59;
+}
+
+.card-body {
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+  padding: 1.25rem;
+  background-color: white;
