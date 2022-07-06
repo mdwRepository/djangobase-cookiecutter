@@ -18,8 +18,8 @@ class TermsOfUseAcceptedMiddleware:
 
     def __call__(self, request, *args, **kwargs):
         ignored_paths = [
-            reverse('customuser:uuser_login'),
-            reverse('customuser:user_logout'),
+            reverse('user_login'),
+            reverse('user_logout'),
             reverse('tou:terms_of_use'),
             reverse('tou:terms_of_use_accept'),
         ]
