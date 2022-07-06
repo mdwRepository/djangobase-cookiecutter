@@ -318,11 +318,6 @@ class SkosConceptSchemeForm(forms.ModelForm):
                                 'Titles in other languages',
                                 Fieldset('',
                                          Formset('titles'), css_class="formset-div"),
-                                # TODO: active=False causes remove button to be hidden
-                                # active=False,
-                                # <div id="{{ div.css_id }}" class="{% if div.css_class %}{{ div.css_class }}{% endif %}" role="tabpanel"
-                                #          aria-labelledby="{{ div.css_id }}" data-parent="#{{ div.data_parent }}">
-                                # css_class="collapse collapsed"
                             ),
                             Accordion(
                                 AccordionGroup(
