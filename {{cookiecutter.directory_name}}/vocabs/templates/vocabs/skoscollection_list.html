@@ -19,8 +19,8 @@
                     <div class="aside-all">
                         <ul class="list-group">
                             <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <small><a href="?">All SKOS Concepts</a></small>
-                                <span class="badge badge-success">{{ count_skosc }}</span>
+                                <small><a href="?">All SKOS Collections</a></small>
+                                <span class="badge badge-success">{{ count_skoscols }}</span>
                             </li>
                         </ul>
                     </div>
@@ -64,7 +64,7 @@
                                 </a>
                             </li>
                             <li class="breadcrumb-item mb-0">
-                                SKOS Concept
+                                SKOS Collection
                             </li>
                         </ul>
                     </div>
@@ -88,9 +88,9 @@
                     {% else %}
                         <div><small>{% translate 'No filters applied.' %}</small></div>
                     {% endif %}
-                    {% if 'vocabs.add_skosconcept' in perms %}
+                    {% if 'vocabs.add_skoscollection' in perms %}
                         <div id="tray">
-                            <a href="{% url 'vocabs:skosconcept_create' %}">
+                            <a href="{% url 'vocabs:skoscollection_create' %}">
                                 <button type="button" class="btn-success btn-circle btn-xl">
                                     <i class="fa fa-plus"></i>
                                 </button>
@@ -121,7 +121,7 @@
                             </div>
                             {% for object in page_obj %}
                                 {% get_obj_perms request.user for object as "obj_perms" %}
-                                {% if 'view_skosconcept' in obj_perms %}
+                                {% if 'view_skoscollection' in obj_perms %}
                                     <div class="sresult row mb-0">
                                         <div class="col-12">
                                             <div class="row">
@@ -131,7 +131,7 @@
                                                 <div class="col-3 text-right">
                                                     <span class="mdw-dark-blue-text">
                                                         <i class="fa-solid fa-book-open"></i>&nbsp;
-                                                        SKOS Concept</span>
+                                                        SKOS Collection</span>
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -139,37 +139,19 @@
                                                     <h3>
                                                         <a href="{{ object.get_absolute_url }}"
                                                            name="{{ object.pref_label }}">
-                                                            {{ object.pref_label }} | {{ object.pref_label }}
+                                                            {{ object.name }} | {{ object.label_lang }}
                                                         </a>
-                                                        {% if user.is_authenticated %}
-                                                            {% if object.needs_review == True %}
-                                                                &nbsp;<i class="fa-solid fa-lock"
-                                                                         style="color: #b12929"></i>
-                                                            {% else %}
-                                                                &nbsp;
-                                                                <i class="fa-solid fa-lock-open" style="color: #309164"></i>
-                                                            {% endif %}
-                                                        {% endif %}
                                                     </h3>
                                                 </div>
                                                 <div class="col-3 text-right">
-                                                    {% if object.scheme %}
-                                                        <small>
-                                                            <a href="{{ object.scheme.get_absolute_url }}">
-                                                                <span class="badge badge-pill badge-primary">
-                                                                    {{ object.scheme }}
-                                                                </span>
-                                                            </a>
-                                                        </small>
-                                                    {% endif %}
                                                 </div>
                                             </div>
                                             {% if object.has_labels %}
                                                 <div class="row">
                                                     <div class="col-12">
-                                                        {% for label in object.has_labels.all %}
+                                                        {% for label in object.has_titles.all %}
                                                             <div class="row">
-                                                                <div class="col-4">skos:{{label.label_type}} @{{label.language}}</div>
+                                                                <div class="col-4">{{label.language}}</div>
                                                                 <div class="col-8">{{label.name}}</div>
                                                             </div>
                                                         {% endfor %}
@@ -189,7 +171,7 @@
                     {% else %}
                         <div>
                             <br/>
-                            {% translate "No SKOS Concept records found." %}
+                            {% translate "No SKOS Collection records found." %}
                             <br/>
                         </div>
                     {% endif %}

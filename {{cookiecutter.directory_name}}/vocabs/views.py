@@ -30,7 +30,7 @@ from .rdf_utils import *
 #
 ######################################################################
 
-class SkosConceptSchemeListView(GenericListView):
+class SkosConceptSchemeTableListView(GenericListView):
     model = SkosConceptScheme
     table_class = SkosConceptSchemeTable
     filter_class = SkosConceptSchemeListFilter
@@ -46,7 +46,7 @@ class SkosConceptSchemeListView(GenericListView):
         return all_cols
 
     def get_context_data(self, **kwargs):
-        context = super(SkosConceptSchemeListView, self).get_context_data()
+        context = super(SkosConceptSchemeTableListView, self).get_context_data()
         context[self.context_filter_name] = self.filter
         togglable_colums = [x for x in self.get_all_cols() if x not in self.init_columns]
         context['togglable_colums'] = togglable_colums
@@ -63,6 +63,35 @@ class SkosConceptSchemeListView(GenericListView):
         exclude_vals = [x for x in all_cols if x not in selected_cols]
         table.exclude = exclude_vals
         return table
+
+
+class SkosConceptSchemeListView(ListView):
+    model = SkosConceptScheme
+    template_name = "vocabs/skosccollection_list.html"
+    pk_url_kwarg = "pk"
+    paginate_by = 10
+    ordering = ['title']
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['count_skoscs'] = get_objects_for_user(self.request.user, ('view_skosconceptscheme'),
+                                                       SkosConceptScheme.objects.all().distinct()).count()
+        return context
+
+    def get_queryset(self, *args, **kwargs):
+        querySet = get_objects_for_user(self.request.user, ('view_skosconceptscheme'),
+                                        SkosConceptScheme.objects.all().distinct())
+        skc_order = self.request.GET.get('sort', 'titleasc')
+        query = self.request.GET.get('q', None)
+        if query != '' and query is not None:
+            querySet = querySet.filter(
+                Q(title__icontains=query) | Q(has_titles__name__icontains=query))
+        if skc_order in ('titleasc', 'titledsc'):
+            if skc_order == 'titledsc':
+                oqs = querySet.order_by('-title')
+            elif skc_order == 'titleasc':
+                oqs = querySet.order_by('title')
+        return oqs
 
 
 class SkosConceptSchemeDetailView(BaseDetailView):
@@ -207,7 +236,7 @@ class SkosConceptSchemeDelete(BaseDeleteView):
 #
 ######################################################################
 
-class SkosCollectionListView(GenericListView):
+class SkosCollectionTableListView(GenericListView):
     model = SkosCollection
     table_class = SkosCollectionTable
     filter_class = SkosCollectionListFilter
@@ -224,7 +253,7 @@ class SkosCollectionListView(GenericListView):
         return all_cols
 
     def get_context_data(self, **kwargs):
-        context = super(SkosCollectionListView, self).get_context_data()
+        context = super(SkosCollectionTableListView, self).get_context_data()
         context[self.context_filter_name] = self.filter
         togglable_colums = [x for x in self.get_all_cols() if x not in self.init_columns]
         context['togglable_colums'] = togglable_colums
@@ -241,6 +270,35 @@ class SkosCollectionListView(GenericListView):
         exclude_vals = [x for x in all_cols if x not in selected_cols]
         table.exclude = exclude_vals
         return table
+
+
+class SkosCollectionListView(ListView):
+    model = SkosCollection
+    template_name = "vocabs/skosccollection_list.html"
+    pk_url_kwarg = "pk"
+    paginate_by = 10
+    ordering = ['name']
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['count_skoscols'] = get_objects_for_user(self.request.user, ('view_skoscollection'),
+                                                         SkosCollection.objects.all().distinct()).count()
+        return context
+
+    def get_queryset(self, *args, **kwargs):
+        querySet = get_objects_for_user(self.request.user, ('view_skoscollection'),
+                                        SkosCollection.objects.all().distinct())
+        skc_order = self.request.GET.get('sort', 'titleasc')
+        query = self.request.GET.get('q', None)
+        if query != '' and query is not None:
+            querySet = querySet.filter(
+                Q(name__icontains=query) | Q(has_labels__name__icontains=query))
+        if skc_order in ('titleasc', 'titledsc'):
+            if skc_order == 'titledsc':
+                oqs = querySet.order_by('-name')
+            elif skc_order == 'titleasc':
+                oqs = querySet.order_by('name')
+        return oqs
 
 
 class SkosCollectionDetailView(BaseDetailView):
@@ -404,7 +462,7 @@ class SkosConceptListView(ListView):
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
         context['count_skosc'] = get_objects_for_user(self.request.user, ('view_skosconcept'),
-                                                    SkosConcept.objects.all().distinct()).count()
+                                                      SkosConcept.objects.all().distinct()).count()
         return context
 
     def get_queryset(self, *args, **kwargs):

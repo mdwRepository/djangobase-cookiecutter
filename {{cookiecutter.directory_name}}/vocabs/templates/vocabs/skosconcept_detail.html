@@ -83,6 +83,10 @@ var lastWidth = 0;
       console.log(data.selected);
     });
 
+    $("#jstree").bind("select_node.jstree", function(e, data) {
+  window.location.href = data.node.a_attr.href;
+});
+
     $('button').on('click', function () {
       $('#jstree').jstree(true).select_node('child_node_1');
       $('#jstree').jstree('select_node', 'child_node_1');
@@ -93,80 +97,53 @@ var lastWidth = 0;
 {% endblock scripts2 %}
 
 {% block content %}
+<br>
 <div class="container">
     <article class="content clearfix">
-        <div class="breadcrumb-content mb-0">
-            <ul class="breadcrumb mb-0">
-                <li class="breadcrumb-item mb-0">
-                    <a href="/">Home</a>
-                </li>
-                <li class="breadcrumb-item mb-0">
-                    <a href="{% url 'vocabs:browse_vocabs' %}">{% translate "SKOS Concept" %}</a>
-                </li>
-
-                <li class="breadcrumb-item mb-0">
-                    {{ object }}
-                </li>
-            </ul>
-        </div>
-        {% get_obj_perms request.user for object as 'object_perms' %}
-        {% if 'view_skosconcept' in object_perms %}
-        <div class="row">
-            <div class="col-md-10">
-                <h1>{{ object }}</h1>
-            </div>
-            <div class="col-md-2">
-                {% if 'change_skosconcept' in object_perms %}
-                <a href="{% url 'vocabs:skosconcept_update' pk=object.id %}"
-                   name="{% translate 'edit' %} {{ object.title }}"
-                   class="editor_link">
-                    <button class="btn btn-success btn-circle btn-circle-sm m-1" type="button"
-                            data-toggle="tooltip"
-                            data-placement="top"
-                            title="Edit">
-                        <i class="fa fa-edit"></i>
-                    </button>
-                </a>
-                {% endif %}
-                {% if 'delete_skosconcept' in object_perms %}
-                <a href="{% url 'vocabs:skosconcept_delete' pk=object.id %}"
-                   name="{% translate 'delete' %}  {{ object.title }}"
-                   class="editor_link">
-                    <button class="btn btn-danger btn-circle btn-circle-sm m-1" type="button"
-                            data-toggle="tooltip"
-                            data-placement="top"
-                            title="Delete">
-                        <i class="fa fa-trash"></i>
-                    </button>
-                </a>
-                {% endif %}
-            </div>
-        </div>
-        <!-- visual representation -->
-        <!-- visual representation end -->
-        <!-- preferred citation -->
-        <!-- preferred citation end -->
-        {% endif %}
         <div class="row">
             <div class="col-12">
                 <div class="stage">
                     <div class="main">
                         <div class="sheet">
-                            <h2><a href="{{ object.scheme.get_absolute_url }}">{{object.scheme}}</a>
-                                {% if user.is_authenticated %}
-                                <a class="btn btn-outline-secondary"
-                                   href="{% url 'vocabs:skosconcept_create' %}?scheme={{object.scheme.id}}">
-                                    Add Concept
-                                </a>
-                                <a class="btn btn-outline-secondary"
-                                   href="{% url 'vocabs:skoscollection_create' %}?scheme={{object.scheme.id}}">
-                                    Add Collection
-                                </a>
+                            <div class="aside-facets">
+                                <h5>Concept Scheme</h5>
+                                <p>
+                                    <a href="{{ object.scheme.get_absolute_url }}">
+                                        <strong>{{object.scheme}}</strong>
+                                    </a>
+                                </p>
+                                {% if perms.vocabs.add_skosconcept or perms.vocabs.add_skoscollection %}
+                                <h5>Concept scheme actions</h5>
+                                {% if perms.vocabs.add_skosconcept %}
+                                <a href="{% url 'vocabs:skosconcept_create' %}?scheme={{object.scheme.id}}"
+                                class="text-decoration-none">
+                                    <button class="btn btn-success btn-circle btn-circle-sm m-1" type="button"
+                            data-toggle="tooltip"
+                            data-placement="top"
+                            title="Add">
+                        <i class="fa fa-plus"></i>
+                    </button> Concept
+                                </a><br>
                                 {% endif %}
-                            </h2>
+                                {% if perms.vocabs.add_skoscollection %}
+                                <a href="{% url 'vocabs:skoscollection_create' %}?scheme={{object.scheme.id}}"
+                                class="text-decoration-none">
+                                           <button class="btn btn-success btn-circle btn-circle-sm m-1" type="button"
+                            data-toggle="tooltip"
+                            data-placement="top"
+                            title="Add">
+                        <i class="fa fa-plus"></i>
+                    </button> Collection
+                                </a><br>
+                                {% endif %}
+                                <br>
+                                {% endif %}
+                            </div>
                             <!-- Hierarchy -->
                             {% if object.scheme %}
-                            <input type="text" id="jstree_q" value="" class="form-control">
+                            <h5>Concept Scheme Tree</h5>
+                            <input type="text" id="jstree_q" value="" class="form-control" placeholder="Search Concept Scheme Tree ...">
+                            <br>
 <div id="jstree">
                                 {% for concept,structure in object.scheme.has_concepts.all|tree_info %}
                                     {% if structure.new_level %}
@@ -217,6 +194,61 @@ var lastWidth = 0;
                     </div>
                     <div class="col">
                         <div class="sheet">
+                            <div class="breadcrumb-content mb-0">
+            <ul class="breadcrumb mb-0">
+                <li class="breadcrumb-item mb-0">
+                    <a href="/">Home</a>
+                </li>
+                <li class="breadcrumb-item mb-0">
+                    <a href="{% url 'vocabs:browse_vocabs' %}">{% translate "SKOS Concept" %}</a>
+                </li>
+
+                <li class="breadcrumb-item mb-0">
+                    {{ object }}
+                </li>
+            </ul>
+        </div>
+                            <br>
+        {% get_obj_perms request.user for object as 'object_perms' %}
+        {% if 'view_skosconcept' in object_perms %}
+        <div class="row">
+            <div class="col-md-8">
+                <h1>{{ object }}</h1>
+            </div>
+            <div class="col-md-4 text-right">
+                {% if 'change_skosconcept' in object_perms %}
+                <a href="{% url 'vocabs:skosconcept_update' pk=object.id %}"
+                   name="{% translate 'edit' %} {{ object.title }}"
+                   class="editor_link">
+                    <button class="btn btn-success btn-circle btn-circle-sm m-1" type="button"
+                            data-toggle="tooltip"
+                            data-placement="top"
+                            title="Edit">
+                        <i class="fa fa-edit"></i>
+                    </button>
+                </a>
+                {% endif %}
+                {% if 'delete_skosconcept' in object_perms %}
+                <a href="{% url 'vocabs:skosconcept_delete' pk=object.id %}"
+                   name="{% translate 'delete' %}  {{ object.title }}"
+                   class="editor_link">
+                    <button class="btn btn-danger btn-circle btn-circle-sm m-1" type="button"
+                            data-toggle="tooltip"
+                            data-placement="top"
+                            title="Delete">
+                        <i class="fa fa-trash"></i>
+                    </button>
+                </a>
+                {% endif %}
+            </div>
+        </div>
+                            <br>
+        <!-- visual representation -->
+        <!-- visual representation end -->
+        <!-- preferred citation -->
+        <!-- preferred citation end -->
+        {% endif %}
+
                             <div class="row">
                                 <div class="col-md-12">
                                     <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -472,11 +504,9 @@ var lastWidth = 0;
                                                         {% for x in history %}
                                                         <li>
                                                             {% if forloop.last %}
-                                                            {{ x.revision.date_created }} created by {{ x.revision.user
-                                                            }}
+                                                            {{ x.revision.date_created }} created by {{ x.revision.user }}
                                                             {% else %}
-                                                            {{ x.revision.date_created }} changed by {{ x.revision.user
-                                                            }}
+                                                            {{ x.revision.date_created }} changed by {{ x.revision.user }}
                                                             {% endif %}
                                                         </li>
                                                         {% endfor %}
@@ -491,6 +521,7 @@ var lastWidth = 0;
                     </div>
                 </div>
             </div>
+        </div>
             <br/>
             {% else %}
             <h1>{% translate 'Unauthorized' %}</h1>
@@ -506,4 +537,5 @@ var lastWidth = 0;
     </div>
     {% endif %}
 </div>
+<br>
 {% endblock content %}

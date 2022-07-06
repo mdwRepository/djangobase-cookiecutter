@@ -365,7 +365,7 @@ class SkosConceptSchemeForm(forms.ModelForm):
                                 'Source Information',
                                 Fieldset('',
                                          Formset('sources'), css_class="formset-div"),
-                                # active=False,
+                                css_class="optional"
                             ),
                         ),
                     ),
@@ -552,7 +552,7 @@ class SkosCollectionForm(forms.ModelForm):
                     'class': 'form-control'
                 }
             ),
-            'name_lang': forms.TextInput(
+            'label_lang': forms.TextInput(
                 attrs={
                     'class': 'form-control'
                 }
@@ -603,14 +603,16 @@ class SkosCollectionForm(forms.ModelForm):
                         HTML('<h4 class="form-headline">Notes</h4>'),
                         Fieldset('',
                                  Formset('notes'), css_class="formset-div"),
+                        css_class="recommended"
                     ),
                 ),
                 Accordion(
                     AccordionGroup(
                         'Optional Information',
-                        HTML('<h4 class="form-headline">Source Information/h4>'),
+                        HTML('<h4 class="form-headline">Source Information</h4>'),
                         Fieldset('',
                                  Formset('sources'), css_class="formset-div"),
+                        css_class="optional"
                     ),
                 ),
                 HTML("<br>"),
@@ -963,6 +965,7 @@ class SkosConceptForm(forms.ModelForm):
                                  Formset('sources'), css_class="formset-div"),
                         HTML('<h4 class="form-headline">Collection</h4>'),
                         Field('collection'),
+                        css_class="optional"
                     )
                 ),
                 # Field('top_concept'),

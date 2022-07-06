@@ -9,18 +9,18 @@
                 <aside>
                     <div class="aside-feeds">
                         <a href="feed/atom">
-                            <img src="{% static 'img/atom.svg' %}" alt="Atom logo">
+                            <img src="{% settings_value 'SHARED_URL' %}shared/images/atom.svg" alt="Atom logo">
                         </a>
                         <br/>
                         <a href="feed/rss">
-                            <img src="{% static 'img/rss20_logo.svg' %}" alt="RSS2 logo">
+                            <img src="{% settings_value 'SHARED_URL' %}shared/images/rss20_logo.svg" alt="RSS2 logo">
                         </a>
                     </div>
                     <div class="aside-all">
                         <ul class="list-group">
                             <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <small><a href="?">All SKOS Concepts</a></small>
-                                <span class="badge badge-success">{{ count_mws }}</span>
+                                <small><a href="?">All SKOS Concept Schemes</a></small>
+                                <span class="badge badge-success">{{ count_skoscs }}</span>
                             </li>
                         </ul>
                     </div>
@@ -64,11 +64,11 @@
                                 </a>
                             </li>
                             <li class="breadcrumb-item mb-0">
-                                SKOS Concept
+                                SKOS Concept Scheme
                             </li>
                         </ul>
                     </div>
-                    <h1>{% translate "SKOS Concept Records" %}</h1>
+                    <h1>{% translate "SKOS Concept Scheme Records" %}</h1>
                     {% if request.GET.q %}
                         <div class="applied_filters">
                             <span class="inline-label metadata-item-label">
@@ -76,8 +76,11 @@
                             </span>
                             <br/>
                             {% if request.GET.q %}
-                                <a href="?{% if request.GET.genre %}genre={{ request.GET.genre }}&{% endif %}{% if request.GET.form %}form={{ request.GET.form }}&{% endif %}{% if request.GET.sase %}sase={{ request.GET.sase }}{% endif %}{% if request.GET.sort %}sort={{ request.GET.sort }}{% endif %}">
-                                    <span class="badge badge-primary"><small><i class="fa-solid fa-x"></i></small>&nbsp; Query: &nbsp;&nbsp; {{ request.GET.q }}</span>
+                                <a href="?{% if request.GET.sort %}sort={{ request.GET.sort }}{% endif %}">
+                                    <span class="badge badge-primary">
+                                        <small><i class="fa-solid fa-x"></i></small>&nbsp;
+                                        Query: &nbsp;&nbsp; {{ request.GET.q }}
+                                    </span>
                                 </a>
                             {% endif %}
                             &nbsp; <small><a href="?" class="link_underline">{% translate 'Clear all' %}</a></small>
@@ -85,9 +88,9 @@
                     {% else %}
                         <div><small>{% translate 'No filters applied.' %}</small></div>
                     {% endif %}
-                    {% if 'vocabs.add_skosconcept' in perms %}
+                    {% if 'vocabs.add_skosconceptscheme' in perms %}
                         <div id="tray">
-                            <a href="{% url 'vocabs:skosconcept_create' %}">
+                            <a href="{% url 'vocabs:skosconceptscheme_create' %}">
                                 <button type="button" class="btn-success btn-circle btn-xl">
                                     <i class="fa fa-plus"></i>
                                 </button>
@@ -103,7 +106,7 @@
                                 </div>
                                 <div class="col-4 text-right">
                                     <form method='GET'>
-                                        <select class="form-control-sm" id="sort" name="sort"
+                                        <select class="form-control form-control-sm" id="sort" name="sort"
                                                 onchange="this.form.submit()">
                                             <option value="titleasc">Title - A to Z</option>
                                             <option value="titledsc">Title - Z to A</option>
@@ -118,7 +121,7 @@
                             </div>
                             {% for object in page_obj %}
                                 {% get_obj_perms request.user for object as "obj_perms" %}
-                                {% if 'view_skosconcept' in obj_perms %}
+                                {% if 'view_skosconceptscheme' in obj_perms %}
                                     <div class="sresult row mb-0">
                                         <div class="col-12">
                                             <div class="row">
@@ -128,7 +131,7 @@
                                                 <div class="col-3 text-right">
                                                     <span class="mdw-dark-blue-text">
                                                         <i class="fa-solid fa-book-open"></i>&nbsp;
-                                                        SKOS Concept</span>
+                                                        SKOS Concept Scheme</span>
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -136,7 +139,7 @@
                                                     <h3>
                                                         <a href="{{ object.get_absolute_url }}"
                                                            name="{{ object.pref_label }}">
-                                                            {{ object.pref_label }} | {{ object.pref_label }}
+                                                            {{ object.title }} | {{ object.title_label }}
                                                         </a>
                                                         {% if user.is_authenticated %}
                                                             {% if object.needs_review == True %}
@@ -150,24 +153,15 @@
                                                     </h3>
                                                 </div>
                                                 <div class="col-3 text-right">
-                                                    {% if object.scheme %}
-                                                        <small>
-                                                            <a href="{{ object.scheme.get_absolute_url }}">
-                                                                <span class="badge badge-pill badge-primary">
-                                                                    {{ object.scheme }}
-                                                                </span>
-                                                            </a>
-                                                        </small>
-                                                    {% endif %}
                                                 </div>
                                             </div>
                                             {% if object.has_labels %}
                                                 <div class="row">
                                                     <div class="col-12">
-                                                        {% for label in object.has_labels.all %}
+                                                        {% for label in object.has_titles.all %}
                                                             <div class="row">
-                                                                <div class="col-4">skos:{{label.label_type}} @{{label.language}}</div>
-                                                                <div class="col-8">{{label.name}}</div>
+                                                                <div class="col-4">@{{title.language}}</div>
+                                                                <div class="col-8">{{title.name}}</div>
                                                             </div>
                                                         {% endfor %}
                                                     </div>
@@ -186,7 +180,7 @@
                     {% else %}
                         <div>
                             <br/>
-                            {% translate "No SKOS Concept records found." %}
+                            {% translate "No SKOS Concept Scheme records found." %}
                             <br/>
                         </div>
                     {% endif %}

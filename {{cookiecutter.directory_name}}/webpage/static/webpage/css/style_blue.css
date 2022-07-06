@@ -844,6 +844,11 @@ a > .fa-2x {
     background-color: #09bfbf59;
 }
 
+.optional {
+    border-left: 4px solid #446aff;
+    background-color: #9cb0ffb3
+ }
+
 .card-body {
   -ms-flex: 1 1 auto;
   flex: 1 1 auto;
