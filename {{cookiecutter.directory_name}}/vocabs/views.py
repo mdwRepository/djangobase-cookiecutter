@@ -17,7 +17,6 @@ from browsing.browsing_utils import GenericListView, BaseCreateView, BaseUpdateV
 from core.views import BaseDetailView, BaseDeleteView
 from guardian.shortcuts import get_objects_for_user
 
-from .models import SkosConcept, SkosConceptScheme, SkosCollection
 from .forms import *
 from .tables import *
 from .filters import SkosConceptListFilter, SkosConceptSchemeListFilter, SkosCollectionListFilter

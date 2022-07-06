@@ -9,9 +9,10 @@
             {% csrf_token %}
             <div class="form-actions">
                 <button type="submit" class="btn btn-large btn-success">{% translate 'Accept' %}</button> or
-                <a href="{{ logout_url }}">{% translate 'log out' %}</a>
+                <a href="{% url 'user_logout' %}">{% translate 'log out' %}</a>
             </div>
         </form>
         <br/>
     </div>
 {% endblock %}
+

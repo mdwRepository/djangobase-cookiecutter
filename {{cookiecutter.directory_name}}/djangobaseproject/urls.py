@@ -28,6 +28,7 @@ from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
 from vocabs import api_views as skos_views
+from users.views import user_login, user_logout
 
 router = routers.DefaultRouter()
 router.register(r'skosconceptschemes', skos_views.SkosConceptSchemeViewSet)
@@ -45,6 +46,8 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('accounts/login/', user_login, name='user_login'),
+    path('logout/', user_logout, name='user_logout'),
     path('api/', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('api/schema/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),

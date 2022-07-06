@@ -3,6 +3,7 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
+from django.conf import settings
 
 from . forms import form_user_login
 
@@ -19,7 +20,7 @@ def user_login(request):
             user = authenticate(username=cd['username'], password=cd['password'])
             if user and user.is_active:
                 login(request, user)
-                return HttpResponseRedirect(request.GET.get('next', '/'))
+                return HttpResponseRedirect(request.GET.get('next', settings.FORCE_SCRIPT_NAME))
             return HttpResponse('user does not exist')
     else:
         form = form_user_login()
@@ -36,8 +37,6 @@ def user_logout(request):
 # ---------------------------------------------------------------------------#
 
 # Terms Of Use if activated
-{% if cookiecutter.tou_enabled == 'y' -%}
-
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.utils.decorators import method_decorator
@@ -67,7 +66,7 @@ class TermsOfUseAcceptView(View):
                       {
                           'next': request.GET.get('next'),
                           'tou': tou,
-                          'logout_url': reverse('customuser:users_logout')
+                          'logout_url': reverse('user_logout')
                       }
                       )
 
@@ -81,5 +80,4 @@ class TermsOfUseAcceptView(View):
         )
         print(accepted_tou)
         accepted_tou.save()
-        return HttpResponseRedirect('/')
-{%- endif %}
+        return HttpResponseRedirect(settings.FORCE_SCRIPT_NAME)
