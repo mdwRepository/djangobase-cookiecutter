@@ -72,7 +72,7 @@ DEBUG_SQL = False
 # ----------------------------------------------------------------------------
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = str(uuid.uuid4())
+SECRET_KEY = env('DJANGO_SECRET_KEY', default=str(uuid.uuid4()))
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = [
