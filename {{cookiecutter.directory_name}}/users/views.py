@@ -20,7 +20,10 @@ def user_login(request):
             user = authenticate(username=cd['username'], password=cd['password'])
             if user and user.is_active:
                 login(request, user)
-                return HttpResponseRedirect(request.GET.get('next', settings.FORCE_SCRIPT_NAME))
+                if settings.FORCE_SCRIPT_NAME:
+                    return HttpResponseRedirect(request.GET.get('next', settings.FORCE_SCRIPT_NAME))
+                else:
+                    return HttpResponseRedirect(request.GET.get('next', '/'))
             return HttpResponse('user does not exist')
     else:
         form = form_user_login()
@@ -80,4 +83,7 @@ class TermsOfUseAcceptView(View):
         )
         print(accepted_tou)
         accepted_tou.save()
-        return HttpResponseRedirect(settings.FORCE_SCRIPT_NAME)
+        if settings.FORCE_SCRIPT_NAME:
+            return HttpResponseRedirect(settings.FORCE_SCRIPT_NAME)
+        else:
+            return HttpResponseRedirect('/')
