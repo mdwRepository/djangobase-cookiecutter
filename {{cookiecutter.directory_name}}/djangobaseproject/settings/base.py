@@ -15,10 +15,6 @@ from pathlib import Path
 
 PROJECT_NAME = "{{cookiecutter.project_abbr}}"
 SITE_ID = 1
-# add context (path) to app in django environments where we do not have access to a proxy / webserver
-# USE_X_FORWARDED_HOST = True
-# FORCE_SCRIPT_NAME = env('FORCE_SCRIPT_NAME', default="/my_path")
-# APPEND_SLASH = False
 
 # django admin labels
 SITE_HEADER = '{{cookiecutter.project_group}} | {{cookiecutter.project_title}} Admin'
