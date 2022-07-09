@@ -7,17 +7,19 @@
         crossorigin="anonymous"
         referrerpolicy="no-referrer"></script>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
 
 <script type="text/javascript">
-$(".main").resizable({
-   handleSelector: ".splitter",
-   resizeHeight: false
- });
+    $(".main").resizable({
+       handleSelector: ".splitter",
+       resizeHeight: false
+     });
 
-var isDragging = false;
-var lastWidth = 0;
+    var isDragging = false;
+    var lastWidth = 0;
 
     $(".splitter")
     .mousedown(function() {
@@ -38,6 +40,7 @@ var lastWidth = 0;
           }
     });
     })
+
     .mouseup(function() {
         $(".splitter").removeClass("splitter-active");
         var wasDragging = isDragging;
@@ -64,366 +67,465 @@ var lastWidth = 0;
         }
     });
 
-  $(function () {
-    $("#jstree").jstree({
-       "plugins" : [ "search" ]
-     });
+    $(function () {
+        $("#jstree").jstree({
+           "plugins" : [ "search" ]
+        });
 
-    var to = false;
+        var to = false;
 
-    $('#jstree_q').keyup(function () {
-       if(to) { clearTimeout(to); }
-          to = setTimeout(function () {
-             var v = $('#jstree_q').val();
-             $('#jstree').jstree(true).search(v);
-          }, 250);
-      });
+        $('#jstree_q').keyup(function () {
+           if(to) { clearTimeout(to); }
+              to = setTimeout(function () {
+                 var v = $('#jstree_q').val();
+                 $('#jstree').jstree(true).search(v);
+              }, 250);
+        });
 
-    $('#jstree').on("changed.jstree", function (e, data) {
-      console.log(data.selected);
+        $('#jstree').on("changed.jstree", function (e, data) {
+            console.log(data.selected);
+        });
+
+        $("#jstree").bind("select_node.jstree", function(e, data) {
+            window.location.href = data.node.a_attr.href;
+        });
+
+        $('button').on('click', function () {
+            $('#jstree').jstree(true).select_node('child_node_1');
+            $('#jstree').jstree('select_node', 'child_node_1');
+            $.jstree.reference('#jstree').select_node('child_node_1');
+        });
     });
-
-    $("#jstree").bind("select_node.jstree", function(e, data) {
-  window.location.href = data.node.a_attr.href;
-});
-
-    $('button').on('click', function () {
-      $('#jstree').jstree(true).select_node('child_node_1');
-      $('#jstree').jstree('select_node', 'child_node_1');
-      $.jstree.reference('#jstree').select_node('child_node_1');
-    });
-  });
 </script>
 {% endblock scripts2 %}
 
 {% block content %}
 <br>
+<!-- main content container start -->
 <div class="container">
     <article class="content clearfix">
-        <div class="row">
-            <div class="col-12">
-                <div class="stage">
-                    <div class="main">
-                        <div class="sheet">
-                            <div class="aside-facets">
-                                <h5>Concept Scheme</h5>
-                                <p>
+        {% if 'vocabs.view_skoscollection' in perms %}
+            <div class="row">
+                <div class="col-12">
+                    <!-- split screen start -->
+                    <div class="stage">
+                        <!-- left column start -->
+                        <div class="main">
+                            <div class="sheet">
+                                <!-- side content (facets, filters, trees, ...) start -->
+                                <div class="aside-facets">
+                                    <h5>{% translate 'SKOS Concept Scheme' %}</h5>
+                                    <p>
                                     <a href="{{ object.scheme.get_absolute_url }}">
                                         <strong>{{object.scheme}}</strong>
                                     </a>
-                                </p>
-                                {% if perms.vocabs.add_skosconcept or perms.vocabs.add_skoscollection %}
-                                <h5>Concept scheme actions</h5>
-                                {% if perms.vocabs.add_skosconcept %}
-                                <a href="{% url 'vocabs:skosconcept_create' %}?scheme={{object.scheme.id}}&collection={{object.id}}"
-                                class="text-decoration-none">
-                                    <button class="btn btn-success btn-circle btn-circle-sm m-1" type="button"
-                            data-toggle="tooltip"
-                            data-placement="top"
-                            title="Add">
-                        <i class="fa fa-plus"></i>
-                    </button> Concept
-                                </a><br>
-                                {% endif %}
-                                {% if perms.vocabs.add_skoscollection %}
-                                <a href="{% url 'vocabs:skoscollection_create' %}?scheme={{object.scheme.id}}"
-                                class="text-decoration-none">
-                                           <button class="btn btn-success btn-circle btn-circle-sm m-1" type="button"
-                            data-toggle="tooltip"
-                            data-placement="top"
-                            title="Add">
-                        <i class="fa fa-plus"></i>
-                    </button> Collection
-                                </a><br>
-                                {% endif %}
-                                <br>
-                                {% endif %}
-                            </div>
-                            <!-- Hierarchy -->
-                            {% if object.has_members.all %}
-                            <h5>Concepts in this Collection ({{ object.has_members.all|length }}</h5>
-                            <input type="text" id="jstree_q" value="" class="form-control" placeholder="Search Collection Tree ...">
-                            <br>
-<div id="jstree">
-                                {% for concept,structure in object.has_members.all|tree_info %}
-                                    {% if structure.new_level %}
-                                        <ul>
-                                    {% else %}
-                                            </li>
+                                    </p>
+                                    <!-- aside functions start -->
+                                    {% if perms.vocabs.add_skosconcept or perms.vocabs.add_skoscollection %}
+                                        <h5>{% translate 'SKOS Concept Scheme actions' %}</h5>
+                                        {% if perms.vocabs.add_skosconcept %}
+                                            <a href="{% url 'vocabs:skosconcept_create' %}?scheme={{object.scheme.id}}&collection={{object.id}}"
+                                               class="text-decoration-none">
+                                                <button class="btn btn-success btn-circle btn-circle-sm m-1"
+                                                        type="button"
+                                                        data-toggle="tooltip"
+                                                        data-placement="top"
+                                                        title="{% translate 'add' %}">
+                                                    <i class="fa fa-plus"></i>
+                                                </button>
+                                                <span>&nbsp;{% translate 'Concept' %}</span>
+                                            </a>
+                                            <br>
+                                        {% endif %}
+                                        {% if perms.vocabs.add_skoscollection %}
+                                            <a href="{% url 'vocabs:skoscollection_create' %}?scheme={{object.scheme.id}}"
+                                               class="text-decoration-none">
+                                                <button class="btn btn-success btn-circle btn-circle-sm m-1"
+                                                        type="button"
+                                                        data-toggle="tooltip"
+                                                        data-placement="top"
+                                                        title="{% translate 'add' %}">
+                                                    <i class="fa fa-plus"></i>
+                                                </button>
+                                                <span>&nbsp;{% translate 'Collection' %}</span>
+                                            </a>
+                                            <br>
+                                        {% endif %}
+                                        <br>
                                     {% endif %}
-
-                                    {% if concept.id == object.id and concept.needs_review == False %}
-                                    <li data-jstree='{"opened":true,"selected":true}'><strong>{{ concept.pref_label }}</strong>
-                                    {% elif concept.id == object.id and concept.needs_review == True %}
-                                    <li data-jstree='{"opened":true,"selected":true}'><strong>
-                                        {{ concept.pref_label }} <b style="color:red;" title="Needs review"> !</b>
-                                    </strong>
-                                    {% elif concept.id == object.id %}
-                                    <li data-jstree='{"opened":true,"selected":true}'><strong>{{ concept.pref_label }}</strong>
-                                    {% elif concept.id != object.id and concept.needs_review == True %}
-                                    <li><a href="{{ concept.get_absolute_url }}">
-                                        {{ concept.pref_label }} <b style="color:red;" title="Needs review"> !</b>
-                                    </a>
+                                    <!-- aside functions end -->
+                                    <!-- aside tree start -->
+                                    {% if object.has_members.all %}
+                                        <h5>
+                                            {% translate 'Concepts in this Collection' %} ({{ object.has_members.all|length }}
+                                        </h5>
+                                        <!-- tree filter start -->
+                                        <input type="text"
+                                               id="jstree_q"
+                                               value=""
+                                               class="form-control"
+                                               placeholder="{% translate 'Search Collection Tree ...' %}">
+                                        <br>
+                                        <!-- tree filter end -->
+                                        <!-- tree start -->
+                                        <div id="jstree">
+                                            {% for concept,structure in object.has_members.all|tree_info %}
+                                                {% if structure.new_level %}
+                                                    <ul>
+                                                {% else %}
+                                                        </li>
+                                                {% endif %}
+                                                 {% if concept.id == object.id and concept.needs_review == False %}
+                                                    <li data-jstree='{"opened":true,"selected":true}'>
+                                                        <strong>
+                                                            {{ concept.pref_label }}
+                                                        </strong>
+                                                {% elif concept.id == object.id and concept.needs_review == True %}
+                                                    <li data-jstree='{"opened":true,"selected":true}'>
+                                                        <strong>{{ concept.pref_label }}
+                                                            <b style="color:red;" title="{% translate 'Needs review' %}"> !</b>
+                                                        </strong>
+                                                {% elif concept.id == object.id %}
+                                                    <li data-jstree='{"opened":true,"selected":true}'>
+                                                        <strong>
+                                                            {{ concept.pref_label }}
+                                                        </strong>
+                                                {% elif concept.id != object.id and concept.needs_review == True %}
+                                                    <li>
+                                                        <a href="{{ concept.get_absolute_url }}">
+                                                            {{ concept.pref_label }}
+                                                            <b style="color:red;" title="{% translate 'Needs review' %"> !</b>
+                                                        </a>
+                                                {% else %}
+                                                    <li>
+                                                        <a href="{{ concept.get_absolute_url }}">
+                                                            {{ concept.pref_label }}
+                                                        </a>
+                                                {% endif %}
+                                                {% for level in structure.closed_levels %}
+                                                        </li>
+                                                    </ul>
+                                                {% endfor %}
+                                            {% endfor %}
+                                        </div>
+                                        <!-- tree end -->
                                     {% else %}
-                                    <li><a href="{{ concept.get_absolute_url }}">{{ concept.pref_label }}</a>
+                                        <p>
+                                            {% translate 'No Concepts in this Collection.' %}
+                                        </p>
                                     {% endif %}
-
-                                    {% for level in structure.closed_levels %}
-                                </li>
-                            </ul>
-                            {% endfor %}
-                            {% endfor %}
-
-    {% else %}
-
-    <p>No concepts in this collection.</p>
-
-                            {% endif %}
-                            <!-- Hierarchy END -->
-</div>
-                        </div>
-                    </div>
-                    <div class="splitter">
-                        <div class="icon-container">
-                            <div class="icon-wrapper">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="1142 590 3.001 33.515">
-                                    <defs>
-                                    </defs>
-                                    <path id="sig" class="cls-1"
-                                          d="M-1138.455-557.6l-2.47-2.465a.247.247,0,0,1,0-.355l2.47-2.47c.2-.2.356-.13.356.145v5c0,.168-.06.257-.151.257A.317.317,0,0,1-1138.455-557.6Zm-1.545-11.4v-10a1,1,0,0,1,1-1,1,1,0,0,1,1,1v10a1,1,0,0,1-1,1A1,1,0,0,1-1140-569.005Zm1.545-16.6-2.47-2.465a.247.247,0,0,1,0-.356l2.47-2.47c.2-.2.356-.13.356.145v5c0,.168-.06.258-.151.258A.317.317,0,0,1-1138.455-585.6Z"
-                                          transform="translate(4 32.51) rotate(180)"/>
-                                </svg>
+                                    <!-- aside tree end -->
+                                </div>
+                                <!-- side content (facets, filters, trees, ...) end -->
                             </div>
                         </div>
-                    </div>
-                    <div class="col">
-                        <div class="sheet">
-                            <div class="breadcrumb-content mb-0">
-            <ul class="breadcrumb mb-0">
-                <li class="breadcrumb-item mb-0">
-                    <a href="/">Home</a>
-                </li>
-                <li class="breadcrumb-item mb-0">
-                    <a href="{% url 'vocabs:browse_skoscollections' %}">{% translate "SKOS Collection" %}</a>
-                </li>
-
-                <li class="breadcrumb-item mb-0">
-                    {{ object }}
-                </li>
-            </ul>
-        </div>
-                            <br>
-        {% get_obj_perms request.user for object as 'object_perms' %}
-        {% if 'view_skoscollection' in object_perms %}
-        <div class="row">
-            <div class="col-md-8">
-                <h1>{{ object }}</h1>
-            </div>
-            <div class="col-md-4 text-right">
-                {% if 'change_skoscollection' in object_perms %}
-                <a href="{% url 'vocabs:skoscollection_update' pk=object.id %}"
-                   name="{% translate 'edit' %} {{ object.title }}"
-                   class="editor_link">
-                    <button class="btn btn-success btn-circle btn-circle-sm m-1" type="button"
-                            data-toggle="tooltip"
-                            data-placement="top"
-                            title="Edit">
-                        <i class="fa fa-edit"></i>
-                    </button>
-                </a>
-                {% endif %}
-                {% if 'delete_skoscollection' in object_perms %}
-                <a href="{% url 'vocabs:skoscollection_delete' pk=object.id %}"
-                   name="{% translate 'delete' %}  {{ object.title }}"
-                   class="editor_link">
-                    <button class="btn btn-danger btn-circle btn-circle-sm m-1" type="button"
-                            data-toggle="tooltip"
-                            data-placement="top"
-                            title="Delete">
-                        <i class="fa fa-trash"></i>
-                    </button>
-                </a>
-                {% endif %}
-            </div>
-        </div>
-                            <br>
-        <!-- visual representation -->
-        <!-- visual representation end -->
-        <!-- preferred citation -->
-        <!-- preferred citation end -->
-        {% endif %}
-
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <ul class="nav nav-tabs" id="myTab" role="tablist">
-                                        <li class="nav-item metadata-tab">
-                                            <a class="nav-link active" id="overview-tab" data-toggle="tab"
-                                               href="#overview"
-                                               role="tab"
-                                               aria-controls="overview" aria-selected="true">Overview</a>
+                        <!-- left column end -->
+                        <!-- splitter start -->
+                        <div class="splitter">
+                            <div class="icon-container">
+                                <div class="icon-wrapper">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="1142 590 3.001 33.515">
+                                        <defs>
+                                        </defs>
+                                        <path id="sig" class="cls-1"
+                                              d="M-1138.455-557.6l-2.47-2.465a.247.247,0,0,1,0-.355l2.47-2.47c.2-.2.356-.13.356.145v5c0,.168-.06.257-.151.257A.317.317,0,0,1-1138.455-557.6Zm-1.545-11.4v-10a1,1,0,0,1,1-1,1,1,0,0,1,1,1v10a1,1,0,0,1-1,1A1,1,0,0,1-1140-569.005Zm1.545-16.6-2.47-2.465a.247.247,0,0,1,0-.356l2.47-2.47c.2-.2.356-.13.356.145v5c0,.168-.06.258-.151.258A.317.317,0,0,1-1138.455-585.6Z"
+                                              transform="translate(4 32.51) rotate(180)"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- splitter end -->
+                        <!-- right column start -->
+                        <div class="col">
+                            <div class="sheet">
+                                <!-- breadcrumbs start -->
+                                <div class="breadcrumb-content mb-0">
+                                    <ul class="breadcrumb mb-0">
+                                        <li class="breadcrumb-item mb-0">
+                                            <a href="/">Home</a>
                                         </li>
-                                        <li class="nav-item metadata-tab">
-                                            <a class="nav-link" id="history-tab" data-toggle="tab" href="#history"
-                                               role="tab"
-                                               aria-controls="history" aria-selected="false">History</a>
+                                        <li class="breadcrumb-item mb-0">
+                                            <a href="{% url 'vocabs:browse_skoscollections' %}">{
+                                                % translate "SKOS Collection" %}
+                                            </a>
+                                        </li>
+                                        <li class="breadcrumb-item mb-0">
+                                            {{ object }}
                                         </li>
                                     </ul>
-                                    <div class="tab-content" id="conceptTabContent">
-                                        <div class="tab-pane fade active show" id="overview" role="tabpanel"
-                                             aria-labelledby="overview-tab">
-                                            <div class="card">
-                                                {% if object.name %}
-                                                <div class="row">
-                                                    <div class="container">
-                                                        <div class="col-12">
-                                                            <table class="table">
-{% if object.name %}
-        <tr>
-            <th class="w-25">skos:prefLabel {% if object.label_lang %}@{{object.label_lang}}{% endif %}</th>
-            <td>
-           {{ object.name }}
-            </td>
-        </tr>
-        {% endif %}
-
-        <!--for inline added abels-->
-        {% if object.has_labels %}
-        {% for label in object.has_labels.all %}
-        <tr>
-            <th>skos:{{label.label_type}} @{{label.language}}</th>
-            <td>{{label.name}}</td>
-        </tr>
-        {% endfor %}
-        {% endif %}
-        <!--end-->
-
-        {% if object.scheme %}
-         <tr>
-            <th>skos:ConceptScheme</th>
-            <td>
-            <a href="{{ object.scheme.get_absolute_url }}">
-            {{object.scheme}}
-            </a>
-            </td>
-        </tr>
-        {% endif %}
-        {% if object.legacy_id %}
-         <tr>
-            <th>legacy id</th>
-            <td>{{object.legacy_id}}</td>
-        </tr>
-        {% endif %}
-        {% if object.creator %}
-         <tr>
-            <th class="w-25">dc:creator</th>
-            <td>
-            {% for creator in object.creator_as_list %}
-            <li>{{ creator }}</li>
-            {% endfor %}
-            </td>
-        </tr>
-        {% endif %}
-        {% if object.contributor %}
-         <tr>
-            <th class="w-25">dc:contributor</th>
-            <td>
-            {% for contributor in object.contributor_as_list %}
-            <li>{{ contributor }}</li>
-            {% endfor %}
-            </td>
-        </tr>
-        {% endif %}
-
-        <!--for inline added notes-->
-        {% if object.has_notes %}
-        {% for note in object.has_notes.all %}
-        <tr>
-            <th>skos:{{note.note_type}} @{{note.language}}</th>
-            <td>{{note.name}}</td>
-        </tr>
-        {% endfor %}
-        {% endif %}
-        <!--end-->
-
-        <!--for inline added sources-->
-        {% if object.has_sources %}
-        {% for source in object.has_sources.all %}
-        <tr>
-            <th>dc:source @{{source.language}}</th>
-            <td>{{source.name}}</td>
-        </tr>
-        {% endfor %}
-        {% endif %}
-        <!--end-->
-
-        {% if object.date_created %}
-         <tr>
-            <th class="w-25">dct:created</th>
-            <td>{{object.date_created}}</td>
-        </tr>
-        {% endif %}
-
-        {% if object.date_modified %}
-         <tr>
-            <th class="w-25">dct:modified</th>
-            <td>{{object.date_modified}}</td>
-        </tr>
-        {% endif %}
-
-        {% if user.is_authenticated %}
-        {% if object.created_by %}
-         <tr>
-            <th class="w-25">created by</th>
-            <td>{{object.created_by}}</td>
-        </tr>
-        {% endif %}
-        {% endif %}
-
-        {% if object.has_members.all %}
-        <tr>
-            <th>download this collection</th>
-            <td>
-                <li><a href="{% url 'vocabs:vocabs-download' %}?collection={{object.id}}">RDF/XML</a></li>
-                <li><a href="{% url 'vocabs:vocabs-download' %}?format=turtle&collection={{object.id}}">Turtle</a></li>
-            </td>
-        </tr>
-        {% endif %}
-                                                            </table>
+                                </div>
+                                <!-- breadcrumbs end -->
+                                <br>
+                                <!-- object header start -->
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <h1>{{ object }}</h1>
+                                    </div>
+                                    <div class="col-md-4 text-right">
+                                        {% if 'change_skoscollection' in object_perms %}
+                                            <a href="{% url 'vocabs:skoscollection_update' pk=object.id %}"
+                                               name="{% translate 'edit' %} {{ object.title }}"
+                                               class="editor_link">
+                                                <button class="btn btn-success btn-circle btn-circle-sm m-1"
+                                                        type="button"
+                                                        data-toggle="tooltip"
+                                                        data-placement="top"
+                                                        title="{% translate 'edit' %}">
+                                                    <i class="fa fa-edit"></i>
+                                                </button>
+                                            </a>
+                                        {% endif %}
+                                        {% if 'delete_skoscollection' in object_perms %}
+                                            <a href="{% url 'vocabs:skoscollection_delete' pk=object.id %}"
+                                               name="{% translate 'delete' %}  {{ object.title }}"
+                                               class="editor_link">
+                                                <button class="btn btn-danger btn-circle btn-circle-sm m-1"
+                                                        type="button"
+                                                        data-toggle="tooltip"
+                                                        data-placement="top"
+                                                        title="{% translate 'delete' %}">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                            </a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <!-- object header end -->
+                                <br>
+                                <!-- visual representation -->
+                                <!-- visual representation end -->
+                                <!-- preferred citation -->
+                                <!-- preferred citation end -->
+                                <!-- object metadata start -->
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <!-- metadata tabs start -->
+                                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                            <!-- overview tab -->
+                                            <li class="nav-item metadata-tab">
+                                                <a class="nav-link active" id="overview-tab" data-toggle="tab"
+                                                   href="#overview"
+                                                   role="tab"
+                                                   aria-controls="overview" aria-selected="true">Overview</a>
+                                            </li>
+                                            <!-- history tab -->
+                                            <li class="nav-item metadata-tab">
+                                                <a class="nav-link" id="history-tab" data-toggle="tab" href="#history"
+                                                   role="tab"
+                                                   aria-controls="history" aria-selected="false">History</a>
+                                            </li>
+                                        </ul>
+                                        <!-- metadata tabs end -->
+                                        <!-- metadata tab content start -->
+                                        <div class="tab-content" id="conceptTabContent">
+                                            <!-- overview tab content start -->
+                                            <div class="tab-pane fade active show"
+                                                 id="overview"
+                                                 role="tabpanel"
+                                                 aria-labelledby="overview-tab">
+                                                <div class="card">
+                                                    <div class="row">
+                                                        <div class="container">
+                                                            <div class="col-12">
+                                                                <table class="table">
+                                                                    {% if object.name %}
+                                                                        <tr>
+                                                                            <th class="w-25">
+                                                                                skos:prefLabel
+                                                                                {% if object.label_lang %}
+                                                                                    @{{object.label_lang}}
+                                                                                {% endif %}
+                                                                            </th>
+                                                                            <td>
+                                                                                {{ object.name }}
+                                                                            </td>
+                                                                        </tr>
+                                                                    {% endif %}
+                                                                    {% if object.has_labels %}
+                                                                        {% for label in object.has_labels.all %}
+                                                                            <tr>
+                                                                                <th>
+                                                                                    skos:{{label.label_type}}
+                                                                                    @{{label.language}}
+                                                                                </th>
+                                                                                <td>
+                                                                                    {{label.name}}
+                                                                                </td>
+                                                                            </tr>
+                                                                        {% endfor %}
+                                                                    {% endif %}
+                                                                    {% if object.scheme %}
+                                                                         <tr>
+                                                                             <th>
+                                                                                 skos:ConceptScheme
+                                                                             </th>
+                                                                             <td>
+                                                                                <a href="{{ object.scheme.get_absolute_url }}">
+                                                                                    {{object.scheme}}
+                                                                                </a>
+                                                                             </td>
+                                                                        </tr>
+                                                                    {% endif %}
+                                                                    {% if object.legacy_id %}
+                                                                        <tr>
+                                                                            <th>
+                                                                                {% translate 'legacy id' %}
+                                                                            </th>
+                                                                            <td>
+                                                                                {{object.legacy_id}}
+                                                                            </td>
+                                                                        </tr>
+                                                                    {% endif %}
+                                                                    {% if object.creator %}
+                                                                         <tr>
+                                                                            <th class="w-25">
+                                                                                dc:creator
+                                                                            </th>
+                                                                            <td>
+                                                                                <ul>
+                                                                                    {% for creator in object.creator_as_list %}
+                                                                                        <li>{{ creator }}</li>
+                                                                                    {% endfor %}
+                                                                                </ul>
+                                                                            </td>
+                                                                        </tr>
+                                                                    {% endif %}
+                                                                    {% if object.contributor %}
+                                                                        <tr>
+                                                                            <th class="w-25">
+                                                                                dc:contributor
+                                                                            </th>
+                                                                            <td>
+                                                                                <ul>
+                                                                                    {% for contributor in object.contributor_as_list %}
+                                                                                        <li>{{ contributor }}</li>
+                                                                                    {% endfor %}
+                                                                                </ul>
+                                                                            </td>
+                                                                        </tr>
+                                                                    {% endif %}
+                                                                    {% if object.has_notes %}
+                                                                        {% for note in object.has_notes.all %}
+                                                                            <tr>
+                                                                                <th>
+                                                                                    skos:{{note.note_type}}
+                                                                                    @{{note.language}}
+                                                                                </th>
+                                                                                <td>
+                                                                                    {{note.name}}
+                                                                                </td>
+                                                                            </tr>
+                                                                        {% endfor %}
+                                                                    {% endif %}
+                                                                    {% if object.has_sources %}
+                                                                        {% for source in object.has_sources.all %}
+                                                                            <tr>
+                                                                                <th>
+                                                                                    dc:source
+                                                                                    @{{source.language}}
+                                                                                </th>
+                                                                                <td>
+                                                                                    {{source.name}}
+                                                                                </td>
+                                                                            </tr>
+                                                                        {% endfor %}
+                                                                    {% endif %}
+                                                                    {% if object.date_created %}
+                                                                         <tr>
+                                                                            <th class="w-25">
+                                                                                dcterms:created
+                                                                            </th>
+                                                                            <td>
+                                                                                {{object.date_created}}
+                                                                            </td>
+                                                                        </tr>
+                                                                    {% endif %}
+                                                                    {% if object.created_by %}
+                                                                        <tr>
+                                                                            <th class="w-25">
+                                                                                created by
+                                                                            </th>
+                                                                        <td>
+                                                                            {{object.created_by}}
+                                                                        </td>
+                                                                    </tr>
+                                                                    {% endif %}
+                                                                    {% if object.date_modified %}
+                                                                        <tr>
+                                                                            <th class="w-25">
+                                                                                dcterms:modified
+                                                                            </th>
+                                                                            <td>
+                                                                                {{object.date_modified}}
+                                                                            </td>
+                                                                        </tr>
+                                                                    {% endif %}
+                                                                    {% if user.is_authenticated %}
+                                                                        {% if object.has_members.all %}
+                                                                            <tr>
+                                                                                <th>
+                                                                                    {% translate 'download this collection' %}
+                                                                                </th>
+                                                                                <td>
+                                                                                    <li>
+                                                                                        <a href="{% url 'vocabs:vocabs-download' %}?collection={{object.id}}">
+                                                                                            RDF/XML
+                                                                                        </a>
+                                                                                    </li>
+                                                                                    <li>
+                                                                                        <a href="{% url 'vocabs:vocabs-download' %}?format=turtle&collection={{object.id}}">
+                                                                                            Turtle
+                                                                                        </a>
+                                                                                    </li>
+                                                                                </td>
+                                                                            </tr>
+                                                                        {% endif %}
+                                                                    {% endif %}
+                                                                </table>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="tab-pane fade" id="history" role="tabpanel"
-                                             aria-labelledby="history-tab">
-                                            <div class="card">
-                                                <div class="row">
-                                                    <div class="col">
-                                                        {% for x in history %}
-                                                        <li>
-                                                            {% if forloop.last %}
-                                                            {{ x.revision.date_created }} created by {{ x.revision.user }}
-                                                            {% else %}
-                                                            {{ x.revision.date_created }} changed by {{ x.revision.user }}
-                                                            {% endif %}
-                                                        </li>
-                                                        {% endfor %}
+                                            <!-- overview tab content end -->
+                                            <!-- history tab content start -->
+                                            <div class="tab-pane fade"
+                                                 id="history"
+                                                 role="tabpanel"
+                                                 aria-labelledby="history-tab">
+                                                <div class="card">
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            {% for x in history %}
+                                                                <li>
+                                                                    {% if forloop.last %}
+                                                                        {{ x.revision.date_created }} created by {{ x.revision.user }}
+                                                                    {% else %}
+                                                                        {{ x.revision.date_created }} changed by {{ x.revision.user }}
+                                                                    {% endif %}
+                                                                </li>
+                                                            {% endfor %}
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
+                                            <!-- history tab content end -->
                                         </div>
+                                        <!-- metadata tab content end -->
                                     </div>
                                 </div>
+                                <!-- object metadata end -->
                             </div>
                         </div>
+                        <!-- right column end -->
                     </div>
+                    <!-- split screen end -->
                 </div>
             </div>
-        </div>
             <br/>
-            {% else %}
+        {% else %}
             <h1>{% translate 'Unauthorized' %}</h1>
-            {% endif %}
+        {% endif %}
     </article>
     {% if 'vocabs.add_skoscollection' in perms %}
     <div id="tray">
@@ -435,5 +537,6 @@ var lastWidth = 0;
     </div>
     {% endif %}
 </div>
+<!-- main content container end -->
 <br>
 {% endblock content %}
