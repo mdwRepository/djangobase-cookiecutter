@@ -271,6 +271,7 @@ var lastWidth = 0;
                                         <h1>{{ object }}</h1>
                                     </div>
                                     <div class="col-md-4 text-right">
+                                        {% get_obj_perms request.user for object as 'object_perms' %}
                                         {% if 'change_skosconceptscheme' in object_perms %}
                                             <a href="{% url 'vocabs:skosconceptscheme_update' pk=object.id %}"
                                                name="{% translate 'edit' %} {{ object.pref_label }}"
