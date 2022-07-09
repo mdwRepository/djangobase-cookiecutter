@@ -116,7 +116,7 @@ var lastWidth = 0;
                                     {% if perms.vocabs.add_skosconcept or perms.vocabs.add_skoscollection %}
                                         <h5>{% translate 'SKOS Concept Scheme actions' %}</h5>
                                         {% if perms.vocabs.add_skosconcept %}
-                                            <a href="{% url 'vocabs:skosconcept_create' %}?scheme={{object.id}"
+                                            <a href="{% url 'vocabs:skosconcept_create' %}?scheme={{object.id}}"
                                                class="text-decoration-none">
                                                 <button class="btn btn-success btn-circle btn-circle-sm m-1"
                                                         type="button"
@@ -237,7 +237,7 @@ var lastWidth = 0;
                                             <a href="/">Home</a>
                                         </li>
                                         <li class="breadcrumb-item mb-0">
-                                            <a href="{% url 'vocabs:browse_concepts' %}">
+                                            <a href="{% url 'vocabs:browse_vocabs' %}">
                                                 {% translate "SKOS Concept ScHemes" %}
                                             </a>
                                         </li>
