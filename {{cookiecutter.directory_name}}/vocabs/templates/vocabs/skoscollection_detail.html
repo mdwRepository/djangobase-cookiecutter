@@ -482,16 +482,18 @@ var lastWidth = 0;
                                                                                     {% translate 'download this collection' %}
                                                                                 </th>
                                                                                 <td>
-                                                                                    <li>
-                                                                                        <a href="{% url 'vocabs:vocabs-download' %}?collection={{object.id}}">
-                                                                                            RDF/XML
-                                                                                        </a>
-                                                                                    </li>
-                                                                                    <li>
-                                                                                        <a href="{% url 'vocabs:vocabs-download' %}?format=turtle&collection={{object.id}}">
-                                                                                            Turtle
-                                                                                        </a>
-                                                                                    </li>
+                                                                                    <ul>
+                                                                                        <li>
+                                                                                            <a href="{% url 'vocabs:vocabs-download' %}?collection={{object.id}}">
+                                                                                                RDF/XML
+                                                                                            </a>
+                                                                                        </li>
+                                                                                        <li>
+                                                                                            <a href="{% url 'vocabs:vocabs-download' %}?format=turtle&collection={{object.id}}">
+                                                                                                Turtle
+                                                                                            </a>
+                                                                                        </li>
+                                                                                    </ul>
                                                                                 </td>
                                                                             </tr>
                                                                         {% endif %}

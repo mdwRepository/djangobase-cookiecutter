@@ -430,11 +430,13 @@ var lastWidth = 0;
                                                                                 dc:language
                                                                             </th>
                                                                             <td>
-                                                                                {% for language in object.language_as_list %}
-                                                                                    <li>
-                                                                                        {{language}}
-                                                                                    </li>
-                                                                                {% endfor %}
+                                                                                <ul>
+                                                                                    {% for language in object.language_as_list %}
+                                                                                        <li>
+                                                                                            {{language}}
+                                                                                        </li>
+                                                                                    {% endfor %}
+                                                                                </ul>
                                                                             </td>
                                                                         </tr>
                                                                     {% endif %}
@@ -444,11 +446,13 @@ var lastWidth = 0;
                                                                                 dc:subject
                                                                             </th>
                                                                             <td>
-                                                                                {% for subject in object.subject_as_list %}
-                                                                                    <li>
-                                                                                        {{subject}}
-                                                                                    </li>
-                                                                                {% endfor %}
+                                                                                <ul>
+                                                                                    {% for subject in object.subject_as_list %}
+                                                                                        <li>
+                                                                                            {{subject}}
+                                                                                        </li>
+                                                                                    {% endfor %}
+                                                                                </ul>
                                                                             </td>
                                                                         </tr>
                                                                     {% endif %}
@@ -618,16 +622,18 @@ var lastWidth = 0;
                                                                                     {% translate 'download this collection' %}
                                                                                 </th>
                                                                                 <td>
-                                                                                    <li>
-                                                                                        <a href="{% url 'vocabs:vocabs-download' %}?scheme={{object.id}}">
-                                                                                            RDF/XML
-                                                                                        </a>
-                                                                                    </li>
-                                                                                    <li>
-                                                                                        <a href="{% url 'vocabs:vocabs-download' %}?format=turtle&scheme={{object.id}}">
-                                                                                            Turtle
-                                                                                        </a>
-                                                                                    </li>
+                                                                                    <ul>
+                                                                                        <li>
+                                                                                            <a href="{% url 'vocabs:vocabs-download' %}?scheme={{object.id}}">
+                                                                                                RDF/XML
+                                                                                            </a>
+                                                                                        </li>
+                                                                                        <li>
+                                                                                            <a href="{% url 'vocabs:vocabs-download' %}?format=turtle&scheme={{object.id}}">
+                                                                                                Turtle
+                                                                                            </a>
+                                                                                        </li>
+                                                                                    </ul>
                                                                                 </td>
                                                                             </tr>
                                                                         {% endif %}

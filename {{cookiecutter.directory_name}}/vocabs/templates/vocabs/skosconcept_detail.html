@@ -517,11 +517,13 @@ var lastWidth = 0;
                                                                         <tr>
                                                                             <th>skos:related</th>
                                                                             <td>
-                                                                                {% for x in object.related_as_list %}
-                                                                                    <li>
-                                                                                        {{x|urlize}}
-                                                                                    </li>
-                                                                                {% endfor %}
+                                                                                <ul>
+                                                                                    {% for x in object.related_as_list %}
+                                                                                        <li>
+                                                                                            {{x|urlize}}
+                                                                                        </li>
+                                                                                    {% endfor %}
+                                                                                </ul>
                                                                             </td>
                                                                         </tr>
                                                                     {% endif %}
@@ -529,11 +531,13 @@ var lastWidth = 0;
                                                                         <tr>
                                                                             <th>skos:broadMatch</th>
                                                                             <td>
-                                                                                {% for x in object.broad_match_as_list %}
-                                                                                    <li>
-                                                                                        {{x|urlize}}
-                                                                                    </li>
-                                                                                {% endfor %}
+                                                                                <ul>
+                                                                                    {% for x in object.broad_match_as_list %}
+                                                                                        <li>
+                                                                                            {{x|urlize}}
+                                                                                        </li>
+                                                                                    {% endfor %}
+                                                                                </ul>
                                                                             </td>
                                                                         </tr>
                                                                     {% endif %}
@@ -541,11 +545,13 @@ var lastWidth = 0;
                                                                         <tr>
                                                                             <th>skos:narrowMatch</th>
                                                                             <td>
-                                                                                {% for x in object.narrow_match_as_list %}
-                                                                                    <li>
-                                                                                        {{x|urlize}}
-                                                                                    </li>
-                                                                                {% endfor %}
+                                                                                <ul>
+                                                                                    {% for x in object.narrow_match_as_list %}
+                                                                                        <li>
+                                                                                            {{x|urlize}}
+                                                                                        </li>
+                                                                                    {% endfor %}
+                                                                                </ul>
                                                                             </td>
                                                                         </tr>
                                                                     {% endif %}
@@ -553,11 +559,13 @@ var lastWidth = 0;
                                                                         <tr>
                                                                             <th>skos:exactMatch</th>
                                                                             <td>
-                                                                                {% for x in object.exact_match_as_list %}
-                                                                                    <li>
-                                                                                        {{x|urlize}}
-                                                                                    </li>
-                                                                                {% endfor %}
+                                                                                <ul>
+                                                                                    {% for x in object.exact_match_as_list %}
+                                                                                        <li>
+                                                                                            {{x|urlize}}
+                                                                                        </li>
+                                                                                    {% endfor %}
+                                                                                </ul>
                                                                             </td>
                                                                         </tr>
                                                                     {% endif %}
@@ -565,11 +573,13 @@ var lastWidth = 0;
                                                                         <tr>
                                                                             <th>skos:relatedMatch</th>
                                                                             <td>
-                                                                                {% for x in object.related_match_as_list %}
-                                                                                    <li>
-                                                                                        {{x|urlize}}
-                                                                                    </li>
-                                                                                {% endfor %}
+                                                                                <ul>
+                                                                                    {% for x in object.related_match_as_list %}
+                                                                                        <li>
+                                                                                            {{x|urlize}}
+                                                                                        </li>
+                                                                                    {% endfor %}
+                                                                                </ul>
                                                                             </td>
                                                                         </tr>
                                                                     {% endif %}
@@ -577,11 +587,13 @@ var lastWidth = 0;
                                                                         <tr>
                                                                             <th>skos:closeMatch</th>
                                                                             <td>
-                                                                                {% for x in object.close_match_as_list %}
-                                                                                    <li>
-                                                                                        {{x|urlize}}
-                                                                                    </li>
-                                                                                {% endfor %}
+                                                                                <ul>
+                                                                                    {% for x in object.close_match_as_list %}
+                                                                                        <li>
+                                                                                            {{x|urlize}}
+                                                                                        </li>
+                                                                                    {% endfor %}
+                                                                                </ul>
                                                                             </td>
                                                                         </tr>
                                                                     {% endif %}
@@ -611,16 +623,18 @@ var lastWidth = 0;
                                                                                 {% translate 'download this collection' %}
                                                                             </th>
                                                                             <td>
-                                                                                <li>
-                                                                                    <a href="{% url 'vocabs:vocabs-download' %}?pref_label={{object.id}}">
-                                                                                        RDF/XML
-                                                                                    </a>
-                                                                                </li>
-                                                                                <li>
-                                                                                    <a href="{% url 'vocabs:vocabs-download' %}?format=turtle&pref_label={{object.id}}">
-                                                                                        Turtle
-                                                                                    </a>
-                                                                                </li>
+                                                                                <ul>
+                                                                                    <li>
+                                                                                        <a href="{% url 'vocabs:vocabs-download' %}?pref_label={{object.id}}">
+                                                                                            RDF/XML
+                                                                                        </a>
+                                                                                    </li>
+                                                                                    <li>
+                                                                                        <a href="{% url 'vocabs:vocabs-download' %}?format=turtle&pref_label={{object.id}}">
+                                                                                            Turtle
+                                                                                        </a>
+                                                                                    </li>
+                                                                                </ul>
                                                                             </td>
                                                                         </tr>
                                                                     {% endif %}
