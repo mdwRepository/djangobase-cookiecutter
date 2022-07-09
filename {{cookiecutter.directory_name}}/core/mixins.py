@@ -135,28 +135,6 @@ class BaseEntityMetadataMixin(models.Model):
         related_name='%(class)s' + '_contributor',
         help_text=_("contributors_help"),
     )
-    # versioning
-    current_major_version = models.IntegerField(
-        editable=False,
-        default=0,
-        verbose_name=_('major_version')
-    ).set_extra(
-        is_public=True,
-    )
-    current_minor_version = models.IntegerField(
-        editable=False,
-        default=0,
-        verbose_name=_('minor_version')
-    ).set_extra(
-        is_public=True,
-    )
-    current_revision_number = models.IntegerField(
-        editable=False,
-        default=0,
-        verbose_name=_('revision number')
-    ).set_extra(
-        is_public=True,
-    )
     # additional optional fields
     slug = models.SlugField(
         null=True,
