@@ -28,6 +28,13 @@
                             </li>
                         </ul>
                     </div>
+                    {% if user.is_authenticated %}
+                        <hr>
+                        <a href="table/" style="padding-left: 10px;">
+                            {% translate 'Table View' %}
+                        </a>
+                        <br>
+                    {% endif %}
                     <hr/>
                     <div class="aside-search">
                         <form method='GET'>
