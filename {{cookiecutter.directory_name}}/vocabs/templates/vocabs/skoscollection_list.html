@@ -19,7 +19,11 @@
                     <div class="aside-all">
                         <ul class="list-group">
                             <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <small><a href="?">All SKOS Collections</a></small>
+                                <small>
+                                    <a href="?">
+                                        All SKOS Collections
+                                    </a>
+                                </small>
                                 <span class="badge badge-success">{{ count_skoscols }}</span>
                             </li>
                         </ul>
@@ -37,7 +41,8 @@
                                     </button>
                                 </div>
                             </div>
-                        </div>
+                        </form>
+                    </div>
                     <br/>
                 </aside>
             </div>
@@ -58,13 +63,13 @@
                                 <a
                                    href="{% if not SCRIPT_NAME == '' %}{{ SCRIPT_NAME }}{% endif %}/"
                                    hreflang="{{ LANGUAGE_CODE }}"
-                                   aria-label="{% translate 'go to the homepage of the mdwRepository' %}"
+                                   aria-label="{% translate 'go to the homepage of' %} {% projects_metadata 'title' %}"
                                    title="{% translate 'go to the homepage of ' %} {% projects_metadata 'title' %}">
-                                    {% projects_metadata 'title' %} Home
+                                    {% projects_metadata 'title' %}
                                 </a>
                             </li>
                             <li class="breadcrumb-item mb-0">
-                                SKOS Collection
+                                SKOS Collections
                             </li>
                         </ul>
                     </div>

@@ -1,5 +1,7 @@
 {% extends "webpage/base.html" %}
-{% load i18n static guardian_tags mptt_tags %}
+{% load i18n static guardian_tags mptt_tags webpage_extras %}
+{% get_force_script_name as SCRIPT_NAME %}
+
 {% block Title %}{{ object }}{% endblock %}
 
 {% block scripts2 %}
@@ -149,7 +151,7 @@ var lastWidth = 0;
                                     <!-- aside tree start -->
                                     {% if object.scheme %}
                                         <h5>
-                                            {% translate 'Concept Scheme tree' %} ({{ object.has_concepts.all|length }}
+                                            {% translate 'Concept Scheme tree' %} ({{ object.has_concepts.all|length }})
                                         </h5>
                                         <!-- tree filter start -->
                                         <input type="text"
@@ -234,11 +236,26 @@ var lastWidth = 0;
                                 <div class="breadcrumb-content mb-0">
                                     <ul class="breadcrumb mb-0">
                                         <li class="breadcrumb-item mb-0">
-                                            <a href="/">Home</a>
+                                            <a
+                                               href="/"
+                                               hreflang="{{ LANGUAGE_CODE }}"
+                                               aria-label="{% translate 'go to the homepage of the mdwRepository' %}"
+                                               title="{% translate 'go to the homepage of the mdwRepository' %}">
+                                                mdwRepository
+                                            </a>
                                         </li>
                                         <li class="breadcrumb-item mb-0">
-                                            <a href="{% url 'vocabs:browse_vocabs' %}">
-                                                {% translate "SKOS Concept ScHemes" %}
+                                            <a
+                                               href="{% if not SCRIPT_NAME == '' %}{{ SCRIPT_NAME }}{% endif %}/"
+                                               hreflang="{{ LANGUAGE_CODE }}"
+                                               aria-label="{% translate 'go to the homepage of' %} {% projects_metadata 'title' %}"
+                                               title="{% translate 'go to the homepage of ' %} {% projects_metadata 'title' %}">
+                                                {% projects_metadata 'title' %}
+                                            </a>
+                                        </li>
+                                        <li class="breadcrumb-item mb-0">
+                                            <a href="{% url 'vocabs:browse_schemes' %}">
+                                                {% translate "SKOS Concept Schemes" %}
                                             </a>
                                         </li>
                                         <li class="breadcrumb-item mb-0">
