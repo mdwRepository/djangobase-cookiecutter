@@ -125,7 +125,7 @@ var lastWidth = 0;
                                         <h5>{% translate 'SKOS Concept Scheme actions' %}</h5>
                                         {% if perms.vocabs.add_skosconcept %}
                                             <a href="{% url 'vocabs:skosconcept_create' %}?scheme={{object.scheme.id}}"
-                                               class="text-decoration-none">
+                                               style="text-decoration: none !important;">
                                                 <button class="btn btn-success btn-circle btn-circle-sm m-1"
                                                         type="button"
                                                         data-toggle="tooltip"
@@ -139,7 +139,7 @@ var lastWidth = 0;
                                         {% endif %}
                                         {% if perms.vocabs.add_skoscollection %}
                                             <a href="{% url 'vocabs:skoscollection_create' %}?scheme={{object.scheme.id}}"
-                                               class="text-decoration-none">
+                                               style="text-decoration: none !important;">
                                                 <button class="btn btn-success btn-circle btn-circle-sm m-1"
                                                         type="button"
                                                         data-toggle="tooltip"
@@ -281,7 +281,7 @@ var lastWidth = 0;
                                         {% if 'change_skosconcept' in object_perms %}
                                             <a href="{% url 'vocabs:skosconcept_update' pk=object.id %}"
                                                name="{% translate 'edit' %} {{ object.pref_label }}"
-                                               class="editor_link">
+                                               class="editor_link" style="text-decoration: none !important;">
                                                 <button class="btn btn-success btn-circle btn-circle-sm m-1"
                                                         type="button"
                                                         data-toggle="tooltip"
@@ -294,7 +294,7 @@ var lastWidth = 0;
                                         {% if 'delete_skosconcept' in object_perms %}
                                             <a href="{% url 'vocabs:skosconcept_delete' pk=object.id %}"
                                                name="{% translate 'delete' %}  {{ object.pref_label }}"
-                                               class="editor_link">
+                                               class="editor_link" style="text-decoration: none !important;">
                                                 <button class="btn btn-danger btn-circle btn-circle-sm m-1"
                                                         type="button"
                                                         data-toggle="tooltip"
@@ -621,7 +621,7 @@ var lastWidth = 0;
                                                                     {% if user.is_authenticated %}
                                                                         <tr>
                                                                             <th>
-                                                                                {% translate 'download this collection' %}
+                                                                                {% translate 'download this concept' %}
                                                                             </th>
                                                                             <td>
                                                                                 <ul>
