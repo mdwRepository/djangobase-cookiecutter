@@ -7,19 +7,18 @@
         crossorigin="anonymous"
         referrerpolicy="no-referrer"></script>
 
-<link rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
 
 <script type="text/javascript">
-    $(".main").resizable({
-       handleSelector: ".splitter",
-       resizeHeight: false
-     });
+$(".main").resizable({
+   handleSelector: ".splitter",
+   resizeHeight: false
+ });
 
-    var isDragging = false;
-    var lastWidth = 0;
+var isDragging = false;
+var lastWidth = 0;
 
     $(".splitter")
     .mousedown(function() {
@@ -40,7 +39,6 @@
           }
     });
     })
-
     .mouseup(function() {
         $(".splitter").removeClass("splitter-active");
         var wasDragging = isDragging;
@@ -67,35 +65,35 @@
         }
     });
 
-    $(function () {
-        $("#jstree").jstree({
-           "plugins" : [ "search" ]
-        });
+  $(function () {
+    $("#jstree").jstree({
+       "plugins" : [ "search" ]
+     });
 
-        var to = false;
+    var to = false;
 
-        $('#jstree_q').keyup(function () {
-           if(to) { clearTimeout(to); }
-              to = setTimeout(function () {
-                 var v = $('#jstree_q').val();
-                 $('#jstree').jstree(true).search(v);
-              }, 250);
-        });
+    $('#jstree_q').keyup(function () {
+       if(to) { clearTimeout(to); }
+          to = setTimeout(function () {
+             var v = $('#jstree_q').val();
+             $('#jstree').jstree(true).search(v);
+          }, 250);
+      });
 
-        $('#jstree').on("changed.jstree", function (e, data) {
-            console.log(data.selected);
-        });
-
-        $("#jstree").bind("select_node.jstree", function(e, data) {
-            window.location.href = data.node.a_attr.href;
-        });
-
-        $('button').on('click', function () {
-            $('#jstree').jstree(true).select_node('child_node_1');
-            $('#jstree').jstree('select_node', 'child_node_1');
-            $.jstree.reference('#jstree').select_node('child_node_1');
-        });
+    $('#jstree').on("changed.jstree", function (e, data) {
+      console.log(data.selected);
     });
+
+    $("#jstree").bind("select_node.jstree", function(e, data) {
+  window.location.href = data.node.a_attr.href;
+});
+
+    $('button').on('click', function () {
+      $('#jstree').jstree(true).select_node('child_node_1');
+      $('#jstree').jstree('select_node', 'child_node_1');
+      $.jstree.reference('#jstree').select_node('child_node_1');
+    });
+  });
 </script>
 {% endblock scripts2 %}
 
@@ -496,15 +494,17 @@
                                                 <div class="card">
                                                     <div class="row">
                                                         <div class="col">
-                                                            {% for x in history %}
-                                                                <li>
-                                                                    {% if forloop.last %}
-                                                                        {{ x.revision.date_created }} created by {{ x.revision.user }}
-                                                                    {% else %}
-                                                                        {{ x.revision.date_created }} changed by {{ x.revision.user }}
-                                                                    {% endif %}
-                                                                </li>
-                                                            {% endfor %}
+                                                            <ul>
+                                                                {% for x in history %}
+                                                                    <li>
+                                                                        {% if forloop.last %}
+                                                                            {{ x.revision.date_created }} created by {{ x.revision.user }}
+                                                                        {% else %}
+                                                                            {{ x.revision.date_created }} changed by {{ x.revision.user }}
+                                                                        {% endif %}
+                                                                    </li>
+                                                                {% endfor %}
+                                                            </ul>
                                                         </div>
                                                     </div>
                                                 </div>
