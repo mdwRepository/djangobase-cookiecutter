@@ -23,7 +23,7 @@ django_filters.filters.LOOKUP_TYPES = [
 class SkosConceptListFilter(django_filters.FilterSet):
     pref_label = django_filters.ModelMultipleChoiceFilter(
         widget=autocomplete.Select2Multiple(
-            url='vocabs-ac:skosconcept-autocomplete',
+            url='skos-ac:skosconcept-autocomplete',
         ),
         queryset=SkosConcept.objects.all(),
         lookup_expr='icontains',
@@ -33,7 +33,7 @@ class SkosConceptListFilter(django_filters.FilterSet):
     scheme = django_filters.ModelChoiceFilter(
         queryset=SkosConceptScheme.objects.all(),
         widget=autocomplete.ModelSelect2(
-            url='vocabs-ac:skosconceptscheme-autocomplete',
+            url='skos-ac:skosconceptscheme-autocomplete',
             attrs={
                 'data-placeholder': 'Start typing ...',
             }
@@ -43,7 +43,7 @@ class SkosConceptListFilter(django_filters.FilterSet):
     collection = django_filters.ModelChoiceFilter(
         queryset=SkosCollection.objects.all(),
         widget=autocomplete.ModelSelect2(
-            url='vocabs-ac:skoscollection-autocomplete',
+            url='skos-ac:skoscollection-autocomplete',
             attrs={
                 'data-placeholder': 'Start typing ...',
             },
@@ -53,7 +53,7 @@ class SkosConceptListFilter(django_filters.FilterSet):
     )
     broader_concept = django_filters.ModelChoiceFilter(
         widget=autocomplete.ModelSelect2(
-            url='vocabs-ac:skosconcept-autocomplete',
+            url='skos-ac:skosconcept-autocomplete',
             forward=['scheme']
         ),
         queryset=SkosConcept.objects.all(),
@@ -103,7 +103,7 @@ class SkosCollectionListFilter(django_filters.FilterSet):
     scheme = django_filters.ModelChoiceFilter(
         queryset=SkosConceptScheme.objects.all(),
         widget=autocomplete.ModelSelect2(
-            url='vocabs-ac:skosconceptscheme-autocomplete',
+            url='skos-ac:skosconceptscheme-autocomplete',
             attrs={
                 'data-placeholder': 'Start typing ...',
             }
@@ -111,7 +111,7 @@ class SkosCollectionListFilter(django_filters.FilterSet):
         help_text=False,
     )
     has_members__pref_label = django_filters.ModelMultipleChoiceFilter(
-        widget=autocomplete.Select2Multiple(url='vocabs-ac:skosconcept-autocomplete'),
+        widget=autocomplete.Select2Multiple(url='skos-ac:skosconcept-autocomplete'),
         queryset=SkosConcept.objects.all(),
         lookup_expr='icontains',
         help_text=False,

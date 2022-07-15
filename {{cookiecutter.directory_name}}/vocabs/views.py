@@ -153,7 +153,7 @@ class SkosConceptSchemeCreate(BaseCreateView):
         return super(SkosConceptSchemeCreate, self).form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy('vocabs:skosconceptscheme_detail', kwargs={'slug': self.object.slug})
+        return reverse_lazy('skosconceptschemes:skosconceptscheme_detail', kwargs={'slug': self.object.slug})
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -213,7 +213,7 @@ class SkosConceptSchemeUpdate(BaseUpdateView):
         return super(SkosConceptSchemeUpdate, self).form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy('vocabs:skosconceptscheme_detail', kwargs={'slug': self.object.slug})
+        return reverse_lazy('skosconceptschemes:skosconceptscheme_detail', kwargs={'slug': self.object.slug})
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -223,7 +223,7 @@ class SkosConceptSchemeUpdate(BaseUpdateView):
 class SkosConceptSchemeDelete(BaseDeleteView):
     model = SkosConceptScheme
     template_name = 'webpage/confirm_delete.html'
-    success_url = reverse_lazy('vocabs:browse_schemes')
+    success_url = reverse_lazy('skosconceptschemes:browse_skosconceptschemes')
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -359,7 +359,7 @@ class SkosCollectionCreate(BaseCreateView):
         return initial
 
     def get_success_url(self):
-        return reverse_lazy('vocabs:skoscollection_detail', kwargs={'slug': self.object.slug})
+        return reverse_lazy('skoscollections:skoscollection_detail', kwargs={'slug': self.object.slug})
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -412,7 +412,7 @@ class SkosCollectionUpdate(BaseUpdateView):
         return super(SkosCollectionUpdate, self).form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy('vocabs:skoscollection_detail', kwargs={'slug': self.object.slug})
+        return reverse_lazy('skoscollections:skoscollection_detail', kwargs={'slug': self.object.slug})
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -422,7 +422,7 @@ class SkosCollectionUpdate(BaseUpdateView):
 class SkosCollectionDelete(BaseDeleteView):
     model = SkosCollection
     template_name = 'webpage/confirm_delete.html'
-    success_url = reverse_lazy('vocabs:browse_skoscollections')
+    success_url = reverse_lazy('skoscollections:browse_skoscollections')
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -544,7 +544,7 @@ class SkosConceptCreate(BaseCreateView):
         return initial
 
     def get_success_url(self):
-        return reverse_lazy('vocabs:skosconcept_detail', kwargs={'slug': self.object.slug})
+        return reverse_lazy('skosconcepts:skosconcept_detail', kwargs={'slug': self.object.slug})
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -597,7 +597,7 @@ class SkosConceptUpdate(BaseUpdateView):
         return super(SkosConceptUpdate, self).form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy('vocabs:skosconcept_detail', kwargs={'slug': self.object.slug})
+        return reverse_lazy('skosconcepts:skosconcept_detail', kwargs={'slug': self.object.slug})
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -607,7 +607,7 @@ class SkosConceptUpdate(BaseUpdateView):
 class SkosConceptDelete(BaseDeleteView):
     model = SkosConcept
     template_name = 'webpage/confirm_delete.html'
-    success_url = reverse_lazy('vocabs:browse_vocabs')
+    success_url = reverse_lazy('skosconcepts:browse_skosconcepts')
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -656,7 +656,7 @@ def file_upload(request):
                     skos_vocab = SkosImporter(file=file, language=form.cleaned_data['language'])
                 try:
                     skos_vocab.upload_data(user=request.user.username)
-                    return redirect('vocabs:browse_schemes')
+                    return redirect('skosconceptschemes:browse_skosconceptschemes')
                 except Exception as error:
                     messages.error(request, error)
             else:

@@ -9,6 +9,35 @@ search_types = (
 )
 
 
+class ClassificationRegistryServiceAC(object):
+    """
+    mdwRepository Classification Service
+    """
+    endpoint = 'https://repo.mdw.ac.at/mdr/crs/skos-ac/skosconcept-autocomplete/'
+    search_type = 'PrefixSearch?'
+    response_format = 'json'
+
+    def payload(self, q):
+        """
+        returns a dictionary containing arguments to be
+        passed in the URL’s query string
+        """
+        return {'QueryString': q, 'format': self.response_format}
+
+    def get_url(self):
+        """
+        service's URL
+        """
+        return self.endpoint + self.search_type
+
+    def parse_response(self, response):
+        """
+        parses JSON response to return a list containing
+        data in format 'uri - label'
+        """
+        return [str(x['id']) + ' - ' + str(x['text']) for x in response['results']]
+
+
 class DbpediaAC(object):
     """
     Dbpedia

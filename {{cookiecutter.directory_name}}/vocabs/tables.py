@@ -4,7 +4,7 @@ from vocabs.models import *
 
 
 class SkosConceptSchemeTable(tables.Table):
-    title = tables.LinkColumn('vocabs:skosconceptscheme_detail', args=[A('slug')])
+    title = tables.LinkColumn('skosconceptschemes:skosconceptscheme_detail', args=[A('slug')])
 
     class Meta:
         model = SkosConceptScheme
@@ -13,7 +13,7 @@ class SkosConceptSchemeTable(tables.Table):
 
 
 class SkosCollectionTable(tables.Table):
-    name = tables.LinkColumn('vocabs:skoscollection_detail', args=[A('slug')])
+    name = tables.LinkColumn('skoscollections:skoscollection_detail', args=[A('slug')])
 
     class Meta:
         model = SkosCollection
@@ -22,7 +22,7 @@ class SkosCollectionTable(tables.Table):
 
 
 class SkosConceptTable(tables.Table):
-    pref_label = tables.LinkColumn('vocabs:skosconcept_detail', args=[A('slug')])
+    pref_label = tables.LinkColumn('skosconcepts:skosconcept_detail', args=[A('slug')])
 
     class Meta:
         model = SkosConcept

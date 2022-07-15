@@ -10,7 +10,7 @@ from .models import SkosConcept
 class LatestSkosConceptRssFeed(Feed):
 
     title = _('SKOS Concept RSS 2.0 Feed')
-    link = reverse_lazy('vocabs:browse_vocabs')
+    link = reverse_lazy('skosconcepts:browse_skosconcepts')
     description = _('New SKOS Concept feed.')
 
     def items(self):
@@ -23,7 +23,7 @@ class LatestSkosConceptRssFeed(Feed):
 class LatestSkosConceptAtomFeed(Feed):
 
     title = _('SKOS Concept Atom Feed')
-    link = reverse_lazy('vocabs:browse_vocabs')
+    link = reverse_lazy('skosconcepts:browse_skosconcepts')
     description = _('New SKOS Concept feed.')
     feed_type = Atom1Feed
 

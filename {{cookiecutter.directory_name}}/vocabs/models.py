@@ -193,14 +193,14 @@ class SkosConceptScheme(models.Model):
 
     @classmethod
     def get_listview_url(self):
-        return reverse('vocabs:browse_schemes')
+        return reverse('skosconceptschemes:browse_skosconceptschemes')
 
     @classmethod
     def get_createview_url(self):
-        return reverse('vocabs:skosconceptscheme_create')
+        return reverse('skosconceptschemes:skosconceptscheme_create')
 
     def get_absolute_url(self):
-        return reverse('vocabs:skosconceptscheme_detail', kwargs={'slug': self.slug})
+        return reverse('skosconceptschemes:skosconceptscheme_detail', kwargs={'slug': self.slug})
 
     def get_next(self):
         next = SkosConceptScheme.objects.filter(id__gt=self.id)
@@ -376,14 +376,14 @@ class SkosCollection(models.Model):
 
     @classmethod
     def get_listview_url(self):
-        return reverse('vocabs:browse_skoscollections')
+        return reverse('skoscollections:browse_skoscollections')
 
     @classmethod
     def get_createview_url(self):
-        return reverse('vocabs:skoscollection_create')
+        return reverse('skoscollections:skoscollection_create')
 
     def get_absolute_url(self):
-        return reverse('vocabs:skoscollection_detail', kwargs={'slug': self.slug})
+        return reverse('skoscollections:skoscollection_detail', kwargs={'slug': self.slug})
 
     def get_next(self):
         next = SkosCollection.objects.filter(id__gt=self.id)
@@ -684,15 +684,15 @@ class SkosConcept(MPTTModel):
 
     @classmethod
     def get_listview_url(self):
-        return reverse('vocabs:browse_vocabs')
+        return reverse('skosconcepts:browse_skosconcepts')
 
     @classmethod
     def get_createview_url(self):
-        return reverse('vocabs:skosconcept_create')
+        return reverse('skosconcepts:skosconcept_create')
 
     def get_absolute_url(self):
-        return reverse('vocabs:skosconcept_detail', kwargs={'slug': self.slug})
-        #return reverse('vocabs:skosconcept_detail', kwargs={'pk': self.id})
+        return reverse('skosconcepts:skosconcept_detail', kwargs={'slug': self.slug})
+        #return reverse('skosconcepts:skosconcept_detail', kwargs={'pk': self.id})
 
     def __str__(self):
         return self.pref_label

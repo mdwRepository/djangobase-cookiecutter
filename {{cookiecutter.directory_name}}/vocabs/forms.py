@@ -277,7 +277,7 @@ class SkosConceptSchemeForm(forms.ModelForm):
                 }
             ),
             'curator': autocomplete.ModelSelect2Multiple(
-                url='vocabs-ac:user-autocomplete'
+                url='skos-ac:user-autocomplete'
             ),
             'version': forms.TextInput(
                 attrs={
@@ -563,7 +563,7 @@ class SkosCollectionForm(forms.ModelForm):
                 }
             ),
             'scheme': autocomplete.ModelSelect2(
-                url='vocabs-ac:skosconceptscheme-autocomplete'
+                url='skos-ac:skosconceptscheme-autocomplete'
             ),
             'creator': forms.Textarea(
                 attrs={
@@ -792,7 +792,7 @@ ConceptSourceFormSet = inlineformset_factory(
 
 class AutocompleteCharField(forms.CharField):
     widget = autocomplete.TagSelect2(
-        url='vocabs-ac:external-link-ac',
+        url='skos-ac:external-link-ac',
         forward=['endpoint'],
         attrs={
             'data-placeholder': 'Type at least 3 characters to get autocomplete suggestions ...',
@@ -814,7 +814,7 @@ class SkosConceptForm(forms.ModelForm):
     broader_concept = TreeNodeChoiceField(
         queryset=SkosConcept.objects.all(),
         widget=autocomplete.ModelSelect2(
-            url='vocabs-ac:skosconcept-autocomplete',
+            url='skos-ac:skosconcept-autocomplete',
             forward=['scheme']
         ),
         help_text=SkosConcept._meta.get_field('broader_concept').help_text,
@@ -824,7 +824,7 @@ class SkosConceptForm(forms.ModelForm):
     collection = forms.ModelMultipleChoiceField(
         queryset=SkosCollection.objects.all(),
         widget=autocomplete.ModelSelect2Multiple(
-            url='vocabs-ac:skoscollection-autocomplete',
+            url='skos-ac:skoscollection-autocomplete',
             forward=['scheme']
         ),
         help_text=SkosConcept._meta.get_field('collection').help_text,
@@ -906,7 +906,7 @@ class SkosConceptForm(forms.ModelForm):
                 }
             ),
             'scheme': autocomplete.ModelSelect2(
-                url='vocabs-ac:skosconceptscheme-autocomplete'),
+                url='skos-ac:skosconceptscheme-autocomplete'),
         }
 
     def __init__(self, *args, **kwargs):
