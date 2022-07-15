@@ -124,8 +124,8 @@ var lastWidth = 0;
                                     {% if perms.vocabs.add_skosconcept or perms.vocabs.add_skoscollection %}
                                         <h5>{% translate 'SKOS Concept Scheme actions' %}</h5>
                                         {% if perms.vocabs.add_skosconcept %}
-                                            <a href="{% url 'vocabs:skosconcept_create' %}?scheme={{object.scheme.id}}&collection={{object.id}}"
-                                               style="text-decoration: none !important;">
+                                            <a href="{% url 'skosconcepts:skosconcept_create' %}?scheme={{object.scheme.id}}&collection={{object.id}}"
+                                               class="text-decoration-none">
                                                 <button class="btn btn-success btn-circle btn-circle-sm m-1"
                                                         type="button"
                                                         data-toggle="tooltip"
@@ -138,8 +138,8 @@ var lastWidth = 0;
                                             <br>
                                         {% endif %}
                                         {% if perms.vocabs.add_skoscollection %}
-                                            <a href="{% url 'vocabs:skoscollection_create' %}?scheme={{object.scheme.id}}"
-                                               style="text-decoration: none !important;">
+                                            <a href="{% url 'skoscollections:skoscollection_create' %}?scheme={{object.scheme.id}}"
+                                               class="text-decoration-none">
                                                 <button class="btn btn-success btn-circle btn-circle-sm m-1"
                                                         type="button"
                                                         data-toggle="tooltip"
@@ -260,7 +260,7 @@ var lastWidth = 0;
                                             </a>
                                         </li>
                                         <li class="breadcrumb-item mb-0">
-                                            <a href="{% url 'vocabs:browse_skoscollections' %}">
+                                            <a href="{% url 'skosconceptschemes:browse_skosconceptschemes' %}">
                                                 {% translate "SKOS Collections" %}
                                             </a>
                                         </li>
@@ -279,9 +279,9 @@ var lastWidth = 0;
                                     <div class="col-md-4 text-right">
                                         {% get_obj_perms request.user for object as 'object_perms' %}
                                         {% if 'change_skoscollection' in object_perms %}
-                                            <a href="{% url 'vocabs:skoscollection_update' pk=object.id %}"
+                                            <a href="{% url 'skoscollections:skoscollection_update' pk=object.id %}"
                                                name="{% translate 'edit' %} {{ object.title }}"
-                                               class="editor_link" style="text-decoration: none !important;">
+                                               class="editor_link">
                                                 <button class="btn btn-success btn-circle btn-circle-sm m-1"
                                                         type="button"
                                                         data-toggle="tooltip"
@@ -292,9 +292,9 @@ var lastWidth = 0;
                                             </a>
                                         {% endif %}
                                         {% if 'delete_skoscollection' in object_perms %}
-                                            <a href="{% url 'vocabs:skoscollection_delete' pk=object.id %}"
+                                            <a href="{% url 'skoscollections:skoscollection_delete' pk=object.id %}"
                                                name="{% translate 'delete' %}  {{ object.title }}"
-                                               class="editor_link" style="text-decoration: none !important;">
+                                               class="editor_link">
                                                 <button class="btn btn-danger btn-circle btn-circle-sm m-1"
                                                         type="button"
                                                         data-toggle="tooltip"
@@ -483,18 +483,16 @@ var lastWidth = 0;
                                                                                     {% translate 'download this collection' %}
                                                                                 </th>
                                                                                 <td>
-                                                                                    <ul>
-                                                                                        <li>
-                                                                                            <a href="{% url 'vocabs:vocabs-download' %}?collection={{object.id}}">
-                                                                                                RDF/XML
-                                                                                            </a>
-                                                                                        </li>
-                                                                                        <li>
-                                                                                            <a href="{% url 'vocabs:vocabs-download' %}?format=turtle&collection={{object.id}}">
-                                                                                                Turtle
-                                                                                            </a>
-                                                                                        </li>
-                                                                                    </ul>
+                                                                                    <li>
+                                                                                        <a href="{% url 'skos:vocabs-download' %}?collection={{object.id}}">
+                                                                                            RDF/XML
+                                                                                        </a>
+                                                                                    </li>
+                                                                                    <li>
+                                                                                        <a href="{% url 'skos:vocabs-download' %}?format=turtle&collection={{object.id}}">
+                                                                                            Turtle
+                                                                                        </a>
+                                                                                    </li>
                                                                                 </td>
                                                                             </tr>
                                                                         {% endif %}
@@ -549,7 +547,7 @@ var lastWidth = 0;
     </article>
     {% if 'vocabs.add_skoscollection' in perms %}
     <div id="tray">
-        <a href="{% url 'vocabs:skoscollection_create' %}">
+        <a href="{% url 'skoscollections:skoscollection_create' %}">
             <button type="button" class="btn-success btn-circle btn-xl">
                 <i class="fa fa-plus"></i>
             </button>
