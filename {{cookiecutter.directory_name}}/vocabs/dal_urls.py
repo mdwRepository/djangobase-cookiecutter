@@ -4,7 +4,7 @@ from .models import SkosConcept, SkosConceptScheme, SkosCollection
 from django.conf import settings
 from users.models import CustomGroup
 
-app_name = 'vocabs'
+app_name = 'skos-ac'
 
 urlpatterns = [
     path('autocomplete/external-link/', dal_views.ExternalLinkAC.as_view(), name='external-link-ac'),
