@@ -142,10 +142,6 @@ a:hover {
     /* text-decoration: underline; */
 }
 
-.text-decoration-none-important {
-    text-decoration: none !important;
-}
-
 /* Header  ====================================================== */
 
 header {
@@ -524,12 +520,27 @@ a > .fa-2x {
     padding-bottom: 15px;
 }
 
-.formsetAdd {
+.mainContent a.formsetAdd {
     color: #008038 !important;
+    text-decoration: none !important;
 }
 
-.formsetRemove {
+.mainContent a.formsetAdd:before {
+      font-family: "Font Awesome 6 Free"; font-weight: 400; content: "\2b\00a0";
+      text-decoration: none !important;
+    }
+
+
+.mainContent a.formsetRemove {
+    color: #ff0000 !important;
+    text-decoration: none !important;
 }
+
+.mainContent a.formsetRemove:before {
+      font-family: "Font Awesome 6 Free"; font-weight: 400; content: "\f2ed\00a0";
+      text-decoration: none !important;
+    }
+
 
 .accordion-header {
     background-color: #003b7929;
@@ -541,14 +552,12 @@ a > .fa-2x {
     padding-top: 10px;
 }
 
-.delete-row {
-    color: #ff0000 !important;
-}
-
 .row1 {
     background-color: #003b7908;
     padding: 10px;
-    margin-bottom: 10px;}
+    margin-bottom: 10px;
+    border: 1px solid rgba(64, 64, 64, .1)
+}
 
 /* Add button  ====================================================== */
 
@@ -866,6 +875,16 @@ a > .fa-2x {
     background-color: #09bfbf59;
 }
 
+.mandatory {
+    border-left: 4px solid #9d0000;
+    background-color: #dd0000a3;
+}
+
+.mandatoryIfApplicable {
+    border-left: 4px solid #dd7607;
+    background-color: #ffa749eb;
+}
+
 .optional {
     border-left: 4px solid #446aff;
     background-color: #9cb0ffb3
@@ -876,3 +895,44 @@ a > .fa-2x {
   flex: 1 1 auto;
   padding: 1.25rem;
   background-color: white;
+
+
+.text-decoration-none-important {
+    text-decoration: none !important;
+}
+
+.formblock {
+    background-color: azure;
+    padding: 10px;
+}
+
+.select2-selection--multiple {
+    border: 1px solid ;
+    width: 100%;
+    border-color: #ced4da !important;
+}
+
+.select2-container--default {
+  background-color: white;
+  border: 1px solid;
+  border-radius: 4px;
+  cursor: text;
+  width: 100%;
+  border-color: #ced4da !important;
+}
+
+/* Cards  ====================================================== */
+
+.card {
+    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: transparent;
+    background-clip: border-box;
+    border: 1px solid rgba(0, 0, 0, .125);
+    border-radius: .25rem;
+}
