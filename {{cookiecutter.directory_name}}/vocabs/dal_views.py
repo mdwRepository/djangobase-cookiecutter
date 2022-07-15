@@ -4,7 +4,7 @@ from guardian.shortcuts import get_objects_for_user
 from mptt.settings import DEFAULT_LEVEL_INDICATOR
 import requests, json
 
-from users.models import CustomUser
+from users.models import CustomUser, CustomGroup
 from .endpoints import *
 
 
@@ -107,5 +107,14 @@ class UserAC(autocomplete.Select2QuerySetView):
         qs = CustomUser.objects.exclude(username=self.request.user)
         if self.q:
             qs = qs.filter(username__icontains=self.q)
+
+        return qs
+
+
+class GroupAC(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        qs = CustomGroup.objects.all()
+        if self.q:
+            qs = qs.filter(name__icontains=self.q)
 
         return qs

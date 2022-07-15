@@ -3,6 +3,9 @@ from . import dal_views
 from .models import SkosConcept, SkosConceptScheme, SkosCollection
 from django.conf import settings
 
+from users.models import CustomGroup
+
+
 app_name = 'vocabs'
 
 urlpatterns = [
@@ -17,4 +20,6 @@ urlpatterns = [
          name='skosconcept-extmatch-autocomplete'),
     path('user-autocomplete/', dal_views.UserAC.as_view(model=settings.AUTH_USER_MODEL),
          name='user-autocomplete'),
+    path('group-autocomplete/', dal_views.GroupAC.as_view(model=CustomGroup),
+         name='group-autocomplete'),
 ]
