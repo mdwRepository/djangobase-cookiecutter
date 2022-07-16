@@ -8,7 +8,9 @@ from mptt.admin import MPTTModelAdmin
 # With object permissions support
 @admin.register(SkosConcept)
 class SkosConceptAdmin(MPTTModelAdmin, GuardedModelAdmin, VersionAdmin):
-	pass
+	list_filter = ('scheme', 'legacy_id', 'notation', 'needs_review')
+	search_fields = ('pref_label', 'related', 'broad_match', 'narrow_match', 'exact_match', 'related_match',
+					 'close_match')
 
 
 class SkosCollectionAdmin(GuardedModelAdmin, VersionAdmin):
