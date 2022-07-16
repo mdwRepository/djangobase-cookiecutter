@@ -34,3 +34,4 @@ xlrd==1.2.0
 python-ldap==3.3.1
 django-auth-ldap==3.0.0
 {%- endif %}
+psycopg2-binary==2.9.1
