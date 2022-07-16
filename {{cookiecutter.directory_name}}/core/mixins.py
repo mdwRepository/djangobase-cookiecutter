@@ -43,10 +43,10 @@ models.Field.set_extra = set_extra
 class ExtIdMixin(models.Model):
     """
         External id (UUID4) mixin for a resource (can be referenced by other
-        systems.
+        systems; slug in django
     """
 
-    ext_id = models.UUIDField(
+    slug = models.SlugField(
         default=uuid.uuid4,
         editable=False,
         primary_key=True
@@ -59,7 +59,7 @@ class ExtIdMixin(models.Model):
 
     @property
     def get_uuid(self):
-        return str(self.ext_id)
+        return str(self.slug)
 
     @staticmethod
     def uuid_to_hex(uth):
@@ -67,11 +67,11 @@ class ExtIdMixin(models.Model):
 
     @property
     def clean_uuid(self):
-        return str(self.uuid_to_hex(self.ext_id))
+        return str(self.uuid_to_hex(self.slug))
 
     @classmethod
     def get_natural_primary_key(self):
-        return str(self.ext_id)
+        return str(self.slug)
 
 
 # BASE ENTITY METADATA
@@ -134,13 +134,6 @@ class BaseEntityMetadataMixin(models.Model):
         blank=True,
         related_name='%(class)s' + '_contributor',
         help_text=_("contributors_help"),
-    )
-    # additional optional fields
-    slug = models.SlugField(
-        null=True,
-        blank=True
-    ).set_extra(
-        is_public=True,
     )
 
     class Meta:
