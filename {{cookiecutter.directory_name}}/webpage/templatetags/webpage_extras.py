@@ -19,7 +19,7 @@ def class_name(value):
 
 @register.simple_tag
 def settings_value(name):
-    # pass settings value tp template
+    # pass settings value to template
     return getattr(settings, name, "")
 
 
