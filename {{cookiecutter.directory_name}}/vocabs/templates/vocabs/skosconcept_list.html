@@ -151,7 +151,7 @@
                                                     <h3>
                                                         <a href="{{ object.get_absolute_url }}"
                                                            name="{{ object.pref_label }}">
-                                                            {{ object.pref_label }} | {{ object.pref_label }}
+                                                            {{ object.pref_label }} | {{ object.pref_label_lang }}
                                                         </a>
                                                         {% if user.is_authenticated %}
                                                             {% if object.needs_review == True %}

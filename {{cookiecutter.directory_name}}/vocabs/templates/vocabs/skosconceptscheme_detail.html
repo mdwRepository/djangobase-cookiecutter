@@ -104,7 +104,8 @@ var lastWidth = 0;
 <!-- main content container start -->
 <div class="container">
     <article class="content clearfix">
-        {% if 'vocabs.view_skosconceptscheme' in perms %}
+        {% get_obj_perms request.user for object as 'object_perms' %}
+        {% if 'view_skosconceptscheme' in object_perms or perms.vocabs.view_skosconceptscheme %}
             <div class="row">
                 <div class="col-12">
                     <!-- split screen start -->
@@ -169,33 +170,38 @@ var lastWidth = 0;
                                                 {% else %}
                                                         </li>
                                                 {% endif %}
-                                                 {% if concept.id == object.id and concept.needs_review == False %}
-                                                    <li data-jstree='{"opened":true,"selected":true}'>
-                                                        <strong>
-                                                            {{ concept.pref_label }}
-                                                        </strong>
-                                                {% elif concept.id == object.id and concept.needs_review == True %}
-                                                    <li data-jstree='{"opened":true,"selected":true}'>
-                                                        <strong>{{ concept.pref_label }}
-                                                            <b style="color:red;" title="{% translate 'Needs review' %}"> !</b>
-                                                        </strong>
-                                                {% elif concept.id == object.id %}
-                                                    <li data-jstree='{"opened":true,"selected":true}'>
-                                                        <strong>
-                                                            {{ concept.pref_label }}
-                                                        </strong>
-                                                {% elif concept.id != object.id and concept.needs_review == True %}
-                                                    <li>
-                                                        <a href="{{ concept.get_absolute_url }}">
-                                                            {{ concept.pref_label }}
-                                                            <b style="color:red;" title="{% translate 'Needs review' %"> !</b>
-                                                        </a>
-                                                {% else %}
-                                                    <li>
-                                                        <a href="{{ concept.get_absolute_url }}">
-                                                            {{ concept.pref_label }}
-                                                        </a>
+                                                {% get_obj_perms request.user for concept as 'concept_perms' %}
+
+                                                {% if 'view_skosconcept' in concept_perms %}
+                                                    {% if concept.id == object.id and concept.needs_review == False %}
+                                                        <li data-jstree='{"opened":true,"selected":true}'>
+                                                            <strong>
+                                                                {{ concept.pref_label }}
+                                                            </strong>
+                                                    {% elif concept.id == object.id and concept.needs_review == True %}
+                                                        <li data-jstree='{"opened":true,"selected":true}'>
+                                                            <strong>{{ concept.pref_label }}
+                                                                <b style="color:red;" title="{% translate 'Needs review' %}"> !</b>
+                                                            </strong>
+                                                    {% elif concept.id == object.id %}
+                                                        <li data-jstree='{"opened":true,"selected":true}'>
+                                                            <strong>
+                                                                {{ concept.pref_label }}
+                                                            </strong>
+                                                    {% elif concept.id != object.id and concept.needs_review == True %}
+                                                        <li>
+                                                            <a href="{{ concept.get_absolute_url }}">
+                                                                {{ concept.pref_label }}
+                                                                <b style="color:red;" title="{% translate 'Needs review' %"> !</b>
+                                                            </a>
+                                                    {% else %}
+                                                        <li>
+                                                            <a href="{{ concept.get_absolute_url }}">
+                                                                {{ concept.pref_label }}
+                                                            </a>
+                                                    {% endif %}
                                                 {% endif %}
+
                                                 {% for level in structure.closed_levels %}
                                                         </li>
                                                     </ul>
@@ -271,7 +277,6 @@ var lastWidth = 0;
                                         <h1>{{ object }}</h1>
                                     </div>
                                     <div class="col-md-4 text-right">
-                                        {% get_obj_perms request.user for object as 'object_perms' %}
                                         {% if 'change_skosconceptscheme' in object_perms %}
                                             <a href="{% url 'skosconceptschemes:skosconceptscheme_update' pk=object.id %}"
                                                name="{% translate 'edit' %} {{ object.pref_label }}"

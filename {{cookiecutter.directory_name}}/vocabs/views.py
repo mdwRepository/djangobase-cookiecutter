@@ -68,9 +68,9 @@ class SkosConceptSchemeTableListView(GenericListView):
 class SkosConceptSchemeListView(ListView):
     model = SkosConceptScheme
     template_name = "vocabs/skosccollection_list.html"
-    pk_url_kwarg = "pk"
     paginate_by = 10
     ordering = ['title']
+    permission_required = ['view_skosconceptscheme']
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -79,7 +79,10 @@ class SkosConceptSchemeListView(ListView):
         return context
 
     def get_queryset(self, *args, **kwargs):
-        querySet = get_objects_for_user(self.request.user, ('view_skosconceptscheme'),
+        if self.request.user.is_superuser:
+            querySet = SkosConceptScheme.objects.all().distinct()
+        else:
+            querySet = get_objects_for_user(self.request.user, ('view_skosconceptscheme'),
                                         SkosConceptScheme.objects.all().distinct())
         skc_order = self.request.GET.get('sort', 'titleasc')
         query = self.request.GET.get('q', None)
@@ -89,18 +92,28 @@ class SkosConceptSchemeListView(ListView):
         if skc_order in ('titleasc', 'titledsc'):
             if skc_order == 'titledsc':
                 oqs = querySet.order_by('-title')
-            elif skc_order == 'titleasc':
+            else:
                 oqs = querySet.order_by('title')
+        else:
+            oqs = querySet
         return oqs
 
 
 class SkosConceptSchemeDetailView(BaseDetailView):
     model = SkosConceptScheme
     template_name = 'vocabs/skosconceptscheme_detail.html'
+    slug_url_kwarg = "slug"
+    permission_required = ['view_skosconceptscheme']
+
+    def get_queryset(self, **kwargs):
+        querySet = get_objects_for_user(self.request.user, ('vocabs.view_skosconceptscheme'),
+                                        SkosConceptScheme.objects.all().filter(slug=self.kwargs.get('slug')))
+        return querySet
 
     def get_context_data(self, **kwargs):
         context = super(SkosConceptSchemeDetailView, self).get_context_data(**kwargs)
-        context["concepts"] = SkosConcept.objects.filter(scheme=self.kwargs.get('pk'))
+        context["concepts"] = get_objects_for_user(self.request.user, ('vocabs.view_skosconcept'),
+                                                              SkosConcept.objects.all().distinct()).filter(scheme=self.object.id)
         return context
 
 
@@ -484,6 +497,13 @@ class SkosConceptDetailView(BaseDetailView):
     model = SkosConcept
     template_name = 'vocabs/skosconcept_detail.html'
     success_url = None
+    slug_url_kwarg = "slug"
+    permission_required = ['view_skosconcept']
+
+    def get_queryset(self, **kwargs):
+        querySet = get_objects_for_user(self.request.user, ('vocabs.view_skosconcept'),
+                                        SkosConcept.objects.all().filter(slug=self.kwargs.get('slug')))
+        return querySet
 
     def get_context_data(self, **kwargs):
         context = super(SkosConceptDetailView, self).get_context_data(**kwargs)
